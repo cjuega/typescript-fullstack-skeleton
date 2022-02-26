@@ -1,0 +1,29 @@
+{
+  "name": "typescript-fullstack-skeleton",
+  "version": "1.0.0",
+  "description": "Monorepo boilerplate for backend/frontend projects written in Typescript and following the Hexagonal Architecture paradigm.",
+  "repository": "git@github.com:cjuega/typescript-fullstack-skeleton.git",
+  "author": "Carlos Juega",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "src/contexts/*",
+    "src/apps/*/*"
+  ],
+  "scripts": {
+    "postinstall": "npx husky install",
+    "precommit": "npx lerna run precommit --stream --concurrency 1",
+    "lint": "yarn lint:contexts && yarn lint:apps",
+    "lint:contexts": "npx lerna run lint --scope @context/* --stream",
+    "lint:apps": "npx lerna run lint --scope @app/* --stream",
+    "build": "npx lerna run build --scope @context/*",
+    "test": "yarn build && yarn test:unit && yarn test:integration && yarn test:features",
+    "test:unit": "npx lerna run test:unit --scope @context/* --stream",
+    "test:integration": "npx lerna run test:integration --scope @context/* --stream --concurrency 1",
+    "test:features": "npx lerna run test --scope @app/* --stream --concurrency 1"
+  },
+  "devDependencies": {
+    "husky": "^7.0.4",
+    "lerna": "^4.0.0"
+  }
+}
