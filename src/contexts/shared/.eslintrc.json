@@ -1,0 +1,65 @@
+{
+    "extends": [
+        "airbnb-base",
+        "plugin:jest/all",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:import/typescript",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "plugins": [
+        "jest",
+        "@typescript-eslint"
+    ],
+    "rules": {
+        "strict": [2, "global"],
+        "no-var": 0,
+        "one-var": [2, {
+            "initialized": "always",
+            "uninitialized": "never"
+        }],
+        "comma-dangle": [2, "never"],
+        "indent": [2, 4, {
+            "CallExpression": {
+                "arguments": "first"
+            },
+            "FunctionDeclaration": {
+                "parameters": "first"
+            }
+        }],
+        "max-len": [2, {
+            "code": 140
+        }],
+        "jest/require-hook": 0
+    },
+    "parser": "@typescript-eslint/parser",
+    "env": {},
+    "overrides": [{
+            "files": ["*.test.ts"],
+            "rules": {
+                "jest/no-mocks-import": 0,
+                "jest/prefer-expect-resolves": 0,
+                "jest/require-hook": 2
+            }
+        },
+        {
+            "files": ["*.mock.ts"],
+            "rules": {
+                "jest/no-standalone-expect": 0
+            }
+        }
+    ],
+    "settings": {
+        "import/core-modules": ["terser-webpack-plugin"],
+        "import/resolver": {
+            "alias": {
+                "map": [
+                    ["@src", "./src"]
+                ],
+                "extensions": [
+                    ".ts", ".js"
+                ]
+            }
+        }
+    }
+}
