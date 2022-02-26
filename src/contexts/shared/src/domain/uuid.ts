@@ -1,6 +1,6 @@
 import { v4 } from 'uuid';
 import validate from 'uuid-validate';
-import InvalidArgumentError from '@src/domain/invalidArgumentError';
+import InvalidArgument from '@src/domain/invalidArgument';
 
 export default class Uuid {
     readonly value: string;
@@ -17,7 +17,7 @@ export default class Uuid {
 
     private ensureIsValidUuid(id: string): void {
         if (!validate(id)) {
-            throw new InvalidArgumentError(`<${this.constructor.name}> does not allow the value <${id}>`);
+            throw new InvalidArgument(`<${this.constructor.name}> does not allow the value <${id}>`);
         }
     }
 

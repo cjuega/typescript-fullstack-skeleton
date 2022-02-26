@@ -3,3 +3,7 @@
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 
 Monorepo boilerplate for backend/frontend projects written in Typescript and following the Hexagonal Architecture paradigm.
+
+## Getting started
+
+* Remember to update `.vscode/settings.json` with your current packages to prevent eslint errors within vscode.

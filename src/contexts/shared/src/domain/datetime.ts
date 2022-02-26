@@ -1,5 +1,5 @@
 import moment from 'moment';
-import InvalidArgumentError from '@src/domain/invalidArgumentError';
+import InvalidArgument from '@src/domain/invalidArgument';
 import StringValueObject from '@src/domain/stringValueObject';
 
 export default class Datetime extends StringValueObject {
@@ -13,7 +13,7 @@ export default class Datetime extends StringValueObject {
         const date = moment(value);
 
         if (!date.isValid()) {
-            throw new InvalidArgumentError(`<${this.name}> doesn't allow the value <${value}>`);
+            throw new InvalidArgument(`<${this.name}> doesn't allow the value <${value}>`);
         }
     }
 
