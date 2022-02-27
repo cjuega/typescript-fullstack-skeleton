@@ -138,3 +138,6 @@ typings
 # System files
 .DS_Store
 Thumbs.db
+
+# esbuild directories
+.esbuild
