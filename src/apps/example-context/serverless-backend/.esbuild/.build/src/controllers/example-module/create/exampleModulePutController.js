@@ -6465,21 +6465,46 @@ var require_invalidArgument = __commonJS({
   }
 });
 
+// ../../../contexts/shared/dist/domain/valueObject.js
+var require_valueObject = __commonJS({
+  "../../../contexts/shared/dist/domain/valueObject.js"(exports) {
+    "use strict";
+    var __importDefault = exports && exports.__importDefault || function(mod) {
+      return mod && mod.__esModule ? mod : { "default": mod };
+    };
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var invalidArgument_1 = __importDefault(require_invalidArgument());
+    var ValueObject = class {
+      constructor(value) {
+        this.value = value;
+        this.ensureValueIsDefined(value);
+      }
+      ensureValueIsDefined(value) {
+        if (value === null || value === void 0) {
+          throw new invalidArgument_1.default("Value must be defined");
+        }
+      }
+      equalsTo(other) {
+        return other.constructor.name === this.constructor.name && other.value === this.value;
+      }
+      toString() {
+        return this.value.toString();
+      }
+    };
+    exports.default = ValueObject;
+  }
+});
+
 // ../../../contexts/shared/dist/domain/stringValueObject.js
 var require_stringValueObject = __commonJS({
   "../../../contexts/shared/dist/domain/stringValueObject.js"(exports) {
     "use strict";
+    var __importDefault = exports && exports.__importDefault || function(mod) {
+      return mod && mod.__esModule ? mod : { "default": mod };
+    };
     Object.defineProperty(exports, "__esModule", { value: true });
-    var StringValueObject = class {
-      constructor(value) {
-        this.value = value;
-      }
-      toString() {
-        return this.value;
-      }
-      equalsTo(other) {
-        return this.value === other.value;
-      }
+    var valueObject_1 = __importDefault(require_valueObject());
+    var StringValueObject = class extends valueObject_1.default {
     };
     exports.default = StringValueObject;
   }
@@ -6563,11 +6588,12 @@ var require_inMemorySyncEventBus = __commonJS({
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var InMemorySyncEventBus2 = class {
-      constructor() {
+      constructor(...middlewares) {
         this.subscriptions = /* @__PURE__ */ new Map();
+        this.middlewares = middlewares;
       }
-      async publish(events) {
-        const executions = [];
+      async publish(domainEvents) {
+        const events = await this.applyMiddlewares(domainEvents), executions = [];
         events.forEach((event) => {
           const subscribers = this.subscriptions.get(event.eventName);
           if (subscribers) {
@@ -6575,6 +6601,13 @@ var require_inMemorySyncEventBus = __commonJS({
           }
         });
         await Promise.all(executions);
+      }
+      async applyMiddlewares(domainEvents) {
+        let events = domainEvents;
+        for (const middleware of this.middlewares) {
+          events = await middleware.run(events);
+        }
+        return events;
       }
       addSubscribers(subscribers) {
         subscribers.map((subscriber) => subscriber.subscribedTo().map((event) => this.subscribe(event.EVENT_NAME, subscriber)));
@@ -7146,10 +7179,11 @@ var require_uuid = __commonJS({
     var uuid_1 = require_dist();
     var uuid_validate_1 = __importDefault(require_uuid_validate());
     var invalidArgument_1 = __importDefault(require_invalidArgument());
-    var Uuid = class {
+    var valueObject_1 = __importDefault(require_valueObject());
+    var Uuid = class extends valueObject_1.default {
       constructor(value) {
+        super(value);
         this.ensureIsValidUuid(value);
-        this.value = value;
       }
       static random() {
         return new Uuid((0, uuid_1.v4)());
@@ -7158,12 +7192,6 @@ var require_uuid = __commonJS({
         if (!(0, uuid_validate_1.default)(id)) {
           throw new invalidArgument_1.default(`<${this.constructor.name}> does not allow the value <${id}>`);
         }
-      }
-      toString() {
-        return this.value;
-      }
-      equalsTo(other) {
-        return this.toString() === other.toString();
       }
     };
     exports.default = Uuid;

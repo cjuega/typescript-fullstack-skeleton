@@ -1,14 +1,6 @@
-export default abstract class NumberValueObject {
-    readonly value: number;
+import ValueObject from '@src/domain/valueObject';
 
-    constructor(value: number) {
-        this.value = value;
-    }
-
-    equalsTo(other: NumberValueObject): boolean {
-        return this.value === other.value;
-    }
-
+export default abstract class NumberValueObject extends ValueObject<number> {
     isBiggerThan(other: NumberValueObject): boolean {
         return this.value > other.value;
     }

@@ -34,7 +34,12 @@
     "build:tsc": "tsc && tscpaths -p tsconfig.json -s ./src -o ./dist"
   },
   "dependencies": {
+    "aws-sdk": "^2.1082.0",
+    "aws-xray-sdk": "^3.3.4",
+    "dynamodb-onetable": "^2.3.2",
     "faker": "^5.5.3",
+    "fast-glob": "^3.2.11",
+    "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "uuid": "^8.3.2",
     "uuid-validate": "^0.0.3"

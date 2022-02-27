@@ -47,6 +47,12 @@
             "rules": {
                 "jest/no-standalone-expect": 0
             }
+        },
+        {
+            "files": ["*.schema.ts"],
+            "rules": {
+                "no-template-curly-in-string": 0
+            }
         }
     ],
     "settings": {

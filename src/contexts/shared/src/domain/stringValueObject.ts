@@ -1,15 +1,3 @@
-export default abstract class StringValueObject {
-    readonly value: string;
+import ValueObject from '@src/domain/valueObject';
 
-    constructor(value: string) {
-        this.value = value;
-    }
-
-    toString(): string {
-        return this.value;
-    }
-
-    equalsTo(other: StringValueObject): boolean {
-        return this.value === other.value;
-    }
-}
+export default abstract class StringValueObject extends ValueObject<string> {}

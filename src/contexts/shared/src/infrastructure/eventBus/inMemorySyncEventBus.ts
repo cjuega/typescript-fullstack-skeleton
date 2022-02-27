@@ -2,6 +2,7 @@
 import { DomainEvent } from '@src/domain/eventBus/domainEvent';
 import { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
 import { EventBus } from '@src/domain/eventBus/eventBus';
+import { EventBusMiddleware } from '@src/domain/eventBus/eventBusMiddleware';
 
 type Subscription = {
     boundedCallback: Function;
@@ -11,12 +12,16 @@ type Subscription = {
 export default class InMemorySyncEventBus implements EventBus {
     private subscriptions: Map<string, Array<Subscription>>;
 
-    constructor() {
+    private middlewares: EventBusMiddleware[];
+
+    constructor(...middlewares: EventBusMiddleware[]) {
         this.subscriptions = new Map();
+        this.middlewares = middlewares;
     }
 
-    async publish(events: Array<DomainEvent>): Promise<void> {
-        const executions: any = [];
+    async publish(domainEvents: Array<DomainEvent>): Promise<void> {
+        const events = await this.applyMiddlewares(domainEvents),
+            executions: any = [];
 
         events.forEach((event) => {
             const subscribers = this.subscriptions.get(event.eventName);
@@ -27,6 +32,17 @@ export default class InMemorySyncEventBus implements EventBus {
         });
 
         await Promise.all(executions);
+    }
+
+    private async applyMiddlewares(domainEvents: Array<DomainEvent>): Promise<Array<DomainEvent>> {
+        let events = domainEvents;
+
+        for (const middleware of this.middlewares) {
+            // eslint-disable-next-line no-await-in-loop
+            events = await middleware.run(events);
+        }
+
+        return events;
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
