@@ -2,9 +2,27 @@
   "name": "@context/example",
   "version": "1.0.0",
   "description": "Example of a bounded context",
-  "main": "index.js",
   "author": "Carlos Juega",
   "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "./dist/"
+  ],
+  "typesVersions": {
+    "*": {
+      "dist/index.d.ts": [
+        "dist/index.d.ts"
+      ],
+      "*": [
+        "dist/*"
+      ]
+    }
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./": "./dist/"
+  },
   "scripts": {
     "precommit": "npx lint-staged",
     "lint": "npx eslint . --ext .js,.ts",
@@ -13,7 +31,7 @@
     "test:integration": "NODE_ENV=test jest --config=jest.config.integration.js --verbose --runInBand --passWithNoTests",
     "build": "yarn build:clean && yarn build:tsc",
     "build:clean": "rm -r dist; exit 0",
-    "build:tsc": "tsc -p tsconfig.build.json  && tscpaths -p tsconfig.build.json -s ./src -o ./dist"
+    "build:tsc": "tsc  && tscpaths -p tsconfig.json -s ./src -o ./dist"
   },
   "dependencies": {
     "@context/shared": "^1.0.0"

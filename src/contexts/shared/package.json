@@ -5,6 +5,25 @@
   "keywords": [],
   "author": "Carlos Juega",
   "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "./dist/"
+  ],
+  "typesVersions": {
+    "*": {
+      "dist/index.d.ts": [
+        "dist/index.d.ts"
+      ],
+      "*": [
+        "dist/*"
+      ]
+    }
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./": "./dist/"
+  },
   "scripts": {
     "precommit": "npx lint-staged",
     "lint": "npx eslint . --ext .js,.ts",

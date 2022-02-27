@@ -20,7 +20,7 @@
     "test": "yarn build && yarn test:unit && yarn test:integration && yarn test:features",
     "test:unit": "npx lerna run test:unit --scope @context/* --stream",
     "test:integration": "npx lerna run test:integration --scope @context/* --stream --concurrency 1",
-    "test:features": "npx lerna run test --scope @app/* --stream --concurrency 1"
+    "test:features": "npx lerna run test:locally --scope @app/* --stream --concurrency 1"
   },
   "devDependencies": {
     "husky": "^7.0.4",

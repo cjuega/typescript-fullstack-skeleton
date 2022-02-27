@@ -1,1 +1,1 @@
-export default class InvalidArgumentError extends Error {}
+export default class InvalidArgument extends Error {}

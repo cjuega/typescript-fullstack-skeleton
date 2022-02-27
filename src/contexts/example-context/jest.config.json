@@ -3,7 +3,8 @@
     "testEnvironment": "node",
     "cacheDirectory": ".tmp/jestCache",
     "moduleNameMapper": {
-        "@src/(.*)$": "<rootDir>/src/$1"
+        "@src/(.*)$": "<rootDir>/src/$1",
+        "@context/shared/(.*)$": "<rootDir>/../shared/dist/$1"
     },
     "coverageDirectory": "./reports/coverage",
     "coverageReporters": ["lcov", "text-summary"],
@@ -22,5 +23,6 @@
             "statements": 95
         }
     },
-    "testMatch": ["<rootDir>/src/**/*.test.ts"]
+    "testMatch": ["<rootDir>/src/**/*.test.ts"],
+    "testPathIgnorePatterns": ["<rootDir>/(.*)/persistence/(.*)"]
 }

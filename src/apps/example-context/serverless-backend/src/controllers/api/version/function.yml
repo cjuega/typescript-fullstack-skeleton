@@ -1,0 +1,10 @@
+versionGetController:
+  handler: src/controllers/api/version/versionGetController.get
+  events:
+    - http:
+        method: get
+        path: api/version
+        cors: true
+  tags:
+    Project: ${env:PROJECT}
+    Env: ${self:provider.stage}

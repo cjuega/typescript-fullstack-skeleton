@@ -1,0 +1,13 @@
+exampleModulePutController:
+  handler: src/controllers/example-module/create/exampleModulePutController.create
+  events:
+    - http:
+        method: put
+        path: example-modules/{id}
+        cors: true
+        request:
+          schema:
+            application/json: ${file(src/controllers/example-module/create/request.json)}
+  tags:
+    Project: ${env:PROJECT}
+    Env: ${self:provider.stage}

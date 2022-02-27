@@ -1,0 +1,11 @@
+subscribers:
+  handler: src/subscribers/subscribers.on
+  events:
+    - eventBridge:
+        eventBus: !ImportValue ${env:PROJECT}-${self:provider.stage}-DomainEventBusName
+        pattern:
+          detail-type:
+            - company.service.1.event.exampleAggregate.created
+  tags:
+    Project: ${env:PROJECT}
+    Env: ${self:provider.stage}

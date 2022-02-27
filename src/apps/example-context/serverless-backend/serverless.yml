@@ -1,0 +1,50 @@
+service: ${env:PROJECT}
+
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: ${opt:stage, 'offline'}
+  region: ${env:AWS_REGION, 'eu-west-1'}
+  profile: ${env:AWS_PROFILE}
+  logRetentionInDays: 5
+  apiGateway:
+    minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
+  environment:
+    NODE_ENV: ${self:provider.stage}
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+  tracing:
+    lambda: true
+  iamManagedPolicies:
+    - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - xray:PutTraceSegments
+        - xray:PutTelemetryRecords
+      Resource: "*"
+
+plugins:
+  - serverless-esbuild
+  - serverless-iam-roles-per-function
+  - serverless-prune-plugin
+  - serverless-offline
+
+custom:
+  esbuild:
+    packager: yarn
+  prune: # automatically prune old lambda versions
+    automatic: true
+    number: 3
+
+package:
+  individually: true
+
+functions:
+  # API
+  - ${file(src/controllers/api/version/function.yml)}
+  # example-module
+  - ${file(src/controllers/example-module/create/function.yml)}
+  # subscribers
+  - ${file(src/subscribers/function.yml)}
