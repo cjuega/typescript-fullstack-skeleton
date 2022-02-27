@@ -7,7 +7,7 @@ import handleError from '@src/controllers/handleError';
 import ConsoleLogger from '@context/shared/infrastructure/consoleLogger';
 import CurrentTimeClock from '@context/shared/infrastructure/currentTimeClock';
 // eslint-disable-next-line max-len
-import InMemoryExampleAggregateRepository from '@context/example/example-module/infrastructure/persistence/inMemoryExampleAggregateRepository';
+import DdbOneTableExampleAggregateRepository from '@context/example/example-module/infrastructure/persistence/ddbOneTable/ddbOneTableExampleAggregateRepository';
 import InMemorySyncEventBus from '@context/shared/infrastructure/eventBus/inMemorySyncEventBus';
 import CreateExampleAggregateCommandHandler from '@context/example/example-module/application/create/createExampleAggregateCommandHandler';
 import ExampleAggregateCreator from '@context/example/example-module/application/create/exampleAggregateCreator';
@@ -17,7 +17,7 @@ import ExampleAggregateAlreadyExists from '@context/example/example-module/domai
 
 const logger = new ConsoleLogger(),
     clock = new CurrentTimeClock(),
-    repository = new InMemoryExampleAggregateRepository(),
+    repository = new DdbOneTableExampleAggregateRepository(),
     eventBus = new InMemorySyncEventBus(),
     commandHandler = new CreateExampleAggregateCommandHandler(new ExampleAggregateCreator(clock, repository, eventBus)),
     exceptions = [

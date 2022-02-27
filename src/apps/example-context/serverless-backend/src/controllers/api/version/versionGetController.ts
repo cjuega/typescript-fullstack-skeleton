@@ -4,12 +4,11 @@ import 'source-map-support/register';
 import middy from '@middy/core';
 import cors from '@middy/http-cors';
 import ConsoleLogger from '@context/shared/infrastructure/consoleLogger';
+import { version } from '../../../../package.json';
 
 const logger = new ConsoleLogger(),
     handler: APIGatewayProxyHandler = async (event) => {
         logger.debug(`REQUEST:: ${JSON.stringify(event, null, 2)}`);
-
-        const version = '1.0.0';
 
         return {
             statusCode: 200,

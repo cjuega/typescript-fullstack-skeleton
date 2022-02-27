@@ -1,6 +1,7 @@
 import { DefineStepFunction } from 'jest-cucumber';
 import request from 'supertest';
 import { serverUrl } from '@tests/features/shared/isOffline';
+import { version } from '../../../package.json';
 
 let req: request.Request;
 let response: request.Response;
@@ -36,5 +37,10 @@ export const whenISendAGetRequest = (when: DefineStepFunction): void => {
     andTheResponseBodyIsEmpty = (and: DefineStepFunction): void => {
         and(/the response body should be empty/, () => {
             expect(response.body).toBe('');
+        });
+    },
+    andTheResponseBodyIsPackageVersion = (and: DefineStepFunction): void => {
+        and(/the response body should indicate the version of package.json/, () => {
+            expect(response.body).toStrictEqual({ version });
         });
     };
