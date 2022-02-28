@@ -141,3 +141,6 @@ Thumbs.db
 
 # esbuild directories
 .esbuild
+
+# docker volumes
+.data
