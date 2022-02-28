@@ -6,6 +6,9 @@ exampleModulePutController:
         path: example-modules/{id}
         cors: true
         request:
+          parameters:
+            path:
+              id: true
           schemas:
             application/json: ${file(src/controllers/example-module/create/request.json)}
   tags:

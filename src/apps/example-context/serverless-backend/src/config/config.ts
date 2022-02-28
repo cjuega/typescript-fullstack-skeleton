@@ -21,8 +21,6 @@ convict.addFormat({
 convict.addFormat({
     name: 'ddbonetable-indexes',
     validate(obj, schema) {
-        console.log('validating ddbonetable-indexes...');
-        console.log(obj);
         if (obj.constructor.name !== 'Object') {
             throw new Error('must be of type Array');
         }
