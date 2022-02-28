@@ -6,6 +6,8 @@
   "license": "MIT",
   "scripts": {
     "precommit": "npx lint-staged",
+    "preversion": "yarn test",
+    "postversion": "sed -i '' -E \"s/version: .*/version: $npm_package_version/\" docs/openapi.yml",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "dev": "npx sls offline --stage offline",
     "start:background": "./start-sls-offline.sh",

@@ -25,6 +25,7 @@
   },
   "scripts": {
     "precommit": "npx lint-staged",
+    "preversion": "yarn test",
     "lint": "npx eslint . --ext .js,.ts",
     "test": "yarn test:unit && yarn test:integration",
     "test:unit": "NODE_ENV=test jest --verbose",
