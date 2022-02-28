@@ -1,0 +1,5 @@
+Uuids:
+  type: array
+  items:
+    $ref: uuid.yml#/Uuid
+  uniqueItems: true

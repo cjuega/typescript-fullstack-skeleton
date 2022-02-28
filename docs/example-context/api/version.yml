@@ -1,0 +1,23 @@
+get:
+  operationId: getApiVersion
+  tags:
+  - ApisCtrl
+  summary: Get the version of the API.
+  description: This action returns the version of the API.
+  security: []
+  responses:
+    '200':
+      description: single AssetType.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              version:
+                type: string
+            required: ['version']
+            additionalProperties: false
+          example:
+            {
+              "version": "1.0.0"
+            }

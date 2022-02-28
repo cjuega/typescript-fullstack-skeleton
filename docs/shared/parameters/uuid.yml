@@ -1,0 +1,7 @@
+UuidParam:
+  name: id
+  in: path
+  required: true
+  description: Uuid (v4) that identifies a resource.
+  schema:
+    $ref: ../schemas/uuid.yml#/Uuid

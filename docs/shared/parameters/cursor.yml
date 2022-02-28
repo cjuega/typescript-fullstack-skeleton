@@ -1,0 +1,8 @@
+CursorParam:
+  name: cursor
+  in: query
+  description: A string that describes a cursor for pagination purposes. Note cursors are always returned by the API, then clients can use them to request next or previous pages.
+  schema:
+    type: string
+  example: cursor=eyJpc0JhY2t3YXJkIjp0cnVlLCJrZXkiOnsiX3BrIjoiQ29sbGVjdGlvbjpiMWU1MmY4Mi00Mjk4LTRmYTQtODRmNS1lOWQ4OWQzZmRmMjkiLCJfc2siOiJDb2xsZWN0aW9uIn19
+  

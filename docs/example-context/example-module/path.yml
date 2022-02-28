@@ -1,0 +1,27 @@
+put:
+  operationId: createExampleModule
+  tags:
+  - ExampleModulesCtrl
+  summary: Create a new ExampleModule entry.
+  description: This action creates a new ExampleModule entry in the system.
+  security: []
+  parameters:
+    -
+      $ref: ../../shared/parameters/uuid.yml#/UuidParam
+      description: Unique id of the new ExampleModule entry.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object  
+          properties:
+          additionalProperties: false
+        example:
+          {
+          }
+  responses:
+    '201':
+      $ref: ../../shared/responses/responses.yml#/Created
+    '400':
+      $ref: ../../shared/responses/responses.yml#/BadRequest
+      description: An ExampleModule with the same id already exists; or one or more inputs (path, query or body) don't follow the specification.

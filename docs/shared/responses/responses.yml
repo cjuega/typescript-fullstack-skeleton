@@ -1,0 +1,28 @@
+Created:
+  description: The request has been fulfilled, resulting in the creation of a new resource.
+
+NoContent:
+  description: The server successfully processed the request, and is not returning any content.
+
+BadRequest:
+  description: One or more inputs (path, headers, query or body) don't follow the specification.
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          message:
+            type: string
+        additionalProperties: false
+
+Unauthorized:
+  description: The User is not authenticated.
+
+Forbidden:
+  description: The User is not authorized to perform that action.
+
+NotFound:
+  description: The resource doesn't exist.
+
+ServerError:
+  description: Internal (and probably unknown) error.

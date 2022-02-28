@@ -8,6 +8,7 @@
     "precommit": "npx lint-staged",
     "preversion": "yarn test",
     "postversion": "sed -i '' -E \"s/version: .*/version: $npm_package_version/\" docs/openapi.yml",
+    "docs:bundle": "npx swagger-cli bundle docs/openapi.yml -r --outfile dist/docs/api/openapi.yml --type yaml",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "dev": "npx sls offline --stage offline",
     "start:background": "./start-sls-offline.sh",
@@ -41,6 +42,7 @@
     "serverless-offline-aws-eventbridge": "^1.6.6",
     "serverless-prune-plugin": "^2.0.1",
     "supertest": "^6.2.2",
+    "swagger-cli": "^4.0.4",
     "typescript": "^4.5.5",
     "typescript-eslint": "^0.0.1-alpha.0"
   },
