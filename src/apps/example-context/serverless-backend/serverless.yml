@@ -30,15 +30,22 @@ plugins:
   - serverless-iam-roles-per-function
   - serverless-prune-plugin
   - serverless-offline
+  - serverless-offline-aws-eventbridge
 
 custom:
   esbuild:
     packager: yarn
+    plugins: esbuild-plugins.js
   serverless-iam-roles-per-function:
     defaultInherit: true # Each function will inherit the service level roles too.
   prune: # automatically prune old lambda versions
     automatic: true
     number: 3
+  serverless-offline-aws-eventbridge:
+    port: 4010
+    debug: true
+    account: ''
+    convertEntry: false
 
 package:
   individually: true

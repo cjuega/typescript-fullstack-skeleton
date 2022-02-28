@@ -1,0 +1,22 @@
+{
+    "eventbridge": {
+        "region": "eu-west-1",
+        "endpoint": "http://localhost:4010",
+        "source": "company.service.offline",
+        "eventBusName": "company-offline-events"
+    },
+    "dynamodb": {
+        "region": "localhost",
+        "endpoint": "http://localhost:8000"
+    },
+    "ddbonetable": {
+        "tableName": "example-context-db-offline",
+        "indexes": {
+            "primary": {
+                "hash": "pk",
+                "sort": "sk"
+            }
+        },
+        "logger": true
+    }
+}

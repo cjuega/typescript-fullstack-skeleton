@@ -7,10 +7,15 @@ import handleError from '@src/controllers/handleError';
 import ConsoleLogger from '@context/shared/infrastructure/consoleLogger';
 import CurrentTimeClock from '@context/shared/infrastructure/currentTimeClock';
 import DynamodbDocClientFactory from '@context/shared/infrastructure/persistence/dynamodb/dynamodbDocClientFactory';
+import DynamodbConfigFactory from '@src/config/infrastructure/persistence/dynamodb/dynamodbConfigFactory';
 import DdbOneTableClientFactory from '@context/shared/infrastructure/persistence/ddbOneTable/ddbOneTableClientFactory';
+import DdbOneTableConfigFactory from '@src/config/infrastructure/persistence/ddbOneTable/ddbOneTableConfigFactory';
+import EventBridgeClientFactory from '@context/shared/infrastructure/eventBus/eventBridge/eventBridgeClientFactory';
+import EventBrigeConfigFactory from '@src/config/infrastructure/eventBus/eventBridge/eventBridgeConfigFactory';
+import DomainEventJsonMarshaller from '@context/shared/infrastructure/eventBus/domainEventJsonMarshaller';
 // eslint-disable-next-line max-len
 import DdbOneTableExampleAggregateRepository from '@context/example/example-module/infrastructure/persistence/ddbOneTable/ddbOneTableExampleAggregateRepository';
-import InMemorySyncEventBus from '@context/shared/infrastructure/eventBus/inMemorySyncEventBus';
+import EventBridgeEventBus from '@context/shared/infrastructure/eventBus/eventBridge/eventBridgeEventBus';
 import CreateExampleAggregateCommandHandler from '@context/example/example-module/application/create/createExampleAggregateCommandHandler';
 import ExampleAggregateCreator from '@context/example/example-module/application/create/exampleAggregateCreator';
 import CreateExampleAggregateCommand from '@context/example/example-module/application/create/createExampleAggregateCommand';
@@ -19,21 +24,18 @@ import ExampleAggregateAlreadyExists from '@context/example/example-module/domai
 
 const logger = new ConsoleLogger(),
     clock = new CurrentTimeClock(),
+    CONTEXT_NAME = 'example-module',
     table = DdbOneTableClientFactory.createClient(
-        'example-module',
-        DynamodbDocClientFactory.createClient('example-module', {
-            region: 'localhost',
-            endpoint: 'http://localhost:8000',
-            sslEnabled: false
-        }),
-        {
-            tableName: 'db-integration-tests',
-            indexes: { primary: { hash: 'pk', sort: 'sk' } },
-            logger: true
-        }
+        CONTEXT_NAME,
+        DynamodbDocClientFactory.createClient(CONTEXT_NAME, DynamodbConfigFactory.createConfig()),
+        DdbOneTableConfigFactory.createConfig()
     ),
     repository = new DdbOneTableExampleAggregateRepository(table),
-    eventBus = new InMemorySyncEventBus(),
+    eventBus = new EventBridgeEventBus(
+        EventBridgeClientFactory.createClient(CONTEXT_NAME, EventBrigeConfigFactory.createConfig()),
+        new DomainEventJsonMarshaller(),
+        EventBrigeConfigFactory.createConfig()
+    ),
     commandHandler = new CreateExampleAggregateCommandHandler(new ExampleAggregateCreator(clock, repository, eventBus)),
     exceptions = [
         {

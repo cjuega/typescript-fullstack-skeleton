@@ -6,7 +6,7 @@ exampleModulePutController:
         path: example-modules/{id}
         cors: true
         request:
-          schema:
+          schemas:
             application/json: ${file(src/controllers/example-module/create/request.json)}
   tags:
     Project: ${env:PROJECT}

@@ -7,15 +7,17 @@
   "scripts": {
     "precommit": "npx lint-staged",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "dev": "NODE_ENV=dev npx sls offline --stage offline",
+    "dev": "npx sls offline --stage offline",
     "start:background": "./start-sls-offline.sh",
     "stop:background": "./stop-sls-offline.sh",
-    "test": "yarn start:background && NODE_ENV=test yarn test:only; status=`echo $?`; yarn stop:background; exit $status",
+    "test": "yarn start:background && NODE_ENV=offline yarn test:only; status=`echo $?`; yarn stop:background; exit $status",
     "test:only": "npx jest --verbose --runInBand",
     "test:aws": "CLOUD_URL= jest --verbose --runInBand"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.92",
+    "@types/convict": "^6.1.1",
+    "@types/convict-format-with-validator": "^6.0.2",
     "@types/jest": "^27.4.1",
     "@types/node": "^17.0.21",
     "@types/supertest": "^2.0.11",
@@ -34,6 +36,7 @@
     "serverless-esbuild": "^1.25.0",
     "serverless-iam-roles-per-function": "^3.2.0",
     "serverless-offline": "^8.5.0",
+    "serverless-offline-aws-eventbridge": "^1.6.6",
     "serverless-prune-plugin": "^2.0.1",
     "supertest": "^6.2.2",
     "typescript": "^4.5.5",
@@ -44,6 +47,9 @@
     "@context/shared": "^1.0.0",
     "@middy/core": "^2.5.7",
     "@middy/http-cors": "^2.5.7",
+    "convict": "^6.2.1",
+    "convict-format-with-validator": "^6.2.0",
+    "esbuild-plugin-copy": "^0.4.0",
     "source-map-support": "^0.5.21"
   }
 }
