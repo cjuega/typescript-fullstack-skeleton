@@ -43,15 +43,15 @@ export default class DdbOneTableClientFactory {
 
     private static async loadModels(config: DdbOneTableConfig): Promise<{ [key: string]: OneModelSchema }> {
         const models: { [key: string]: OneModelSchema } = {},
-            schemaFiles = await fglob(config.schemas || '**/ddbOneTable/*.schema.ts', { absolute: true });
+            modelFiles = await fglob(config.models || '**/ddbOneTable/*.model.ts', { absolute: true });
 
-        for (const filepath of schemaFiles) {
-            const filename = basename(filepath, extname(filepath)).split('.')[0],
-                name = filename.charAt(0).toLocaleUpperCase() + filename.slice(1),
+        for (const filepath of modelFiles) {
+            const modelFile = basename(filepath, extname(filepath)).split('.')[0],
+                modelName = modelFile.charAt(0).toLocaleUpperCase() + modelFile.slice(1),
                 // eslint-disable-next-line no-await-in-loop
-                { default: schema } = await import(filepath);
+                { default: model } = await import(filepath);
 
-            models[name] = schema;
+            models[modelName] = model;
         }
 
         return models;

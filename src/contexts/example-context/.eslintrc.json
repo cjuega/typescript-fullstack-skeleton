@@ -49,7 +49,7 @@
             }
         },
         {
-            "files": ["*.schema.ts"],
+            "files": ["*.model.ts"],
             "rules": {
                 "no-template-curly-in-string": 0
             }
