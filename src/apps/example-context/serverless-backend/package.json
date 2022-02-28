@@ -10,7 +10,8 @@
     "dev": "NODE_ENV=dev npx sls offline --stage offline",
     "start:background": "./start-sls-offline.sh",
     "stop:background": "./stop-sls-offline.sh",
-    "test:locally": "yarn start:background && NODE_ENV=test npx jest --verbose --runInBand; status=`echo $?`; yarn stop:background; exit $status",
+    "test": "yarn start:background && NODE_ENV=test yarn test:only; status=`echo $?`; yarn stop:background; exit $status",
+    "test:only": "npx jest --verbose --runInBand",
     "test:aws": "CLOUD_URL= jest --verbose --runInBand"
   },
   "devDependencies": {
