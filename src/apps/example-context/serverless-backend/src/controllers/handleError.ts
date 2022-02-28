@@ -1,6 +1,9 @@
 // eslint-disable-next-line import/no-unresolved
 import { APIGatewayProxyResult } from 'aws-lambda';
 import { Nullable } from '@context/shared/domain/nullable';
+import ConsoleLogger from '@context/shared/infrastructure/consoleLogger';
+
+const logger = new ConsoleLogger();
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type ErrorMapping = { clazz: Function; errorCode: number };
@@ -25,6 +28,8 @@ function handleCustomException(exceptions: ErrorMapping[], error: Error): Nullab
 }
 
 export default function handleError(exceptions: ErrorMapping[], error: Error): APIGatewayProxyResult {
+    logger.error(error.toString());
+
     return (
         handleCustomException(exceptions, error) || {
             statusCode: 500,

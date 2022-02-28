@@ -3,6 +3,7 @@ import DdbOneTableRepository from '@context/shared/infrastructure/persistence/dd
 import ExampleAggregate from '@src/example-module/domain/exampleAggregate';
 import ExampleAggregateId from '@src/example-module/domain/exampleAggregateId';
 import { ExampleAggregateRepository } from '@src/example-module/domain/exampleAggregateRepository';
+import ExampleAggregateModel from '@src/example-module/infrastructure/persistence/ddbOneTable/exampleAggregate.model';
 
 export default class DdbOneTableExampleAggregateRepository
     extends DdbOneTableRepository<ExampleAggregate>
@@ -10,6 +11,11 @@ export default class DdbOneTableExampleAggregateRepository
     // eslint-disable-next-line class-methods-use-this
     protected modelName(): string {
         return 'ExampleAggregate';
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    protected loadModel(): any {
+        return ExampleAggregateModel;
     }
 
     async save(aggregate: ExampleAggregate): Promise<void> {

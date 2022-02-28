@@ -3,7 +3,8 @@
     "testEnvironment": "node",
     "moduleNameMapper": {
         "@src/(.*)$": "<rootDir>/src/$1",
-        "@tests/(.*)$": ["<rootDir>/tests/$1"]
+        "@tests/(.*)$": ["<rootDir>/tests/$1"],
+        "@context/shared/(.*)$": "<rootDir>/../../../contexts/shared/dist/$1"
     },
     "testMatch": ["<rootDir>/**/*.steps.ts"],
     "testTimeout": 10000
