@@ -1,6 +1,7 @@
 import { DefineStepFunction } from 'jest-cucumber';
 import request from 'supertest';
 import { serverUrl } from '@tests/features/shared/isOffline';
+import { isOpenAPIValidRequest, isOpenAPIValidResponse } from '@tests/features/shared/docValidation';
 import { version } from '../../../package.json';
 
 let req: request.Request;
@@ -43,4 +44,42 @@ export const whenISendAGetRequest = (when: DefineStepFunction): void => {
         and(/the response body should indicate the version of package.json/, () => {
             expect(response.body).toStrictEqual({ version });
         });
+    },
+    andTheRequestIsOpenAPIValid = (and: DefineStepFunction): void => {
+        and(
+            /the request is valid according to OpenAPI "(.+)" with path "(.+)"/,
+            async (pathToOpenAPIFile: string, pathToRoute: string) => {
+                const isValid = await isOpenAPIValidRequest(
+                    pathToOpenAPIFile,
+                    pathToRoute,
+                    req.method,
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    req.header['Content-Type'],
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    // eslint-disable-next-line no-underscore-dangle
+                    req._data
+                );
+
+                expect(isValid).toBe(true);
+            }
+        );
+    },
+    andTheResponseIsOpenAPIValid = (and: DefineStepFunction): void => {
+        and(
+            /the response is valid according to OpenAPI "(.+)" with path "(.+)"/,
+            async (pathToOpenAPIFile: string, pathToRoute: string) => {
+                const isValid = await isOpenAPIValidResponse(
+                    pathToOpenAPIFile,
+                    pathToRoute,
+                    req.method,
+                    `${response.status}`,
+                    response.type,
+                    response.body
+                );
+
+                expect(isValid).toBe(true);
+            }
+        );
     };

@@ -7,5 +7,6 @@ Feature: Create a new ExampleModule
             """
             {}
             """
+        And the request is valid according to OpenAPI "dist/docs/api/openapi.yml" with path "/example-modules/{id}"
         Then the response status code should be 201
         And the response body should be empty

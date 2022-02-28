@@ -13,8 +13,7 @@ put:
     content:
       application/json:
         schema:
-          type: object  
-          properties:
+          type: object
           additionalProperties: false
         example:
           {
