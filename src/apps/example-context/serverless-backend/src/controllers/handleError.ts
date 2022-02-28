@@ -17,7 +17,7 @@ function handleCustomException(exceptions: ErrorMapping[], error: Error): Nullab
         if (error instanceof clazz) {
             return {
                 statusCode: errorCode,
-                body: ''
+                body: JSON.stringify({ message: error.toString() })
             };
         }
 
@@ -33,7 +33,7 @@ export default function handleError(exceptions: ErrorMapping[], error: Error): A
     return (
         handleCustomException(exceptions, error) || {
             statusCode: 500,
-            body: ''
+            body: JSON.stringify({ message: error.toString() })
         }
     );
 }
