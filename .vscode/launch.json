@@ -15,6 +15,19 @@
       "request": "launch",
       "preLaunchTask": "npm: test",
       "url": "http://localhost:9876/debug.html"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Serverless Tests",
+      "cwd": "${workspaceFolder}/src/apps/example-context/serverless-backend",
+      "runtimeExecutable": "yarn",
+      "runtimeArgs": ["test:only"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "env": {
+        "NODE_ENV": "offline"
+      }
     }
   ]
 }

@@ -46,25 +46,34 @@ export const whenISendAGetRequest = (when: DefineStepFunction): void => {
         });
     },
     andTheRequestIsOpenAPIValid = (and: DefineStepFunction): void => {
-        and(
-            /the request is valid according to OpenAPI "(.+)" with path "(.+)"/,
-            async (pathToOpenAPIFile: string, pathToRoute: string) => {
-                const isValid = await isOpenAPIValidRequest(
-                    pathToOpenAPIFile,
-                    pathToRoute,
-                    req.method,
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    req.header['Content-Type'],
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    // eslint-disable-next-line no-underscore-dangle
-                    req._data
-                );
+        and(/the request is valid according to OpenAPI "(.+)" with path "(.+)"/, async (pathToOpenAPIFile: string, pathToRoute: string) => {
+            const { searchParams } = new URL(req.url),
+                queryParams: { [key: string]: string } = {};
 
-                expect(isValid).toBe(true);
-            }
-        );
+            searchParams.forEach((value, key) => {
+                queryParams[key] = value;
+            });
+
+            // eslint-disable-next-line one-var
+            const isValid = await isOpenAPIValidRequest(
+                pathToOpenAPIFile,
+                pathToRoute,
+                req.method,
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                req.header['Content-Type'],
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                req.header,
+                queryParams,
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                // eslint-disable-next-line no-underscore-dangle
+                req._data
+            );
+
+            expect(isValid).toBe(true);
+        });
     },
     andTheResponseIsOpenAPIValid = (and: DefineStepFunction): void => {
         and(
