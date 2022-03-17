@@ -1,5 +1,0 @@
-Uuid:
-  type: string
-  description: An uuid v4.
-  pattern: ^[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}$
-  example: 'e4b689e2-c06a-40a1-aac2-5f6d695d7326'

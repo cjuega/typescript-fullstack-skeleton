@@ -1,13 +1,23 @@
 ExampleModule:
-  type: object
   description: ExampleModule schema.
-  properties:
-    id:
-      $ref: ../../shared/schemas/uuid.yml#/Uuid
-      description: Unique id that identifies the ExampleModule entry in the system.
-    createdAt:
-      type: string
-      description: instant in which the ExampleModule entry was created (ISO-8601 format).
-      format: date-time
-  required: ['id', 'createdAt']
-  additionalProperties: false
+  allOf:
+    -
+      type: object
+      properties:
+        id:
+          description: Unique id that identifies the ExampleModule entry in the system.
+          type: string
+          format: uuid
+        createdAt:
+          description: instant in which the ExampleModule entry was created (ISO-8601 format).
+          type: string
+          format: date-time
+      required: ['id', 'createdAt']
+    -
+      $ref: example-module-put-body.yml#/ExampleModulePutBody
+    # This is a trick to support additionalProperties: false when combining schemas with allOf
+    - type: object
+      properties:
+        id: {}
+        createdAt: {}
+      additionalProperties: false

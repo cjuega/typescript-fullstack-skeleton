@@ -10,10 +10,10 @@ servers:
 security:
   - accessToken: []
 paths:
-  /example-modules/{id}:
-    $ref: ../../../../../docs/example-context/example-module/path.yml
   /api/version:
     $ref: ../../../../../docs/example-context/api/version.yml
+  /example-modules/{id}:
+    $ref: ../../../../../docs/example-context/example-module/path.yml
 components:
   securitySchemes:
     accessToken:

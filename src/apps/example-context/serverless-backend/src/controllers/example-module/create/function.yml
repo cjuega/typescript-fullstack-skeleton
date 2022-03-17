@@ -10,7 +10,7 @@ exampleModulePutController:
             path:
               id: true
           schemas:
-            application/json: ${file(src/controllers/example-module/create/request.json)}
+            application/json: ${file(../../../../docs/example-context/example-module/example-module-put-body.yml):ExampleModulePutBody}
   tags:
     Project: ${env:PROJECT}
     Env: ${self:provider.stage}

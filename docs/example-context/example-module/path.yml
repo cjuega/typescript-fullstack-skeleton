@@ -7,14 +7,18 @@ put:
   security: []
   parameters:
     -
-      $ref: ../../shared/parameters/uuid.yml#/UuidParam
       description: Unique id of the new ExampleModule entry.
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
   requestBody:
     content:
       application/json:
         schema:
-          type: object
-          additionalProperties: false
+          $ref: example-module-put-body.yml#/ExampleModulePutBody
         example:
           {
           }
@@ -22,5 +26,5 @@ put:
     '201':
       $ref: ../../shared/responses/responses.yml#/Created
     '400':
-      $ref: ../../shared/responses/responses.yml#/BadRequest
       description: An ExampleModule with the same id already exists; or one or more inputs (path, query or body) don't follow the specification.
+      $ref: ../../shared/responses/responses.yml#/BadRequest
