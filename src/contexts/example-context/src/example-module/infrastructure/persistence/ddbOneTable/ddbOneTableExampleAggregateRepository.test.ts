@@ -34,7 +34,7 @@ describe('ddbOneTableExampleAggregateRepository', () => {
     });
 
     describe('save', () => {
-        it('should save an exampleAggregate', async () => {
+        it('should save an ExampleAggregate', async () => {
             expect.hasAssertions();
 
             const aggregate = ExampleAggregateMother.random();
@@ -46,13 +46,13 @@ describe('ddbOneTableExampleAggregateRepository', () => {
     });
 
     describe('search', () => {
-        it("should return null when exampleAggregate doesn't exist", async () => {
+        it("should return null when ExampleAggregate doesn't exist", async () => {
             expect.hasAssertions();
 
             expect(await repository.search(ExampleAggregateIdMother.random())).toBeNull();
         });
 
-        it('should return an existing collection', async () => {
+        it('should return an existing ExampleAggregate', async () => {
             expect.hasAssertions();
 
             const expected = ExampleAggregateMother.random();
