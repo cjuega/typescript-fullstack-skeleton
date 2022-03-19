@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { readFile } from 'fs';
 import { join, resolve } from 'path';
 import { load } from 'js-yaml';
@@ -37,7 +38,7 @@ function getValidator(): Ajv {
     return ajv;
 }
 
-async function isValidAgainstSchema(schema: Record<string, any>, obj: Record<string, unknown> | undefined | null): Promise<boolean> {
+function isValidAgainstSchema(schema: Record<string, any>, obj: Record<string, unknown> | undefined | null): void {
     const ajv = getValidator(),
         isValid = ajv.validate(schema, obj),
         errorMessage = (ajv.errors || [])
@@ -52,66 +53,117 @@ async function isValidAgainstSchema(schema: Record<string, any>, obj: Record<str
             .join('\n');
 
     expect(isValid).toBeValid(errorMessage);
+}
 
-    return isValid;
+function paramsToAjvSchema(params: Array<{ name: string; required?: boolean; schema: any }>): any {
+    return params.reduce(
+        (schema: any, param) => {
+            const paramName = param.name.toLowerCase();
+
+            schema.properties[paramName] = param.schema;
+
+            if (param.required) {
+                if (!schema.required) {
+                    schema.required = [];
+                }
+
+                schema.required.push(paramName);
+            }
+
+            return schema;
+        },
+        {
+            type: 'object',
+            properties: {},
+            additionalProperties: false
+        }
+    );
+}
+
+function areRequestHeadersValid(headersSchema: any, headers: any): void {
+    // Add Content-Type header to schema
+    // eslint-disable-next-line no-param-reassign
+    headersSchema.properties['content-type'] = { type: 'string' };
+
+    const lowercaseHeaders = Object.entries(headers).reduce((h: any, [k, v]) => {
+        h[k.toLowerCase()] = v;
+        return h;
+    }, {});
+
+    isValidAgainstSchema(headersSchema, lowercaseHeaders);
+}
+
+function areRequestPathParamsValid(pathSchema: any, pathParams: any): void {
+    isValidAgainstSchema(pathSchema, pathParams);
+}
+
+function areRequestQueryParamsValid(querySchema: any, queryParams: any): void {
+    isValidAgainstSchema(querySchema, queryParams);
+}
+
+function isRequestBodyValid(bodySchema: any, body: any): void {
+    if (bodySchema && !body) {
+        expect(body).toBeDefined();
+    }
+
+    if (!bodySchema && !!body) {
+        expect(body).toBeUndefined();
+    }
+
+    isValidAgainstSchema(bodySchema, body);
 }
 
 // eslint-disable-next-line one-var
-export const isOpenAPIValidRequest = async (
+export const isRequestOpenAPIValid = async (
         filepath: string,
         pathToRoute: string,
         httpVerb: string,
         contentType: string,
         headers: { [key: string]: string },
+        pathParams: { [key: string]: string },
         queryParams: { [key: string]: string },
         body: Record<string, unknown> | undefined | null
-    ): Promise<boolean> => {
-        console.log(headers);
-        console.log(queryParams);
-
+    ): Promise<void> => {
         const schema = await readSchema(join(appFolder, filepath)),
             pathSchema = schema.paths[pathToRoute],
             methodSchema = pathSchema && pathSchema[httpVerb.toLowerCase()],
+            parametersSchema = methodSchema?.parameters || [],
             bodySchema = methodSchema?.requestBody?.content[contentType]?.schema;
 
-        if (!methodSchema) {
-            return false;
-        }
+        expect(methodSchema).toBeDefined();
 
-        if ((bodySchema && !body) || (!bodySchema && !!body)) {
-            return false;
-        }
+        areRequestHeadersValid(paramsToAjvSchema(parametersSchema.filter((p: any) => p.in === 'header')), headers);
 
-        return isValidAgainstSchema(bodySchema, body);
+        areRequestPathParamsValid(paramsToAjvSchema(parametersSchema.filter((p: any) => p.in === 'path')), pathParams);
+
+        areRequestQueryParamsValid(paramsToAjvSchema(parametersSchema.filter((p: any) => p.in === 'query')), queryParams);
+
+        isRequestBodyValid(bodySchema, body);
     },
-    isOpenAPIValidResponse = async (
+    isResponseOpenAPIValid = async (
         filepath: string,
         pathToRoute: string,
         httpVerb: string,
         responseCode: string,
         contentType: string,
         response: Record<string, unknown>
-    ): Promise<boolean> => {
+    ): Promise<void> => {
         const schema = await readSchema(join(appFolder, filepath)),
             pathSchema = schema.paths[pathToRoute],
             methodSchema = pathSchema && pathSchema[httpVerb.toLowerCase()],
             responseSchema = methodSchema?.responses[responseCode]?.content[contentType]?.schema;
 
-        if (!pathSchema) {
-            return false;
+        expect(pathSchema).toBeDefined();
+        expect(methodSchema).toBeDefined();
+        expect(methodSchema.responses[responseCode]).toBeDefined();
+
+        if (responseSchema && !response) {
+            expect(response).toBeDefined();
         }
 
-        if (!methodSchema) {
-            return false;
+        if (!responseSchema && !!response) {
+            expect(response).toBeUndefined();
         }
 
-        if (!methodSchema?.responses[responseCode]) {
-            return false;
-        }
-
-        if ((responseSchema && !response) || (!responseSchema && !!response)) {
-            return false;
-        }
-
-        return isValidAgainstSchema(responseSchema, response);
+        isValidAgainstSchema(responseSchema, response);
     };

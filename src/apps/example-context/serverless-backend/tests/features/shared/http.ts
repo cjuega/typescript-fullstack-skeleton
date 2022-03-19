@@ -1,7 +1,7 @@
 import { DefineStepFunction } from 'jest-cucumber';
 import request from 'supertest';
 import { serverUrl } from '@tests/features/shared/isOffline';
-import { isOpenAPIValidRequest, isOpenAPIValidResponse } from '@tests/features/shared/docValidation';
+import { isRequestOpenAPIValid, isResponseOpenAPIValid } from '@tests/features/shared/docValidation';
 import { version } from '../../../package.json';
 
 let req: request.Request;
@@ -17,6 +17,37 @@ async function iSendAPutRequest(route: string, body: string): Promise<void> {
     req = request(serverUrl).put(route);
 
     response = await req.send(JSON.parse(body));
+}
+
+function extractPathParams(url: string, docPath: string): { [key: string]: string } {
+    const pathParamNames = docPath.match(/{([a-zA-Z]+)}/g),
+        pathParamsValues = url.match(new RegExp(docPath.replace(/{[a-zA-Z]+}/g, '([a-zA-Z0-9-_]+)')));
+
+    pathParamsValues?.shift();
+
+    if (!pathParamNames) {
+        return {};
+    }
+
+    return pathParamNames.reduce((params: { [key: string]: string }, name, i) => {
+        const nameWithoutBrackets = name.substring(1, name.length - 1);
+
+        // eslint-disable-next-line no-param-reassign
+        params[nameWithoutBrackets] = pathParamsValues![i];
+
+        return params;
+    }, {});
+}
+
+function extractQueryParams(url: string): { [key: string]: string } {
+    const { searchParams } = new URL(url),
+        queryParams: { [key: string]: string } = {};
+
+    searchParams.forEach((value, key) => {
+        queryParams[key] = value;
+    });
+
+    return queryParams;
 }
 
 export const whenISendAGetRequest = (when: DefineStepFunction): void => {
@@ -47,15 +78,7 @@ export const whenISendAGetRequest = (when: DefineStepFunction): void => {
     },
     andTheRequestIsOpenAPIValid = (and: DefineStepFunction): void => {
         and(/the request is valid according to OpenAPI "(.+)" with path "(.+)"/, async (pathToOpenAPIFile: string, pathToRoute: string) => {
-            const { searchParams } = new URL(req.url),
-                queryParams: { [key: string]: string } = {};
-
-            searchParams.forEach((value, key) => {
-                queryParams[key] = value;
-            });
-
-            // eslint-disable-next-line one-var
-            const isValid = await isOpenAPIValidRequest(
+            await isRequestOpenAPIValid(
                 pathToOpenAPIFile,
                 pathToRoute,
                 req.method,
@@ -65,21 +88,20 @@ export const whenISendAGetRequest = (when: DefineStepFunction): void => {
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 req.header,
-                queryParams,
+                extractPathParams(req.url, pathToRoute),
+                extractQueryParams(req.url),
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 // eslint-disable-next-line no-underscore-dangle
                 req._data
             );
-
-            expect(isValid).toBe(true);
         });
     },
     andTheResponseIsOpenAPIValid = (and: DefineStepFunction): void => {
         and(
             /the response is valid according to OpenAPI "(.+)" with path "(.+)"/,
             async (pathToOpenAPIFile: string, pathToRoute: string) => {
-                const isValid = await isOpenAPIValidResponse(
+                await isResponseOpenAPIValid(
                     pathToOpenAPIFile,
                     pathToRoute,
                     req.method,
@@ -87,8 +109,6 @@ export const whenISendAGetRequest = (when: DefineStepFunction): void => {
                     response.type,
                     response.body
                 );
-
-                expect(isValid).toBe(true);
             }
         );
     };
