@@ -27,7 +27,7 @@ export default abstract class DdbOneTableRepository<T extends AggregateRoot> {
 
         try {
             table.getModel(modelName);
-        } catch (e) {
+        } catch {
             table.addModel(modelName, this.loadModel());
         }
     }
