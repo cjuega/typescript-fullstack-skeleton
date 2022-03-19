@@ -2,10 +2,10 @@ PageInfo:
   type: object
   properties:
     prev:
-      type: string
       description: A cursor string to get the previous page.
+      type: string
       nullable: true
     next:
-      type: string
       description: A cursor string to get the next page.
+      type: string
       nullable: true

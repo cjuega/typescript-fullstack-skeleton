@@ -5,7 +5,7 @@ NoContent:
   description: The server successfully processed the request, and is not returning any content.
 
 BadRequest:
-  description: One or more inputs (path, headers, query or body) don't follow the specification.
+  description: One or more inputs (headers, path, query or body) don't follow the specification.
   content:
     application/json:
       schema:
@@ -16,7 +16,7 @@ BadRequest:
         additionalProperties: false
 
 Unauthorized:
-  description: The User is not authenticated.
+  description: The User is not authenticated and the endpoint requires a logged in user.
 
 Forbidden:
   description: The User is not authorized to perform that action.
