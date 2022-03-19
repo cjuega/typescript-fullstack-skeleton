@@ -16,7 +16,7 @@ fi
 
 # start up serverless
 # $! is the pid of the last program your shell ran in the background
-yarn dev &> $TMPFILE &
+yarn start &> $TMPFILE &
 PID=$!
 
 echo $PID > .tmp/.offline.pid

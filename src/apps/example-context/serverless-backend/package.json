@@ -10,7 +10,7 @@
     "postversion": "sed -i '' -E \"s/version: .*/version: $npm_package_version/\" docs/openapi.yml",
     "docs:bundle": "npx swagger-cli bundle docs/openapi.yml -r --outfile dist/docs/api/openapi.yml --type yaml",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "dev": "npx sls offline --stage offline",
+    "start": "npx sls offline --stage offline",
     "start:background": "./start-sls-offline.sh",
     "stop:background": "./stop-sls-offline.sh",
     "test": "yarn start:background && NODE_ENV=offline yarn test:only; status=`echo $?`; yarn stop:background; exit $status",
