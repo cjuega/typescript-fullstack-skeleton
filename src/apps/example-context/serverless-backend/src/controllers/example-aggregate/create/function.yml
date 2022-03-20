@@ -1,0 +1,16 @@
+exampleAggregatePutController:
+  handler: src/controllers/example-aggregate/create/exampleAggregatePutController.create
+  events:
+    - http:
+        method: put
+        path: example-aggregates/{id}
+        cors: true
+        request:
+          parameters:
+            path:
+              id: true
+          schemas:
+            application/json: ${file(../../../../docs/example-context/example-aggregate/example-aggregate-put-body.yml):ExampleAggregatePutBody}
+  tags:
+    Project: ${env:PROJECT}
+    Env: ${self:provider.stage}

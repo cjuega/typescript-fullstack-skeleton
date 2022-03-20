@@ -1,4 +1,0 @@
-ExampleModulePutBody:
-  description: Schema to create a new ExampleModule entry.
-  type: object
-  additionalProperties: false

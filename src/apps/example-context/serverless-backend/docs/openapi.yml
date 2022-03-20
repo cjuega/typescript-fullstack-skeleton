@@ -12,8 +12,8 @@ security:
 paths:
   /api/version:
     $ref: ../../../../../docs/example-context/api/version.yml
-  /example-modules/{id}:
-    $ref: ../../../../../docs/example-context/example-module/path.yml
+  /example-aggregates/{id}:
+    $ref: ../../../../../docs/example-context/example-aggregate/path.yml
 components:
   securitySchemes:
     accessToken:
@@ -22,4 +22,4 @@ components:
       bearerFormat: JWT
   schemas:
     ExampleModule:
-      $ref: ../../../../../docs/example-context/example-module/example-module.yml#/ExampleModule
+      $ref: ../../../../../docs/example-context/example-aggregate/example-aggregate.yml#/ExampleAggregate

@@ -1,0 +1,4 @@
+ExampleAggregatePutBody:
+  description: Schema to create a new ExampleAggregate entry.
+  type: object
+  additionalProperties: false

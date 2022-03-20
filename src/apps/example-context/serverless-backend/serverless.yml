@@ -53,7 +53,7 @@ package:
 functions:
   # API
   - ${file(src/controllers/api/version/function.yml)}
-  # example-module
-  - ${file(src/controllers/example-module/create/function.yml)}
+  # example-aggregate
+  - ${file(src/controllers/example-aggregate/create/function.yml)}
   # subscribers
   - ${file(src/subscribers/function.yml)}

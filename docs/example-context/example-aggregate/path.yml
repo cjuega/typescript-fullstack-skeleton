@@ -1,0 +1,30 @@
+put:
+  operationId: createExampleAggregate
+  tags:
+  - ExampleAggregatesCtrl
+  summary: Create a new ExampleAggregate entry.
+  description: This action creates a new ExampleAggregate entry in the system.
+  security: []
+  parameters:
+    -
+      description: Unique id of the new ExampleAggregate entry.
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: example-aggregate-put-body.yml#/ExampleAggregatePutBody
+        example:
+          {
+          }
+  responses:
+    '201':
+      $ref: ../../shared/responses/responses.yml#/Created
+    '400':
+      description: An ExampleAggregate with the same id already exists; or one or more inputs (path params or body) don't follow the specification.
+      $ref: ../../shared/responses/responses.yml#/BadRequest
