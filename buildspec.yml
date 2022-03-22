@@ -1,0 +1,44 @@
+version: 0.2
+
+env:
+  secrets-manager:
+    dockerhub_username: $SECRET_ID:username
+    dockerhub_password: $SECRET_ID:password
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 14.x
+    commands:
+      - apt-get install jq
+      - pip3 install docker-compose
+      - npm install --silent --progress=false -g npm
+      - npm install --silent --progress=false -g yarn
+      # https://aws.amazon.com/es/premiumsupport/knowledge-center/codebuild-docker-pull-image-error/
+      - docker login -u $dockerhub_username -p $dockerhub_password
+
+  # This is required so AwsSignedConnection can read AWS credentials properly. It seems there is an issue otherwise.
+  pre_build:
+    commands:
+      - export TEMP_ROLE=`curl http://169.254.170.2$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI`
+      - export AWS_ACCESS_KEY_ID=$(echo "${TEMP_ROLE}" | jq -r '.AccessKeyId')
+      - export AWS_SECRET_ACCESS_KEY=$(echo "${TEMP_ROLE}" | jq -r '.SecretAccessKey')
+      - export AWS_SESSION_TOKEN=$(echo "${TEMP_ROLE}" | jq -r '.Token')
+
+  build:
+    commands:
+      - make test
+      - yarn deploy:aws
+      - yarn test:features:aws
+      - mkdir artifacts
+      - make build
+
+  post_build:
+    commands:
+      - yarn destroy:aws
+      - make clean
+
+artifacts:
+ files:
+   - artifacts/**/*
+   - deploy.sh

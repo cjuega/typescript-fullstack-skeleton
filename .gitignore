@@ -144,3 +144,6 @@ Thumbs.db
 
 # docker volumes
 .data
+
+# AWS CDK output
+cdk.out

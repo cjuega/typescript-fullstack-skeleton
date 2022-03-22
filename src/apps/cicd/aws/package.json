@@ -1,0 +1,39 @@
+{
+  "name": "@app/aws-cicd",
+  "version": "1.0.0",
+  "description": "IaC to deploy a CI/CD pipeline in AWS.",
+  "author": "Carlos Juega",
+  "license": "MIT",
+  "scripts": {
+    "precommit": "npx lint-staged",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest --verbose",
+    "cdk": "cdk"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.10",
+    "@types/node": "10.17.27",
+    "@typescript-eslint/eslint-plugin": "^5.12.1",
+    "@typescript-eslint/parser": "^5.12.1",
+    "aws-cdk": "2.17.0",
+    "eslint": "^8.10.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jest": "^26.1.1",
+    "eslint-plugin-module-resolver": "^1.4.0",
+    "jest": "^26.4.2",
+    "js-yaml": "^4.1.0",
+    "ts-jest": "^26.2.0",
+    "ts-node": "^9.0.0",
+    "typescript": "~3.9.7"
+  },
+  "dependencies": {
+    "@aws-cdk/aws-codebuild": "^1.149.0",
+    "aws-cdk-lib": "2.17.0",
+    "constructs": "^10.0.0",
+    "source-map-support": "^0.5.16"
+  }
+}

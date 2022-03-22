@@ -17,10 +17,14 @@
     "lint:contexts": "npx lerna run lint --scope @context/* --stream",
     "lint:apps": "npx lerna run lint --scope @app/* --stream",
     "build": "npx lerna run build --scope @context/*",
+    "build:aws": "npx lerna run build:serverless --scope @app/* --stream",
     "test": "yarn build && yarn test:unit && yarn test:integration && yarn test:features",
     "test:unit": "npx lerna run test:unit --scope @context/* --stream",
     "test:integration": "npx lerna run test:integration --scope @context/* --stream --concurrency 1",
-    "test:features": "npx lerna run test --scope @app/* --stream --concurrency 1"
+    "test:features": "npx lerna run test --scope @app/* --stream --concurrency 1",
+    "test:features:aws": "npx lerna run test:features:aws --scope @app/* --stream --concurrency 1",
+    "deploy:aws": "npx lerna run deploy:aws --scope @app/* --stream",
+    "destroy:aws": "npx lerna run destroy:aws --scope @app/* --stream"
   },
   "devDependencies": {
     "husky": "^7.0.4",
