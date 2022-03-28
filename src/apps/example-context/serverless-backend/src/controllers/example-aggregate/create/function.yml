@@ -7,7 +7,7 @@ exampleAggregatePutController:
         cors: true
         request:
           parameters:
-            path:
+            paths:
               id: true
           schemas:
             application/json: ${file(../../../../docs/example-context/example-aggregate/example-aggregate-put-body.yml):ExampleAggregatePutBody}
