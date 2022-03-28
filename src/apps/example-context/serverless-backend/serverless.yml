@@ -7,7 +7,7 @@ provider:
   runtime: nodejs14.x
   stage: ${opt:stage, 'offline'}
   region: ${env:AWS_REGION, 'eu-west-1'}
-  profile: ${env:AWS_PROFILE}
+  profile: ${env:AWS_PROFILE, ''}
   logRetentionInDays: 5
   apiGateway:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
