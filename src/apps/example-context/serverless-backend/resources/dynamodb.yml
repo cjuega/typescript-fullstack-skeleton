@@ -1,0 +1,54 @@
+Resources:
+  Database:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${env:PROJECT}-${self:provider.stage}-table
+      AttributeDefinitions:
+        -
+          AttributeName: pk
+          AttributeType: S
+        -
+          AttributeName: sk
+          AttributeType: S
+        -
+          AttributeName: gsi1pk
+          AttributeType: S
+        -
+          AttributeName: gsi1sk
+          AttributeType: S
+      KeySchema:
+        -
+          AttributeName: pk
+          KeyType: HASH
+        -
+          AttributeName: sk
+          KeyType: RANGE
+      BillingMode: PROVISIONED
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      GlobalSecondaryIndexes:
+        -
+          IndexName: ${env:PROJECT}-${self:provider.stage}-gsi1
+          KeySchema:
+            -
+              AttributeName: gsi1pk
+              KeyType: HASH
+            -
+              AttributeName: gsi1sk
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
+      TimeToLiveSpecification:
+        AttributeName: _ttl
+        Enabled: TRUE
+      Tags:
+        -
+          Key: Project
+          Value: ${env:PROJECT}
+        -
+          Key: Env
+          Value: ${self:provider.stage}

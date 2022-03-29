@@ -50,6 +50,9 @@ custom:
 package:
   individually: true
 
+resources:
+  - ${file(resources/dynamodb.yml)}
+
 functions:
   # API
   - ${file(src/controllers/api/version/function.yml)}
