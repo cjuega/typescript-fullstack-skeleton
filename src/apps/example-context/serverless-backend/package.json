@@ -11,11 +11,17 @@
     "docs:bundle": "npx swagger-cli bundle docs/openapi.yml -r --outfile dist/docs/api/openapi.yml --type yaml",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "start": "npx sls offline --stage offline",
-    "start:background": "./start-sls-offline.sh",
-    "stop:background": "./stop-sls-offline.sh",
+    "start:background": "scripts/start-sls-offline.sh",
+    "stop:background": "scripts/stop-sls-offline.sh",
     "test": "yarn start:background && NODE_ENV=offline yarn test:only; status=`echo $?`; yarn stop:background; exit $status",
     "test:only": "yarn docs:bundle && npx jest --verbose --runInBand",
-    "test:aws": "CLOUD_URL= yarn docs:bundle && jest --verbose --runInBand"
+    "service:aws": "scripts/service-aws.sh",
+    "saveSetup:aws": "scripts/save-setup-aws.sh",
+    "restoreSetup:aws": "scripts/restore-setup-aws.sh",
+    "deploy:aws": "scripts/deploy-aws.sh",
+    "test:features:aws": "scripts/test-features-aws.sh",
+    "build:aws": "yarn docs:bundle && scripts/build-aws.sh",
+    "destroy:aws": "scripts/destroy-aws.sh"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.92",
