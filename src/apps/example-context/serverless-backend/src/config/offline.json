@@ -3,7 +3,7 @@
         "region": "eu-west-1",
         "endpoint": "http://localhost:4010",
         "source": "company.service.offline",
-        "eventBusName": "company-offline-events"
+        "eventBusName": "example-context-offline-events"
     },
     "dynamodb": {
         "region": "localhost",

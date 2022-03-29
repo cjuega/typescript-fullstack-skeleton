@@ -8,6 +8,11 @@ exampleAggregatePutController:
         - dynamodb:GetItem
         - dynamodb:PutItem
       Resource: !GetAtt Database.Arn
+    -
+      Effect: Allow
+      Action:
+        - events:PutEvents
+      Resource: !GetAtt DomainEventBus.Arn
   events:
     - http:
         method: put
