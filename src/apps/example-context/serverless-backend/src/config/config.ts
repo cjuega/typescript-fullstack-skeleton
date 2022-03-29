@@ -39,7 +39,6 @@ const files = [`${__dirname}/default.json`],
     config = convict({
         env: {
             doc: 'The application environment.',
-            format: ['pro', 'sta', 'test', 'dev', 'offline'],
             default: 'offline',
             env: 'NODE_ENV',
             arg: 'stage'

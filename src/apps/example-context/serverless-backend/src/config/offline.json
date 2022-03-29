@@ -10,11 +10,15 @@
         "endpoint": "http://localhost:8000"
     },
     "ddbonetable": {
-        "tableName": "example-context-db-offline",
+        "tableName": "example-context-offline-table",
         "indexes": {
             "primary": {
                 "hash": "pk",
                 "sort": "sk"
+            },
+            "example-context-offline-gsi1": {
+                "hash": "gsi1pk",
+                "sort": "gsi1sk"
             }
         },
         "logger": true
