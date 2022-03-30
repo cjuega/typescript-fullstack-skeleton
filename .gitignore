@@ -147,3 +147,6 @@ Thumbs.db
 
 # AWS CDK output
 cdk.out
+
+# Convict settings files
+**/src/config/*.json

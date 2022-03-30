@@ -23,7 +23,7 @@ start_database:
 .PHONY = build
 build:
 	yarn build
-	yarn build:aws
+	yarn build:aws pro
 
 # Run tests
 .PHONY = test

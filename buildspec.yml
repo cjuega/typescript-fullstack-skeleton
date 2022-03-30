@@ -28,17 +28,19 @@ phases:
   build:
     commands:
       - make test
-      - yarn deploy:aws
-      - yarn test:features:aws
-      - mkdir artifacts
+      - yarn restoreSetup:aws int
+      - yarn deploy:aws int
+      - yarn test:features:aws int
       - make build
 
   post_build:
     commands:
-      - yarn destroy:aws
+      # - yarn destroy:aws int
       - make clean
 
 artifacts:
  files:
-   - artifacts/**/*
-   - deploy.sh
+   - src/apps/**/dist/artifacts/**/*
+   - src/apps/**/dist/docs/**/*
+   - scripts/deploy-artifacts.sh
+   - scripts/publish-docs-aws.sh

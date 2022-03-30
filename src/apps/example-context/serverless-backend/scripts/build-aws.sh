@@ -5,10 +5,11 @@ if [ $# -lt 1 ]; then
     exit 1
 fi
 
-PACKAGE_DIR=$(pwd)/dist/artifacts
 ENV=$1
+ARTIFACT_DIR=$(pwd)/dist/artifact
+PACKAGE_DIR=$ARTIFACT_DIR/$ENV
 
-rm -rf $PACKAGE_DIR
+rm -rf $ARTIFACT_DIR
 mkdir -p $PACKAGE_DIR
 
 if [ ! -f .env.$ENV ]; then

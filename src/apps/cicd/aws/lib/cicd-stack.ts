@@ -120,7 +120,7 @@ export class CICDStack extends Stack {
                             }
                         },
                         build: {
-                            commands: ['bash deploy.sh']
+                            commands: ['bash scripts/deploy-artifacts.sh']
                         }
                     }
                 }),
