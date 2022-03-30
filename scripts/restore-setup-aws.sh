@@ -9,7 +9,9 @@ ENV=$1
 
 if [ ! -f .env.$ENV ]; then
     echo "dotenv file <.env.$ENV> doesn't exist!"
-    exit 1
+    echo ""
+    echo "defaulting to <.env.offline> settings..."
+    cp .env.offline .env.$ENV
 fi
 
 source .env.$ENV
