@@ -14,4 +14,4 @@ fi
 
 source .env.$ENV
 
-AWS_PROFILE=$AWS_PROFILE AWS_REGION=$AWS_REGION aws cloudformation describe-stacks --stack-name $PROJECT-$ENV | jq -r '.Stacks[].Outputs[] | select(.OutputKey=="ServiceEndpoint") | .OutputValue'
+aws cloudformation describe-stacks --stack-name $PROJECT-$ENV --region $AWS_REGION --profile $AWS_PROFILE | jq -r '.Stacks[].Outputs[] | select(.OutputKey=="ServiceEndpoint") | .OutputValue'
