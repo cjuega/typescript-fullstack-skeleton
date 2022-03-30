@@ -14,10 +14,10 @@ fi
 
 source .env.$ENV
 
-AWS_PROFILE=$AWS_PROFILE aws ssm put-parameter --name $PROJECT-$ENV-dotenv --type SecureString --value "$(cat .env.$ENV)" --overwrite
+AWS_PROFILE=$AWS_PROFILE AWS_REGION=$AWS_REGION aws ssm put-parameter --name $PROJECT-$ENV-dotenv --type SecureString --value "$(cat .env.$ENV)" --overwrite
 
 if [ -f src/config/$ENV.json ]; then
-    AWS_PROFILE=$AWS_PROFILE aws ssm put-parameter --name $PROJECT-$ENV-config --type SecureString --value "$(cat ./src/config/$ENV.json)" --overwrite
+    AWS_PROFILE=$AWS_PROFILE AWS_REGION=$AWS_REGION aws ssm put-parameter --name $PROJECT-$ENV-config --type SecureString --value "$(cat ./src/config/$ENV.json)" --overwrite
 else
     echo "WARNING!!!! Config file <src/config/$ENV.json> doesn't exist! Nothing saved!"
 fi

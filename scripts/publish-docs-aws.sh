@@ -23,7 +23,7 @@ DOCS=dist/docs/api/openapi.yml
 
 if [ ! -z "$DOCS_S3_BUCKET" ] && [ -f $DOCS ]; then
     echo "Deploying docs for <$PROJECT ($SERVICE_FLAVOR)>!"
-    AWS_PROFILE=$AWS_PROFILE aws s3 cp $DOCS s3://$DOCS_S3_BUCKET/apis/$PROJECT/$SERVICE_FLAVOR/openapi.yml --cache-control no-cache
+    AWS_PROFILE=$AWS_PROFILE AWS_REGION=$AWS_REGION aws s3 cp $DOCS s3://$DOCS_S3_BUCKET/apis/$PROJECT/$SERVICE_FLAVOR/openapi.yml --cache-control no-cache
 else
     echo "docs for <$PROJECT ($SERVICE_FLAVOR)> not found or DOCS_S3_BUCKET not found in <.env.$ENV>. Skipping docs deployment..."
 fi
