@@ -9,6 +9,7 @@
     "preversion": "yarn test",
     "postversion": "sed -i '' -E \"s/version: .*/version: $npm_package_version/\" docs/openapi.yml",
     "docs:bundle": "npx swagger-cli bundle docs/openapi.yml -r --outfile dist/docs/api/openapi.yml --type yaml",
+    "publish:docs:aws": "yarn docs:bundle && ../../../../scripts/publish-docs-aws.sh",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "start": "npx sls offline --stage offline",
     "start:background": "scripts/start-sls-offline.sh",
