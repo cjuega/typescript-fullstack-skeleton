@@ -52,7 +52,7 @@ Object {
     },
     \\"build\\": {
       \\"commands\\": [
-        \\"bash deploy.sh\\"
+        \\"bash scripts/deploy-artifacts.sh\\"
       ]
     }
   }
