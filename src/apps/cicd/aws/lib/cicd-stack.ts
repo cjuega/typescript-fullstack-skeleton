@@ -57,11 +57,11 @@ export class CICDStack extends Stack {
                     actions: [sourceAction]
                 },
                 {
-                    stageName: 'TestBuild',
+                    stageName: 'TestAndBuild',
                     actions: [testAction]
                 },
                 {
-                    stageName: 'BuildDeploy',
+                    stageName: 'Deploy',
                     actions: [deployAction]
                 }
             ]
@@ -77,7 +77,7 @@ export class CICDStack extends Stack {
             [repo, branch] = repositoryAndBranch.split('#'),
             output = new Artifact(),
             action = new CodeStarConnectionsSourceAction({
-                actionName: 'SourceAction',
+                actionName: 'Source',
                 owner,
                 repo,
                 branch,
@@ -89,7 +89,7 @@ export class CICDStack extends Stack {
     }
 
     private buildTestAction(sourceOutput: Artifact, dockerSecret: Secret): [Action, Artifact] {
-        const project = new PipelineProject(this, 'TestBuild', {
+        const project = new PipelineProject(this, 'TestAndBuild', {
                 environment: {
                     buildImage: LinuxBuildImage.STANDARD_5_0,
                     privileged: true
@@ -103,7 +103,7 @@ export class CICDStack extends Stack {
             }),
             output = new Artifact(),
             action = new CodeBuildAction({
-                actionName: 'Test-Build',
+                actionName: 'TestAndBuild',
                 project,
                 input: sourceOutput,
                 outputs: [output]
@@ -294,7 +294,7 @@ export class CICDStack extends Stack {
     }
 
     private buildDeployAction(testOutput: Artifact): [Action, Artifact] {
-        const project = new PipelineProject(this, 'BuildDeploy', {
+        const project = new PipelineProject(this, 'Deploy', {
                 buildSpec: BuildSpec.fromObject({
                     version: '0.2',
                     phases: {
@@ -314,7 +314,7 @@ export class CICDStack extends Stack {
             }),
             output = new Artifact(),
             action = new CodeBuildAction({
-                actionName: 'Build-Deploy',
+                actionName: 'Deploy',
                 project,
                 input: testOutput,
                 outputs: [output]

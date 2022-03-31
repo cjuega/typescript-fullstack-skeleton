@@ -19,7 +19,14 @@ Object {
     },
   },
   "Resources": Object {
-    "BuildDeploy2990C72D": Object {
+    "ConnectionToRepository": Object {
+      "Properties": Object {
+        "ConnectionName": "GitHub",
+        "ProviderType": "GitHub",
+      },
+      "Type": "AWS::CodeStarConnections::Connection",
+    },
+    "Deploy7B206E61": Object {
       "Properties": Object {
         "Artifacts": Object {
           "Type": "CODEPIPELINE",
@@ -37,7 +44,7 @@ Object {
         },
         "ServiceRole": Object {
           "Fn::GetAtt": Array [
-            "BuildDeployRole9E883242",
+            "DeployRoleFF7E9D15",
             "Arn",
           ],
         },
@@ -62,24 +69,7 @@ Object {
       },
       "Type": "AWS::CodeBuild::Project",
     },
-    "BuildDeployRole9E883242": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "codebuild.amazonaws.com",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::IAM::Role",
-    },
-    "BuildDeployRoleDefaultPolicy2EFD877E": Object {
+    "DeployRoleDefaultPolicy9A3389B6": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -109,7 +99,7 @@ Object {
                       },
                       ":log-group:/aws/codebuild/",
                       Object {
-                        "Ref": "BuildDeploy2990C72D",
+                        "Ref": "Deploy7B206E61",
                       },
                     ],
                   ],
@@ -132,7 +122,7 @@ Object {
                       },
                       ":log-group:/aws/codebuild/",
                       Object {
-                        "Ref": "BuildDeploy2990C72D",
+                        "Ref": "Deploy7B206E61",
                       },
                       ":*",
                     ],
@@ -167,7 +157,7 @@ Object {
                     },
                     ":report-group/",
                     Object {
-                      "Ref": "BuildDeploy2990C72D",
+                      "Ref": "Deploy7B206E61",
                     },
                     "-*",
                   ],
@@ -560,21 +550,31 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "BuildDeployRoleDefaultPolicy2EFD877E",
+        "PolicyName": "DeployRoleDefaultPolicy9A3389B6",
         "Roles": Array [
           Object {
-            "Ref": "BuildDeployRole9E883242",
+            "Ref": "DeployRoleFF7E9D15",
           },
         ],
       },
       "Type": "AWS::IAM::Policy",
     },
-    "ConnectionToRepository": Object {
+    "DeployRoleFF7E9D15": Object {
       "Properties": Object {
-        "ConnectionName": "GitHub",
-        "ProviderType": "GitHub",
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "codebuild.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
       },
-      "Type": "AWS::CodeStarConnections::Connection",
+      "Type": "AWS::IAM::Role",
     },
     "DockerHubSecret9BE6658C": Object {
       "DeletionPolicy": "Delete",
@@ -668,68 +668,6 @@ Object {
       },
       "Type": "AWS::S3::BucketPolicy",
     },
-    "PipelineBuildDeployBuildDeployCodePipelineActionRole10297F8D": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":iam::",
-                      Object {
-                        "Ref": "AWS::AccountId",
-                      },
-                      ":root",
-                    ],
-                  ],
-                },
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::IAM::Role",
-    },
-    "PipelineBuildDeployBuildDeployCodePipelineActionRoleDefaultPolicy040E2DEC": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "codebuild:BatchGetBuilds",
-                "codebuild:StartBuild",
-                "codebuild:StopBuild",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "BuildDeploy2990C72D",
-                  "Arn",
-                ],
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "PipelineBuildDeployBuildDeployCodePipelineActionRoleDefaultPolicy040E2DEC",
-        "Roles": Array [
-          Object {
-            "Ref": "PipelineBuildDeployBuildDeployCodePipelineActionRole10297F8D",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
     "PipelineC660917D": Object {
       "DependsOn": Array [
         "PipelineRoleDefaultPolicyC7A05455",
@@ -766,15 +704,15 @@ Object {
                   },
                   "FullRepositoryId": "cjuega/typescript-fullstack-skeleton",
                 },
-                "Name": "SourceAction",
+                "Name": "Source",
                 "OutputArtifacts": Array [
                   Object {
-                    "Name": "Artifact_Source_SourceAction",
+                    "Name": "Artifact_Source_Source",
                   },
                 ],
                 "RoleArn": Object {
                   "Fn::GetAtt": Array [
-                    "PipelineSourceSourceActionCodePipelineActionRole6F270020",
+                    "PipelineSourceCodePipelineActionRoleC6F9E7F5",
                     "Arn",
                   ],
                 },
@@ -794,30 +732,30 @@ Object {
                 },
                 "Configuration": Object {
                   "ProjectName": Object {
-                    "Ref": "TestBuildBBA1F685",
+                    "Ref": "TestAndBuild9636E65B",
                   },
                 },
                 "InputArtifacts": Array [
                   Object {
-                    "Name": "Artifact_Source_SourceAction",
+                    "Name": "Artifact_Source_Source",
                   },
                 ],
-                "Name": "Test-Build",
+                "Name": "TestAndBuild",
                 "OutputArtifacts": Array [
                   Object {
-                    "Name": "Artifact_TestBuild_Test-Build",
+                    "Name": "Artifact_TestAndBuild_TestAndBuild",
                   },
                 ],
                 "RoleArn": Object {
                   "Fn::GetAtt": Array [
-                    "PipelineTestBuildTestBuildCodePipelineActionRole881E2264",
+                    "PipelineTestAndBuildCodePipelineActionRole184C3838",
                     "Arn",
                   ],
                 },
                 "RunOrder": 1,
               },
             ],
-            "Name": "TestBuild",
+            "Name": "TestAndBuild",
           },
           Object {
             "Actions": Array [
@@ -830,34 +768,96 @@ Object {
                 },
                 "Configuration": Object {
                   "ProjectName": Object {
-                    "Ref": "BuildDeploy2990C72D",
+                    "Ref": "Deploy7B206E61",
                   },
                 },
                 "InputArtifacts": Array [
                   Object {
-                    "Name": "Artifact_TestBuild_Test-Build",
+                    "Name": "Artifact_TestAndBuild_TestAndBuild",
                   },
                 ],
-                "Name": "Build-Deploy",
+                "Name": "Deploy",
                 "OutputArtifacts": Array [
                   Object {
-                    "Name": "Artifact_BuildDeploy_Build-Deploy",
+                    "Name": "Artifact_Deploy_Deploy",
                   },
                 ],
                 "RoleArn": Object {
                   "Fn::GetAtt": Array [
-                    "PipelineBuildDeployBuildDeployCodePipelineActionRole10297F8D",
+                    "PipelineDeployCodePipelineActionRole8B83082E",
                     "Arn",
                   ],
                 },
                 "RunOrder": 1,
               },
             ],
-            "Name": "BuildDeploy",
+            "Name": "Deploy",
           },
         ],
       },
       "Type": "AWS::CodePipeline::Pipeline",
+    },
+    "PipelineDeployCodePipelineActionRole8B83082E": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "PipelineDeployCodePipelineActionRoleDefaultPolicyEE6D615B": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "codebuild:BatchGetBuilds",
+                "codebuild:StartBuild",
+                "codebuild:StopBuild",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "Deploy7B206E61",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "PipelineDeployCodePipelineActionRoleDefaultPolicyEE6D615B",
+        "Roles": Array [
+          Object {
+            "Ref": "PipelineDeployCodePipelineActionRole8B83082E",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
     },
     "PipelineRoleD68726F7": Object {
       "Properties": Object {
@@ -922,7 +922,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "PipelineSourceSourceActionCodePipelineActionRole6F270020",
+                  "PipelineSourceCodePipelineActionRoleC6F9E7F5",
                   "Arn",
                 ],
               },
@@ -932,7 +932,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "PipelineTestBuildTestBuildCodePipelineActionRole881E2264",
+                  "PipelineTestAndBuildCodePipelineActionRole184C3838",
                   "Arn",
                 ],
               },
@@ -942,7 +942,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "PipelineBuildDeployBuildDeployCodePipelineActionRole10297F8D",
+                  "PipelineDeployCodePipelineActionRole8B83082E",
                   "Arn",
                 ],
               },
@@ -959,7 +959,7 @@ Object {
       },
       "Type": "AWS::IAM::Policy",
     },
-    "PipelineSourceSourceActionCodePipelineActionRole6F270020": Object {
+    "PipelineSourceCodePipelineActionRoleC6F9E7F5": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -991,7 +991,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "PipelineSourceSourceActionCodePipelineActionRoleDefaultPolicyE3ED53F4": Object {
+    "PipelineSourceCodePipelineActionRoleDefaultPolicy2D565925": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -1063,16 +1063,16 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "PipelineSourceSourceActionCodePipelineActionRoleDefaultPolicyE3ED53F4",
+        "PolicyName": "PipelineSourceCodePipelineActionRoleDefaultPolicy2D565925",
         "Roles": Array [
           Object {
-            "Ref": "PipelineSourceSourceActionCodePipelineActionRole6F270020",
+            "Ref": "PipelineSourceCodePipelineActionRoleC6F9E7F5",
           },
         ],
       },
       "Type": "AWS::IAM::Policy",
     },
-    "PipelineTestBuildTestBuildCodePipelineActionRole881E2264": Object {
+    "PipelineTestAndBuildCodePipelineActionRole184C3838": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -1104,7 +1104,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "PipelineTestBuildTestBuildCodePipelineActionRoleDefaultPolicy3D34D15E": Object {
+    "PipelineTestAndBuildCodePipelineActionRoleDefaultPolicy2E9A3263": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -1117,7 +1117,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "TestBuildBBA1F685",
+                  "TestAndBuild9636E65B",
                   "Arn",
                 ],
               },
@@ -1125,16 +1125,16 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "PipelineTestBuildTestBuildCodePipelineActionRoleDefaultPolicy3D34D15E",
+        "PolicyName": "PipelineTestAndBuildCodePipelineActionRoleDefaultPolicy2E9A3263",
         "Roles": Array [
           Object {
-            "Ref": "PipelineTestBuildTestBuildCodePipelineActionRole881E2264",
+            "Ref": "PipelineTestAndBuildCodePipelineActionRole184C3838",
           },
         ],
       },
       "Type": "AWS::IAM::Policy",
     },
-    "TestBuildBBA1F685": Object {
+    "TestAndBuild9636E65B": Object {
       "Properties": Object {
         "Artifacts": Object {
           "Type": "CODEPIPELINE",
@@ -1161,7 +1161,7 @@ Object {
         },
         "ServiceRole": Object {
           "Fn::GetAtt": Array [
-            "TestBuildRole53F9BD4C",
+            "TestAndBuildRoleCAE734CE",
             "Arn",
           ],
         },
@@ -1171,7 +1171,7 @@ Object {
       },
       "Type": "AWS::CodeBuild::Project",
     },
-    "TestBuildRole53F9BD4C": Object {
+    "TestAndBuildRoleCAE734CE": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -1188,7 +1188,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "TestBuildRoleDefaultPolicyFD33FB1B": Object {
+    "TestAndBuildRoleDefaultPolicy8BF7224B": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -1218,7 +1218,7 @@ Object {
                       },
                       ":log-group:/aws/codebuild/",
                       Object {
-                        "Ref": "TestBuildBBA1F685",
+                        "Ref": "TestAndBuild9636E65B",
                       },
                     ],
                   ],
@@ -1241,7 +1241,7 @@ Object {
                       },
                       ":log-group:/aws/codebuild/",
                       Object {
-                        "Ref": "TestBuildBBA1F685",
+                        "Ref": "TestAndBuild9636E65B",
                       },
                       ":*",
                     ],
@@ -1276,7 +1276,7 @@ Object {
                     },
                     ":report-group/",
                     Object {
-                      "Ref": "TestBuildBBA1F685",
+                      "Ref": "TestAndBuild9636E65B",
                     },
                     "-*",
                   ],
@@ -1679,10 +1679,10 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "TestBuildRoleDefaultPolicyFD33FB1B",
+        "PolicyName": "TestAndBuildRoleDefaultPolicy8BF7224B",
         "Roles": Array [
           Object {
-            "Ref": "TestBuildRole53F9BD4C",
+            "Ref": "TestAndBuildRoleCAE734CE",
           },
         ],
       },
