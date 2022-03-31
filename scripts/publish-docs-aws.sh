@@ -14,10 +14,6 @@ fi
 
 source .env.$ENV
 
-if [ -z "$AWS_PROFILE" ]; then
-    AWS_PROFILE=default
-fi
-
 SERVICE_FLAVOR=$(basename $(pwd))
 DOCS=dist/docs/api/openapi.yml
 

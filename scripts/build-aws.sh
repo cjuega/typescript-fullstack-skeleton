@@ -8,9 +8,7 @@ fi
 ENV=$1
 ARTIFACT_DIR=$(pwd)/dist/artifact
 PACKAGE_DIR=$ARTIFACT_DIR/$ENV
-
-rm -rf $ARTIFACT_DIR
-mkdir -p $PACKAGE_DIR
+SERVERLESS_DIR=$PACKAGE_DIR/serverless
 
 if [ ! -f .env.$ENV ]; then
     echo "dotenv file <.env.$ENV> doesn't exist!"
@@ -21,7 +19,9 @@ source .env.$ENV
 
 npx sls package --package $PACKAGE_DIR --stage $ENV
 
-cp .env.$ENV $PACKAGE_DIR
-cp serverless.yml $PACKAGE_DIR
-rsync -am --include='*.yml' --include='*/' --exclude='*' resources/ $PACKAGE_DIR/resources/
-rsync -am --include='function.yml' --include='*/' --exclude='*' src/ $PACKAGE_DIR/src/
+mkdir -p $SERVERLESS_DIR
+
+cp .env.$ENV $SERVERLESS_DIR
+cp serverless.yml $SERVERLESS_DIR
+rsync -am --include='*.yml' --include='*/' --exclude='*' resources/ $SERVERLESS_DIR/resources/
+rsync -am --include='function.yml' --include='*/' --exclude='*' src/ $SERVERLESS_DIR/src/

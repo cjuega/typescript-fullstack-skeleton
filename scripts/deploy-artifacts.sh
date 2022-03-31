@@ -16,6 +16,7 @@ for dir in $CODEBUILD_SRC_DIR/src/apps/*/*/$ARTIFACT_DIR/*
 do
     ENV=$(basename $dir)
     PACKAGE_DIR=$dir
+    SERVERLESS_DIR=$dir/serverless
     cd $dir/../../../
     SERVICE_FLAVOR=$(basename $(pwd))
     DOCS=$(pwd)/$DOCS_PATH
@@ -24,6 +25,8 @@ do
 
     echo "Deploying <$PROJECT ($SERVICE_FLAVOR)> into <$ENV> environment"
 
+    cp -r $SERVERLESS_DIR/* .
+    rm -rf $SERVERLESS_DIR
     # .serverless folder must be used to prevent current serverless issues --> https://github.com/serverless/serverless/issues/5381
     mkdir -p .serverless
     cp -r $PACKAGE_DIR .serverless
