@@ -243,6 +243,27 @@ export class CICDStack extends Stack {
 
         statements.push(
             new PolicyStatement({
+                actions: ['ssm:DescribeParameters'],
+                resources: [`arn:aws:ssm:${region}:${account}:*`]
+            })
+        );
+
+        statements.push(
+            new PolicyStatement({
+                actions: ['ssm:GetParameter'],
+                resources: this.services.map((s) => `arn:aws:ssm:${region}:${account}:parameter/${s}*`)
+            })
+        );
+
+        statements.push(
+            new PolicyStatement({
+                actions: ['kms:Decrypt'],
+                resources: [`arn:aws:kms:${region}:${account}:key/*`]
+            })
+        );
+
+        statements.push(
+            new PolicyStatement({
                 actions: ['apigateway:GET', 'apigateway:PATCH', 'apigateway:POST', 'apigateway:PUT', 'apigateway:DELETE'],
                 resources: [`arn:aws:apigateway:${region}::/restapis`, `arn:aws:apigateway:${region}::/restapis/*`]
             })
