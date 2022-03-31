@@ -31,6 +31,7 @@ phases:
       - yarn restoreSetup:aws int
       - yarn deploy:aws int
       - yarn test:features:aws int
+      - yarn restoreSetup:aws pro
       - make build
 
   post_build:
