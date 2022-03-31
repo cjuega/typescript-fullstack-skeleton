@@ -278,6 +278,13 @@ export class CICDStack extends Stack {
 
         statements.push(
             new PolicyStatement({
+                actions: ['dynamodb:ListTables'],
+                resources: [`arn:aws:dynamodb:${region}:${account}:table/*`]
+            })
+        );
+
+        statements.push(
+            new PolicyStatement({
                 actions: ['dynamodb:*'],
                 resources: this.services.map((s) => `arn:aws:dynamodb:${region}:${account}:table/${s}*`)
             })

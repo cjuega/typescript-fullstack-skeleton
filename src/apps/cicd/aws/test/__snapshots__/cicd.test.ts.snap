@@ -481,6 +481,26 @@ Object {
               },
             },
             Object {
+              "Action": "dynamodb:ListTables",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:dynamodb:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":table/*",
+                  ],
+                ],
+              },
+            },
+            Object {
               "Action": "dynamodb:*",
               "Effect": "Allow",
               "Resource": Object {
@@ -1575,6 +1595,26 @@ Object {
                       "Ref": "AWS::AccountId",
                     },
                     ":event-bus/example-context*",
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": "dynamodb:ListTables",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:dynamodb:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":table/*",
                   ],
                 ],
               },
