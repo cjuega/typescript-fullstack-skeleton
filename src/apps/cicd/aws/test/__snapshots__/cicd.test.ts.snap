@@ -176,18 +176,269 @@ Object {
             },
             Object {
               "Action": Array [
-                "cloudformation:List*",
-                "cloudformation:Get*",
-                "cloudformation:PreviewStackUpdate",
-                "cloudformation:ValidateTemplate",
+                "apigateway:GET",
+                "apigateway:PATCH",
+                "apigateway:POST",
+                "apigateway:PUT",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:aws:apigateway:",
+                      Object {
+                        "Ref": "AWS::Region",
+                      },
+                      "::/apis",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:aws:apigateway:",
+                      Object {
+                        "Ref": "AWS::Region",
+                      },
+                      "::/apis/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Action": Array [
+                "cloudformation:CancelUpdateStack",
+                "cloudformation:ContinueUpdateRollback",
+                "cloudformation:CreateChangeSet",
                 "cloudformation:CreateStack",
                 "cloudformation:CreateUploadBucket",
+                "cloudformation:DeleteChangeSet",
                 "cloudformation:DeleteStack",
                 "cloudformation:Describe*",
+                "cloudformation:EstimateTemplateCost",
+                "cloudformation:ExecuteChangeSet",
+                "cloudformation:Get*",
+                "cloudformation:List*",
                 "cloudformation:UpdateStack",
+                "cloudformation:UpdateTerminationProtection",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:cloudformation:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":stack/example-context*/*",
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": Array [
+                "cloudformation:ValidateTemplate",
+                "ec2:Describe*",
               ],
               "Effect": "Allow",
               "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "events:Put*",
+                "events:Describe*",
+                "events:List*",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:events:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":rule/example-context*",
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": Array [
+                "iam:AttachRolePolicy",
+                "iam:CreateRole",
+                "iam:DeleteRole",
+                "iam:DeleteRolePolicy",
+                "iam:DetachRolePolicy",
+                "iam:GetRole",
+                "iam:PassRole",
+                "iam:PutRolePolicy",
+              ],
+              "Effect": "Allow",
+              "Resource": "arn:aws:iam::*:role/example-context-*",
+            },
+            Object {
+              "Action": "lambda:*",
+              "Effect": "Allow",
+              "Resource": "arn:aws:lambda:*:*:function:example-context*",
+            },
+            Object {
+              "Action": "logs:DescribeLogGroups",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:logs:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":log-group::log-stream:*",
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": Array [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:DescribeLogStreams",
+                "logs:FilterLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:logs:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":log-group:/aws/lambda/example-context*:log-stream:*",
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": Array [
+                "s3:CreateBucket",
+                "s3:DeleteBucket",
+                "s3:DeleteBucketPolicy",
+                "s3:DeleteObject",
+                "s3:DeleteObjectVersion",
+                "s3:Get*",
+                "s3:List*",
+                "s3:PutBucketNotification",
+                "s3:PutBucketPolicy",
+                "s3:PutBucketTagging",
+                "s3:PutBucketWebsite",
+                "s3:PutEncryptionConfiguration",
+                "s3:PutObject",
+              ],
+              "Effect": "Allow",
+              "Resource": "arn:aws:s3:::example-context*",
+            },
+            Object {
+              "Action": "s3:*",
+              "Effect": "Allow",
+              "Resource": "arn:aws:s3:::example-context*/*",
+            },
+            Object {
+              "Action": Array [
+                "apigateway:GET",
+                "apigateway:PATCH",
+                "apigateway:POST",
+                "apigateway:PUT",
+                "apigateway:DELETE",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:aws:apigateway:",
+                      Object {
+                        "Ref": "AWS::Region",
+                      },
+                      "::/restapis",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:aws:apigateway:",
+                      Object {
+                        "Ref": "AWS::Region",
+                      },
+                      "::/restapis/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Action": "events:*",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:events:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":event-bus/example-context*",
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": "dynamodb:*",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:dynamodb:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":table/example-context*",
+                  ],
+                ],
+              },
             },
             Object {
               "Action": Array [
@@ -964,18 +1215,269 @@ Object {
             },
             Object {
               "Action": Array [
-                "cloudformation:List*",
-                "cloudformation:Get*",
-                "cloudformation:PreviewStackUpdate",
-                "cloudformation:ValidateTemplate",
+                "apigateway:GET",
+                "apigateway:PATCH",
+                "apigateway:POST",
+                "apigateway:PUT",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:aws:apigateway:",
+                      Object {
+                        "Ref": "AWS::Region",
+                      },
+                      "::/apis",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:aws:apigateway:",
+                      Object {
+                        "Ref": "AWS::Region",
+                      },
+                      "::/apis/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Action": Array [
+                "cloudformation:CancelUpdateStack",
+                "cloudformation:ContinueUpdateRollback",
+                "cloudformation:CreateChangeSet",
                 "cloudformation:CreateStack",
                 "cloudformation:CreateUploadBucket",
+                "cloudformation:DeleteChangeSet",
                 "cloudformation:DeleteStack",
                 "cloudformation:Describe*",
+                "cloudformation:EstimateTemplateCost",
+                "cloudformation:ExecuteChangeSet",
+                "cloudformation:Get*",
+                "cloudformation:List*",
                 "cloudformation:UpdateStack",
+                "cloudformation:UpdateTerminationProtection",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:cloudformation:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":stack/example-context*/*",
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": Array [
+                "cloudformation:ValidateTemplate",
+                "ec2:Describe*",
               ],
               "Effect": "Allow",
               "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "events:Put*",
+                "events:Describe*",
+                "events:List*",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:events:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":rule/example-context*",
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": Array [
+                "iam:AttachRolePolicy",
+                "iam:CreateRole",
+                "iam:DeleteRole",
+                "iam:DeleteRolePolicy",
+                "iam:DetachRolePolicy",
+                "iam:GetRole",
+                "iam:PassRole",
+                "iam:PutRolePolicy",
+              ],
+              "Effect": "Allow",
+              "Resource": "arn:aws:iam::*:role/example-context-*",
+            },
+            Object {
+              "Action": "lambda:*",
+              "Effect": "Allow",
+              "Resource": "arn:aws:lambda:*:*:function:example-context*",
+            },
+            Object {
+              "Action": "logs:DescribeLogGroups",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:logs:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":log-group::log-stream:*",
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": Array [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:DescribeLogStreams",
+                "logs:FilterLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:logs:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":log-group:/aws/lambda/example-context*:log-stream:*",
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": Array [
+                "s3:CreateBucket",
+                "s3:DeleteBucket",
+                "s3:DeleteBucketPolicy",
+                "s3:DeleteObject",
+                "s3:DeleteObjectVersion",
+                "s3:Get*",
+                "s3:List*",
+                "s3:PutBucketNotification",
+                "s3:PutBucketPolicy",
+                "s3:PutBucketTagging",
+                "s3:PutBucketWebsite",
+                "s3:PutEncryptionConfiguration",
+                "s3:PutObject",
+              ],
+              "Effect": "Allow",
+              "Resource": "arn:aws:s3:::example-context*",
+            },
+            Object {
+              "Action": "s3:*",
+              "Effect": "Allow",
+              "Resource": "arn:aws:s3:::example-context*/*",
+            },
+            Object {
+              "Action": Array [
+                "apigateway:GET",
+                "apigateway:PATCH",
+                "apigateway:POST",
+                "apigateway:PUT",
+                "apigateway:DELETE",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:aws:apigateway:",
+                      Object {
+                        "Ref": "AWS::Region",
+                      },
+                      "::/restapis",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:aws:apigateway:",
+                      Object {
+                        "Ref": "AWS::Region",
+                      },
+                      "::/restapis/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Action": "events:*",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:events:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":event-bus/example-context*",
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": "dynamodb:*",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:dynamodb:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":table/example-context*",
+                  ],
+                ],
+              },
             },
             Object {
               "Action": Array [

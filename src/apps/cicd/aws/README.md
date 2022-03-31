@@ -16,11 +16,12 @@ AWS CDK commands require some mandatory _context parameters_. In particular, you
 
 * **provider**: which source provider hosts the code (either `Bitbucket` or `GitHub`).
 * **repository**: the repository and branch that triggers the pipeline. It's in the format `owner/repository#branch`.
+* **services**: a list of services the CI/CD pipeline will have access to (separated by a commas). For instance `example-context,other-context`.
 
 For instance:
 
 ```sh
-yarn cdk deploy CICDStack -c provider=GitHub -c repository=cjuega/typescript-fullstack-skeleton#master --parameters DockerhubUsername=<username> --parameters DockerhubPassword=<password>
+yarn cdk deploy CICDStack -c provider=GitHub -c repository=cjuega/typescript-fullstack-skeleton#master -c services=example-context --parameters DockerhubUsername=<username> --parameters DockerhubPassword=<password>
 ```
 
 ---
