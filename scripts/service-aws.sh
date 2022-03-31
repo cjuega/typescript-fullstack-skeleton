@@ -14,4 +14,14 @@ fi
 
 source .env.$ENV
 
-aws cloudformation describe-stacks --stack-name $PROJECT-$ENV --region $AWS_REGION --profile $AWS_PROFILE | jq -r '.Stacks[].Outputs[] | select(.OutputKey=="ServiceEndpoint") | .OutputValue'
+AWS_ARGS=""
+
+if [ ! -z "$AWS_REGION" ]; then
+    AWS_ARGS="--region $AWS_REGION"
+fi
+
+if [ ! -z "$AWS_PROFILE" ]; then
+    AWS_ARGS="$AWS_ARGS --profile $AWS_PROFILE"
+fi
+
+aws cloudformation describe-stacks --stack-name $PROJECT-$ENV $AWS_ARGS | jq -r '.Stacks[].Outputs[] | select(.OutputKey=="ServiceEndpoint") | .OutputValue'

@@ -16,16 +16,22 @@ fi
 
 source .env.$ENV
 
-if [ -z "$AWS_PROFILE" ]; then
-    AWS_PROFILE=default
+AWS_ARGS=""
+
+if [ ! -z "$AWS_REGION" ]; then
+    AWS_ARGS="--region $AWS_REGION"
 fi
 
-DOES_PARAM_EXIST=$(aws ssm describe-parameters --parameter-filters Key=Name,Option=Equals,Values=$PROJECT-$ENV-dotenv --region $AWS_REGION --profile $AWS_PROFILE | jq -r '.Parameters[0]')
-if [ ! -z "$DOES_PARAM_EXIST" ] && [ "$DOES_PARAM_EXIST" != "null" ]; then
-    aws ssm get-parameter --with-decryption --name $PROJECT-$ENV-dotenv --region $AWS_REGION --profile $AWS_PROFILE | jq -r '.Parameter.Value' > .env.$ENV
+if [ ! -z "$AWS_PROFILE" ]; then
+    AWS_ARGS="$AWS_ARGS --profile $AWS_PROFILE"
 fi
 
-DOES_PARAM_EXIST=$(aws ssm describe-parameters --parameter-filters Key=Name,Option=Equals,Values=$PROJECT-$ENV-config --region $AWS_REGION --profile $AWS_PROFILE | jq -r '.Parameters[0]')
+DOES_PARAM_EXIST=$(aws ssm describe-parameters --parameter-filters Key=Name,Option=Equals,Values=$PROJECT-$ENV-dotenv $AWS_ARGS | jq -r '.Parameters[0]')
 if [ ! -z "$DOES_PARAM_EXIST" ] && [ "$DOES_PARAM_EXIST" != "null" ]; then
-    aws ssm get-parameter --with-decryption --name $PROJECT-$ENV-config --region $AWS_REGION --profile $AWS_PROFILE | jq -r '.Parameter.Value' > ./src/config/$ENV.json
+    aws ssm get-parameter --with-decryption --name $PROJECT-$ENV-dotenv $AWS_ARGS | jq -r '.Parameter.Value' > .env.$ENV
+fi
+
+DOES_PARAM_EXIST=$(aws ssm describe-parameters --parameter-filters Key=Name,Option=Equals,Values=$PROJECT-$ENV-config $AWS_ARGS | jq -r '.Parameters[0]')
+if [ ! -z "$DOES_PARAM_EXIST" ] && [ "$DOES_PARAM_EXIST" != "null" ]; then
+    aws ssm get-parameter --with-decryption --name $PROJECT-$ENV-config $AWS_ARGS | jq -r '.Parameter.Value' > ./src/config/$ENV.json
 fi

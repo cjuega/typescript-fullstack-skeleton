@@ -14,10 +14,10 @@ fi
 
 source .env.$ENV
 
-if [ -z "$AWS_PROFILE" ]; then
-    AWS_PROFILE=default
-fi
-
 SERVICE_URL=$(../../../../scripts/service-aws.sh $ENV)
 
-AWS_PROFILE=$AWS_PROFILE AWS_REGION=$AWS_REGION NODE_ENV=$ENV CLOUD_URL=$SERVICE_URL yarn test:only
+if [ -z "$AWS_PROFILE" ]; then
+    AWS_REGION=$AWS_REGION NODE_ENV=$ENV CLOUD_URL=$SERVICE_URL yarn test:only
+else
+    AWS_PROFILE=$AWS_PROFILE AWS_REGION=$AWS_REGION NODE_ENV=$ENV CLOUD_URL=$SERVICE_URL yarn test:only
+fi
