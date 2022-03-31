@@ -176,6 +176,21 @@ Object {
             },
             Object {
               "Action": Array [
+                "cloudformation:List*",
+                "cloudformation:Get*",
+                "cloudformation:PreviewStackUpdate",
+                "cloudformation:ValidateTemplate",
+                "cloudformation:CreateStack",
+                "cloudformation:CreateUploadBucket",
+                "cloudformation:DeleteStack",
+                "cloudformation:Describe*",
+                "cloudformation:UpdateStack",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
                 "s3:GetObject*",
                 "s3:GetBucket*",
                 "s3:List*",
@@ -946,6 +961,21 @@ Object {
               "Resource": Object {
                 "Ref": "DockerHubSecret9BE6658C",
               },
+            },
+            Object {
+              "Action": Array [
+                "cloudformation:List*",
+                "cloudformation:Get*",
+                "cloudformation:PreviewStackUpdate",
+                "cloudformation:ValidateTemplate",
+                "cloudformation:CreateStack",
+                "cloudformation:CreateUploadBucket",
+                "cloudformation:DeleteStack",
+                "cloudformation:Describe*",
+                "cloudformation:UpdateStack",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
             },
             Object {
               "Action": Array [

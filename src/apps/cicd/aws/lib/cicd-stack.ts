@@ -8,6 +8,7 @@ import {
 import { Artifact, Pipeline } from 'aws-cdk-lib/aws-codepipeline';
 import { CodeStarConnectionsSourceAction, CodeBuildAction, Action } from 'aws-cdk-lib/aws-codepipeline-actions';
 import { CfnConnection } from 'aws-cdk-lib/aws-codestarconnections';
+import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 
 export class CICDStack extends Stack {
     constructor(scope: Construct, id: string, props?: StackProps) {
@@ -106,7 +107,26 @@ export class CICDStack extends Stack {
 
         dockerSecret.grantRead(project);
 
+        project.addToRolePolicy(CICDStack.buildPolicyToDeployInCloudformation());
+
         return [action, output];
+    }
+
+    private static buildPolicyToDeployInCloudformation(): PolicyStatement {
+        return new PolicyStatement({
+            actions: [
+                'cloudformation:List*',
+                'cloudformation:Get*',
+                'cloudformation:PreviewStackUpdate',
+                'cloudformation:ValidateTemplate',
+                'cloudformation:CreateStack',
+                'cloudformation:CreateUploadBucket',
+                'cloudformation:DeleteStack',
+                'cloudformation:Describe*',
+                'cloudformation:UpdateStack'
+            ],
+            resources: ['*']
+        });
     }
 
     private buildDeployAction(testOutput: Artifact): [Action, Artifact] {
@@ -135,6 +155,8 @@ export class CICDStack extends Stack {
                 input: testOutput,
                 outputs: [output]
             });
+
+        project.addToRolePolicy(CICDStack.buildPolicyToDeployInCloudformation());
 
         return [action, output];
     }
