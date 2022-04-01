@@ -28,15 +28,15 @@ phases:
   build:
     commands:
       - make test
-      - yarn restoreSetup:aws int
-      - yarn deploy:aws int
-      - yarn test:features:aws int
+      - yarn restoreSetup:aws cicd
+      - yarn deploy:aws cicd
+      - yarn test:features:aws cicd
       - yarn restoreSetup:aws pro
       - make build
 
   post_build:
     commands:
-      # - yarn destroy:aws int
+      # - yarn destroy:aws cicd
       - make clean
 
 artifacts:
