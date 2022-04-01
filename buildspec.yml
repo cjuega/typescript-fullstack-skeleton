@@ -41,7 +41,8 @@ phases:
 
 artifacts:
  files:
-   - src/apps/**/dist/artifacts/**/*
+   - docs/**/*
+   - src/apps/**/dist/artifact/**/*
    - src/apps/**/dist/docs/**/*
    - scripts/deploy-artifacts.sh
    - scripts/publish-docs-aws.sh
