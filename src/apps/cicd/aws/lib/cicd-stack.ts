@@ -11,18 +11,20 @@ import { CfnConnection } from 'aws-cdk-lib/aws-codestarconnections';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 
 export class CICDStack extends Stack {
-    private readonly services: string[] = this.node.tryGetContext('services').split(',');
+    private readonly sourceProvider: 'Bitbucket' | 'GitHub';
+
+    private readonly repository: string;
+
+    private readonly services: string[];
 
     constructor(scope: Construct, id: string, props?: StackProps) {
         super(scope, id, props);
 
-        const sourceProvider = this.node.tryGetContext('provider'),
-            repository = this.node.tryGetContext('repository'),
-            dockerSecret = this.buildDockerhubSecret();
-
+        this.sourceProvider = this.node.tryGetContext('provider');
+        this.repository = this.node.tryGetContext('repository');
         this.services = this.node.tryGetContext('services').split(',');
 
-        this.buildCICDPipeline(sourceProvider, repository, dockerSecret);
+        this.buildCICDPipeline(this.buildDockerhubSecret());
     }
 
     private buildDockerhubSecret(): Secret {
@@ -42,8 +44,8 @@ export class CICDStack extends Stack {
         });
     }
 
-    private buildCICDPipeline(sourceProvider: 'Bitbucket' | 'GitHub', repository: string, dockerSecret: Secret) {
-        const [sourceAction, sourceOutput] = this.buildSourceAction(sourceProvider, repository),
+    private buildCICDPipeline(dockerSecret: Secret) {
+        const [sourceAction, sourceOutput] = this.buildSourceAction(),
             [testAction, testOutput] = this.buildTestAction(sourceOutput, dockerSecret),
             [deployAction] = this.buildDeployAction(testOutput);
 
@@ -68,12 +70,12 @@ export class CICDStack extends Stack {
         });
     }
 
-    private buildSourceAction(sourceProvider: 'Bitbucket' | 'GitHub', repository: string): [Action, Artifact] {
+    private buildSourceAction(): [Action, Artifact] {
         const connection = new CfnConnection(this, 'ConnectionToRepository', {
-                connectionName: `${sourceProvider}`,
-                providerType: sourceProvider
+                connectionName: `${this.sourceProvider}`,
+                providerType: this.sourceProvider
             }),
-            [owner, repositoryAndBranch] = repository.split('/'),
+            [owner, repositoryAndBranch] = this.repository.split('/'),
             [repo, branch] = repositoryAndBranch.split('#'),
             output = new Artifact(),
             action = new CodeStarConnectionsSourceAction({
