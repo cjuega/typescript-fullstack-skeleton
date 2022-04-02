@@ -308,9 +308,13 @@ Object {
             Object {
               "Action": Array [
                 "logs:CreateLogGroup",
+                "logs:DeleteLogGroup",
                 "logs:CreateLogStream",
+                "logs:DeleteLogStream",
                 "logs:DescribeLogStreams",
                 "logs:FilterLogEvents",
+                "logs:PutRetentionPolicy",
+                "logs:DeleteRetentionPolicy",
               ],
               "Effect": "Allow",
               "Resource": Object {
@@ -323,7 +327,7 @@ Object {
                     },
                     ":",
                     Object {
-                      "Ref": "AWS::Region",
+                      "Ref": "AWS::AccountId",
                     },
                     ":log-group:/aws/lambda/example-context*:log-stream:*",
                   ],
@@ -453,22 +457,56 @@ Object {
             Object {
               "Action": "events:*",
               "Effect": "Allow",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    "arn:aws:events:",
-                    Object {
-                      "Ref": "AWS::Region",
-                    },
-                    ":",
-                    Object {
-                      "Ref": "AWS::AccountId",
-                    },
-                    ":event-bus/example-context*",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:aws:events:",
+                      Object {
+                        "Ref": "AWS::Region",
+                      },
+                      ":",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":event-bus/example-context*",
+                    ],
                   ],
-                ],
-              },
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:aws:events:",
+                      Object {
+                        "Ref": "AWS::Region",
+                      },
+                      ":",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":rules/example-context*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:aws:events:",
+                      Object {
+                        "Ref": "AWS::Region",
+                      },
+                      ":",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":rule/example-context*",
+                    ],
+                  ],
+                },
+              ],
             },
             Object {
               "Action": "dynamodb:ListTables",
@@ -1437,9 +1475,13 @@ Object {
             Object {
               "Action": Array [
                 "logs:CreateLogGroup",
+                "logs:DeleteLogGroup",
                 "logs:CreateLogStream",
+                "logs:DeleteLogStream",
                 "logs:DescribeLogStreams",
                 "logs:FilterLogEvents",
+                "logs:PutRetentionPolicy",
+                "logs:DeleteRetentionPolicy",
               ],
               "Effect": "Allow",
               "Resource": Object {
@@ -1452,7 +1494,7 @@ Object {
                     },
                     ":",
                     Object {
-                      "Ref": "AWS::Region",
+                      "Ref": "AWS::AccountId",
                     },
                     ":log-group:/aws/lambda/example-context*:log-stream:*",
                   ],
@@ -1582,22 +1624,56 @@ Object {
             Object {
               "Action": "events:*",
               "Effect": "Allow",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    "arn:aws:events:",
-                    Object {
-                      "Ref": "AWS::Region",
-                    },
-                    ":",
-                    Object {
-                      "Ref": "AWS::AccountId",
-                    },
-                    ":event-bus/example-context*",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:aws:events:",
+                      Object {
+                        "Ref": "AWS::Region",
+                      },
+                      ":",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":event-bus/example-context*",
+                    ],
                   ],
-                ],
-              },
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:aws:events:",
+                      Object {
+                        "Ref": "AWS::Region",
+                      },
+                      ":",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":rules/example-context*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:aws:events:",
+                      Object {
+                        "Ref": "AWS::Region",
+                      },
+                      ":",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":rule/example-context*",
+                    ],
+                  ],
+                },
+              ],
             },
             Object {
               "Action": "dynamodb:ListTables",

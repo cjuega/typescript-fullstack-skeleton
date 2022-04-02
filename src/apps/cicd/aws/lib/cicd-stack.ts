@@ -203,8 +203,17 @@ export class CICDStack extends Stack {
 
         statements.push(
             new PolicyStatement({
-                actions: ['logs:CreateLogGroup', 'logs:CreateLogStream', 'logs:DescribeLogStreams', 'logs:FilterLogEvents'],
-                resources: this.services.map((s) => `arn:aws:logs:${region}:${region}:log-group:/aws/lambda/${s}*:log-stream:*`)
+                actions: [
+                    'logs:CreateLogGroup',
+                    'logs:DeleteLogGroup',
+                    'logs:CreateLogStream',
+                    'logs:DeleteLogStream',
+                    'logs:DescribeLogStreams',
+                    'logs:FilterLogEvents',
+                    'logs:PutRetentionPolicy',
+                    'logs:DeleteRetentionPolicy'
+                ],
+                resources: this.services.map((s) => `arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${s}*:log-stream:*`)
             })
         );
 
@@ -274,7 +283,10 @@ export class CICDStack extends Stack {
         statements.push(
             new PolicyStatement({
                 actions: ['events:*'],
-                resources: this.services.map((s) => `arn:aws:events:${region}:${account}:event-bus/${s}*`)
+                resources: this.services
+                    .map((s) => `arn:aws:events:${region}:${account}:event-bus/${s}*`)
+                    .concat(this.services.map((s) => `arn:aws:events:${region}:${account}:rules/${s}*`))
+                    .concat(this.services.map((s) => `arn:aws:events:${region}:${account}:rule/${s}*`))
             })
         );
 
