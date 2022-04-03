@@ -28,11 +28,10 @@ phases:
   build:
     commands:
       - make test
-      - yarn restoreSetup:aws cicd
-      - yarn deploy:aws cicd
+      - make deploy env=cicd
       - yarn test:features:aws cicd
-      - yarn restoreSetup:aws pro
-      - make build
+      - make deploy env=pro
+      - yarn publish:docs:aws pro
 
   post_build:
     commands:

@@ -30,6 +30,13 @@ build:
 test: deps start_database
 	yarn test
 
+# Deploy code to an environment in AWS (cicd by default)
+env = cicd
+.PHONY = deploy
+deploy:
+	yarn restoreSetup:aws $(env)
+	yarn deploy:aws $(env)
+
 # Clean containers
 .PHONY = clean
 clean:

@@ -26,6 +26,7 @@
     "deploy:aws": "npx lerna run deploy:aws --scope @app/* --stream --",
     "test:features:aws": "npx lerna run test:features:aws --scope @app/* --stream --concurrency 1 --",
     "build:aws": "npx lerna run build:aws --scope @app/* --stream --",
+    "publish:docs:aws": "npx lerna run publish:docs:aws --scope @app/* --stream --concurrency 1 --",
     "destroy:aws": "npx lerna run destroy:aws --scope @app/* --stream --"
   },
   "devDependencies": {
