@@ -5,13 +5,14 @@ import {
 import { Construct } from 'constructs';
 import { Secret, SecretStringValueBeta1 } from 'aws-cdk-lib/aws-secretsmanager';
 import {
-    PipelineProject, BuildSpec, LinuxBuildImage, BuildEnvironmentVariableType
+    PipelineProject, LinuxBuildImage, BuildEnvironmentVariableType, Cache
 } from 'aws-cdk-lib/aws-codebuild';
 import { Artifact, Pipeline } from 'aws-cdk-lib/aws-codepipeline';
 import { CodeStarConnectionsSourceAction, CodeBuildAction, Action } from 'aws-cdk-lib/aws-codepipeline-actions';
 import { CfnConnection } from 'aws-cdk-lib/aws-codestarconnections';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
 
 export class CICDStack extends Stack {
     private readonly sourceProvider: 'Bitbucket' | 'GitHub';
@@ -20,12 +21,19 @@ export class CICDStack extends Stack {
 
     private readonly services: string[];
 
+    private readonly bucketCache: Bucket;
+
     constructor(scope: Construct, id: string, props?: StackProps) {
         super(scope, id, props);
 
         this.sourceProvider = this.node.tryGetContext('provider');
         this.repository = this.node.tryGetContext('repository');
         this.services = this.node.tryGetContext('services').split(',');
+
+        this.bucketCache = new Bucket(this, 'CacheBucket', {
+            removalPolicy: RemovalPolicy.DESTROY,
+            autoDeleteObjects: true
+        });
 
         this.buildCICDPipeline(this.buildDockerhubSecret());
     }
@@ -49,8 +57,7 @@ export class CICDStack extends Stack {
 
     private buildCICDPipeline(dockerSecret: Secret) {
         const [sourceAction, sourceOutput] = this.buildSourceAction(),
-            [testAction, testOutput] = this.buildTestAction(sourceOutput, dockerSecret),
-            [deployAction] = this.buildDeployAction(testOutput);
+            testAction = this.buildTestAction(sourceOutput, dockerSecret);
 
         // eslint-disable-next-line no-new
         new Pipeline(this, 'Pipeline', {
@@ -64,10 +71,6 @@ export class CICDStack extends Stack {
                 {
                     stageName: 'TestAndBuild',
                     actions: [testAction]
-                },
-                {
-                    stageName: 'Deploy',
-                    actions: [deployAction]
                 }
             ]
         });
@@ -93,7 +96,7 @@ export class CICDStack extends Stack {
         return [action, output];
     }
 
-    private buildTestAction(sourceOutput: Artifact, dockerSecret: Secret): [Action, Artifact] {
+    private buildTestAction(sourceOutput: Artifact, dockerSecret: Secret): Action {
         const project = new PipelineProject(this, 'TestAndBuild', {
                 environment: {
                     buildImage: LinuxBuildImage.STANDARD_5_0,
@@ -112,14 +115,13 @@ export class CICDStack extends Stack {
                             removalPolicy: RemovalPolicy.DESTROY
                         })
                     }
-                }
+                },
+                cache: Cache.bucket(this.bucketCache)
             }),
-            output = new Artifact(),
             action = new CodeBuildAction({
                 actionName: 'TestAndBuild',
                 project,
-                input: sourceOutput,
-                outputs: [output]
+                input: sourceOutput
             });
 
         dockerSecret.grantRead(project);
@@ -132,7 +134,7 @@ export class CICDStack extends Stack {
             project.addToRolePolicy(statement);
         });
 
-        return [action, output];
+        return action;
     }
 
     private buildBasicPermissionsForServerlessFramework(): PolicyStatement[] {
@@ -316,51 +318,5 @@ export class CICDStack extends Stack {
         );
 
         return statements;
-    }
-
-    private buildDeployAction(testOutput: Artifact): [Action, Artifact] {
-        const project = new PipelineProject(this, 'Deploy', {
-                buildSpec: BuildSpec.fromObject({
-                    version: '0.2',
-                    phases: {
-                        install: {
-                            'runtime-versions': {
-                                nodejs: '14.x'
-                            }
-                        },
-                        build: {
-                            commands: ['bash scripts/deploy-artifacts.sh']
-                        }
-                    }
-                }),
-                environment: {
-                    buildImage: LinuxBuildImage.STANDARD_5_0
-                },
-                logging: {
-                    cloudWatch: {
-                        logGroup: new LogGroup(this, 'DeployLogGroup', {
-                            retention: RetentionDays.ONE_WEEK,
-                            removalPolicy: RemovalPolicy.DESTROY
-                        })
-                    }
-                }
-            }),
-            output = new Artifact(),
-            action = new CodeBuildAction({
-                actionName: 'Deploy',
-                project,
-                input: testOutput,
-                outputs: [output]
-            });
-
-        this.buildBasicPermissionsForServerlessFramework().forEach((statement) => {
-            project.addToRolePolicy(statement);
-        });
-
-        this.buildServicesDependentPermissions().forEach((statement) => {
-            project.addToRolePolicy(statement);
-        });
-
-        return [action, output];
     }
 }

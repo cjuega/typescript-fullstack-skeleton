@@ -38,10 +38,7 @@ phases:
       # - yarn destroy:aws cicd
       - make clean
 
-artifacts:
- files:
-   - docs/**/*
-   - src/apps/**/dist/artifact/**/*
-   - src/apps/**/dist/docs/**/*
-   - scripts/deploy-artifacts.sh
-   - scripts/publish-docs-aws.sh
+cache:
+  paths:
+    - node_modules/**/*
+    - '**/node_modules/**/*'

@@ -19,582 +19,64 @@ Object {
     },
   },
   "Resources": Object {
-    "ConnectionToRepository": Object {
+    "CacheBucket41D9D0B0": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
-        "ConnectionName": "GitHub",
-        "ProviderType": "GitHub",
-      },
-      "Type": "AWS::CodeStarConnections::Connection",
-    },
-    "Deploy7B206E61": Object {
-      "Properties": Object {
-        "Artifacts": Object {
-          "Type": "CODEPIPELINE",
-        },
-        "Cache": Object {
-          "Type": "NO_CACHE",
-        },
-        "EncryptionKey": "alias/aws/s3",
-        "Environment": Object {
-          "ComputeType": "BUILD_GENERAL1_SMALL",
-          "Image": "aws/codebuild/standard:5.0",
-          "ImagePullCredentialsType": "CODEBUILD",
-          "PrivilegedMode": false,
-          "Type": "LINUX_CONTAINER",
-        },
-        "LogsConfig": Object {
-          "CloudWatchLogs": Object {
-            "GroupName": Object {
-              "Ref": "DeployLogGroupEE686BC5",
-            },
-            "Status": "ENABLED",
+        "Tags": Array [
+          Object {
+            "Key": "aws-cdk:auto-delete-objects",
+            "Value": "true",
           },
+        ],
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "CacheBucketAutoDeleteObjectsCustomResource12E72BBC": Object {
+      "DeletionPolicy": "Delete",
+      "DependsOn": Array [
+        "CacheBucketPolicyE2F00ED4",
+      ],
+      "Properties": Object {
+        "BucketName": Object {
+          "Ref": "CacheBucket41D9D0B0",
         },
-        "ServiceRole": Object {
+        "ServiceToken": Object {
           "Fn::GetAtt": Array [
-            "DeployRoleFF7E9D15",
+            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
             "Arn",
           ],
         },
-        "Source": Object {
-          "BuildSpec": "{
-  \\"version\\": \\"0.2\\",
-  \\"phases\\": {
-    \\"install\\": {
-      \\"runtime-versions\\": {
-        \\"nodejs\\": \\"14.x\\"
-      }
-    },
-    \\"build\\": {
-      \\"commands\\": [
-        \\"bash scripts/deploy-artifacts.sh\\"
-      ]
-    }
-  }
-}",
-          "Type": "CODEPIPELINE",
-        },
       },
-      "Type": "AWS::CodeBuild::Project",
-    },
-    "DeployLogGroupEE686BC5": Object {
-      "DeletionPolicy": "Delete",
-      "Properties": Object {
-        "RetentionInDays": 7,
-      },
-      "Type": "AWS::Logs::LogGroup",
+      "Type": "Custom::S3AutoDeleteObjects",
       "UpdateReplacePolicy": "Delete",
     },
-    "DeployRoleDefaultPolicy9A3389B6": Object {
+    "CacheBucketPolicyE2F00ED4": Object {
       "Properties": Object {
+        "Bucket": Object {
+          "Ref": "CacheBucket41D9D0B0",
+        },
         "PolicyDocument": Object {
           "Statement": Array [
             Object {
               "Action": Array [
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "DeployLogGroupEE686BC5",
-                  "Arn",
-                ],
-              },
-            },
-            Object {
-              "Action": Array [
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-              ],
-              "Effect": "Allow",
-              "Resource": Array [
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":logs:",
-                      Object {
-                        "Ref": "AWS::Region",
-                      },
-                      ":",
-                      Object {
-                        "Ref": "AWS::AccountId",
-                      },
-                      ":log-group:/aws/codebuild/",
-                      Object {
-                        "Ref": "Deploy7B206E61",
-                      },
-                    ],
-                  ],
-                },
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":logs:",
-                      Object {
-                        "Ref": "AWS::Region",
-                      },
-                      ":",
-                      Object {
-                        "Ref": "AWS::AccountId",
-                      },
-                      ":log-group:/aws/codebuild/",
-                      Object {
-                        "Ref": "Deploy7B206E61",
-                      },
-                      ":*",
-                    ],
-                  ],
-                },
-              ],
-            },
-            Object {
-              "Action": Array [
-                "codebuild:CreateReportGroup",
-                "codebuild:CreateReport",
-                "codebuild:UpdateReport",
-                "codebuild:BatchPutTestCases",
-                "codebuild:BatchPutCodeCoverages",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    "arn:",
-                    Object {
-                      "Ref": "AWS::Partition",
-                    },
-                    ":codebuild:",
-                    Object {
-                      "Ref": "AWS::Region",
-                    },
-                    ":",
-                    Object {
-                      "Ref": "AWS::AccountId",
-                    },
-                    ":report-group/",
-                    Object {
-                      "Ref": "Deploy7B206E61",
-                    },
-                    "-*",
-                  ],
-                ],
-              },
-            },
-            Object {
-              "Action": Array [
-                "apigateway:GET",
-                "apigateway:PATCH",
-                "apigateway:POST",
-                "apigateway:PUT",
-              ],
-              "Effect": "Allow",
-              "Resource": Array [
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:aws:apigateway:",
-                      Object {
-                        "Ref": "AWS::Region",
-                      },
-                      "::/apis",
-                    ],
-                  ],
-                },
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:aws:apigateway:",
-                      Object {
-                        "Ref": "AWS::Region",
-                      },
-                      "::/apis/*",
-                    ],
-                  ],
-                },
-              ],
-            },
-            Object {
-              "Action": Array [
-                "cloudformation:CancelUpdateStack",
-                "cloudformation:ContinueUpdateRollback",
-                "cloudformation:CreateChangeSet",
-                "cloudformation:CreateStack",
-                "cloudformation:CreateUploadBucket",
-                "cloudformation:DeleteChangeSet",
-                "cloudformation:DeleteStack",
-                "cloudformation:Describe*",
-                "cloudformation:EstimateTemplateCost",
-                "cloudformation:ExecuteChangeSet",
-                "cloudformation:Get*",
-                "cloudformation:List*",
-                "cloudformation:UpdateStack",
-                "cloudformation:UpdateTerminationProtection",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    "arn:aws:cloudformation:",
-                    Object {
-                      "Ref": "AWS::Region",
-                    },
-                    ":",
-                    Object {
-                      "Ref": "AWS::AccountId",
-                    },
-                    ":stack/example-context*/*",
-                  ],
-                ],
-              },
-            },
-            Object {
-              "Action": Array [
-                "cloudformation:ValidateTemplate",
-                "ec2:Describe*",
-              ],
-              "Effect": "Allow",
-              "Resource": "*",
-            },
-            Object {
-              "Action": Array [
-                "events:Put*",
-                "events:Describe*",
-                "events:List*",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    "arn:aws:events:",
-                    Object {
-                      "Ref": "AWS::Region",
-                    },
-                    ":",
-                    Object {
-                      "Ref": "AWS::AccountId",
-                    },
-                    ":rule/example-context*",
-                  ],
-                ],
-              },
-            },
-            Object {
-              "Action": Array [
-                "iam:AttachRolePolicy",
-                "iam:CreateRole",
-                "iam:DeleteRole",
-                "iam:DeleteRolePolicy",
-                "iam:DetachRolePolicy",
-                "iam:GetRole",
-                "iam:PassRole",
-                "iam:PutRolePolicy",
-              ],
-              "Effect": "Allow",
-              "Resource": "arn:aws:iam::*:role/example-context-*",
-            },
-            Object {
-              "Action": "lambda:*",
-              "Effect": "Allow",
-              "Resource": "arn:aws:lambda:*:*:function:example-context*",
-            },
-            Object {
-              "Action": "logs:DescribeLogGroups",
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    "arn:aws:logs:",
-                    Object {
-                      "Ref": "AWS::Region",
-                    },
-                    ":",
-                    Object {
-                      "Ref": "AWS::AccountId",
-                    },
-                    ":log-group::log-stream:*",
-                  ],
-                ],
-              },
-            },
-            Object {
-              "Action": Array [
-                "logs:CreateLogGroup",
-                "logs:DeleteLogGroup",
-                "logs:CreateLogStream",
-                "logs:DeleteLogStream",
-                "logs:DescribeLogStreams",
-                "logs:FilterLogEvents",
-                "logs:PutRetentionPolicy",
-                "logs:DeleteRetentionPolicy",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    "arn:aws:logs:",
-                    Object {
-                      "Ref": "AWS::Region",
-                    },
-                    ":",
-                    Object {
-                      "Ref": "AWS::AccountId",
-                    },
-                    ":log-group:/aws/lambda/example-context*:log-stream:*",
-                  ],
-                ],
-              },
-            },
-            Object {
-              "Action": Array [
-                "s3:CreateBucket",
-                "s3:DeleteBucket",
-                "s3:DeleteBucketPolicy",
-                "s3:DeleteObject",
-                "s3:DeleteObjectVersion",
-                "s3:Get*",
-                "s3:List*",
-                "s3:PutBucketNotification",
-                "s3:PutBucketPolicy",
-                "s3:PutBucketTagging",
-                "s3:PutBucketWebsite",
-                "s3:PutEncryptionConfiguration",
-                "s3:PutObject",
-              ],
-              "Effect": "Allow",
-              "Resource": "arn:aws:s3:::example-context*",
-            },
-            Object {
-              "Action": "s3:*",
-              "Effect": "Allow",
-              "Resource": "arn:aws:s3:::example-context*/*",
-            },
-            Object {
-              "Action": "ssm:DescribeParameters",
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    "arn:aws:ssm:",
-                    Object {
-                      "Ref": "AWS::Region",
-                    },
-                    ":",
-                    Object {
-                      "Ref": "AWS::AccountId",
-                    },
-                    ":*",
-                  ],
-                ],
-              },
-            },
-            Object {
-              "Action": "ssm:GetParameter",
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    "arn:aws:ssm:",
-                    Object {
-                      "Ref": "AWS::Region",
-                    },
-                    ":",
-                    Object {
-                      "Ref": "AWS::AccountId",
-                    },
-                    ":parameter/example-context*",
-                  ],
-                ],
-              },
-            },
-            Object {
-              "Action": "kms:Decrypt",
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    "arn:aws:kms:",
-                    Object {
-                      "Ref": "AWS::Region",
-                    },
-                    ":",
-                    Object {
-                      "Ref": "AWS::AccountId",
-                    },
-                    ":key/*",
-                  ],
-                ],
-              },
-            },
-            Object {
-              "Action": Array [
-                "apigateway:GET",
-                "apigateway:PATCH",
-                "apigateway:POST",
-                "apigateway:PUT",
-                "apigateway:DELETE",
-              ],
-              "Effect": "Allow",
-              "Resource": Array [
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:aws:apigateway:",
-                      Object {
-                        "Ref": "AWS::Region",
-                      },
-                      "::/restapis",
-                    ],
-                  ],
-                },
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:aws:apigateway:",
-                      Object {
-                        "Ref": "AWS::Region",
-                      },
-                      "::/restapis/*",
-                    ],
-                  ],
-                },
-              ],
-            },
-            Object {
-              "Action": "events:*",
-              "Effect": "Allow",
-              "Resource": Array [
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:aws:events:",
-                      Object {
-                        "Ref": "AWS::Region",
-                      },
-                      ":",
-                      Object {
-                        "Ref": "AWS::AccountId",
-                      },
-                      ":event-bus/example-context*",
-                    ],
-                  ],
-                },
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:aws:events:",
-                      Object {
-                        "Ref": "AWS::Region",
-                      },
-                      ":",
-                      Object {
-                        "Ref": "AWS::AccountId",
-                      },
-                      ":rules/example-context*",
-                    ],
-                  ],
-                },
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:aws:events:",
-                      Object {
-                        "Ref": "AWS::Region",
-                      },
-                      ":",
-                      Object {
-                        "Ref": "AWS::AccountId",
-                      },
-                      ":rule/example-context*",
-                    ],
-                  ],
-                },
-              ],
-            },
-            Object {
-              "Action": "dynamodb:ListTables",
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    "arn:aws:dynamodb:",
-                    Object {
-                      "Ref": "AWS::Region",
-                    },
-                    ":",
-                    Object {
-                      "Ref": "AWS::AccountId",
-                    },
-                    ":table/*",
-                  ],
-                ],
-              },
-            },
-            Object {
-              "Action": "dynamodb:*",
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    "arn:aws:dynamodb:",
-                    Object {
-                      "Ref": "AWS::Region",
-                    },
-                    ":",
-                    Object {
-                      "Ref": "AWS::AccountId",
-                    },
-                    ":table/example-context*",
-                  ],
-                ],
-              },
-            },
-            Object {
-              "Action": Array [
-                "s3:GetObject*",
                 "s3:GetBucket*",
                 "s3:List*",
                 "s3:DeleteObject*",
-                "s3:PutObject",
-                "s3:PutObjectLegalHold",
-                "s3:PutObjectRetention",
-                "s3:PutObjectTagging",
-                "s3:PutObjectVersionTagging",
-                "s3:Abort*",
               ],
               "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::GetAtt": Array [
+                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                    "Arn",
+                  ],
+                },
+              },
               "Resource": Array [
                 Object {
                   "Fn::GetAtt": Array [
-                    "PipelineArtifactsBucket22248F97",
+                    "CacheBucket41D9D0B0",
                     "Arn",
                   ],
                 },
@@ -604,7 +86,7 @@ Object {
                     Array [
                       Object {
                         "Fn::GetAtt": Array [
-                          "PipelineArtifactsBucket22248F97",
+                          "CacheBucket41D9D0B0",
                           "Arn",
                         ],
                       },
@@ -617,16 +99,53 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "DeployRoleDefaultPolicy9A3389B6",
-        "Roles": Array [
-          Object {
-            "Ref": "DeployRoleFF7E9D15",
-          },
-        ],
       },
-      "Type": "AWS::IAM::Policy",
+      "Type": "AWS::S3::BucketPolicy",
     },
-    "DeployRoleFF7E9D15": Object {
+    "ConnectionToRepository": Object {
+      "Properties": Object {
+        "ConnectionName": "GitHub",
+        "ProviderType": "GitHub",
+      },
+      "Type": "AWS::CodeStarConnections::Connection",
+    },
+    "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": Object {
+      "DependsOn": Array [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "483ae06ed27ef8ca76e011264d772420593a6cfe8544759c306ef3b98c9e25be.zip",
+        },
+        "Description": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "Lambda function for auto-deleting objects in ",
+              Object {
+                "Ref": "CacheBucket41D9D0B0",
+              },
+              " S3 bucket.",
+            ],
+          ],
+        },
+        "Handler": "__entrypoint__.handler",
+        "MemorySize": 128,
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs12.x",
+        "Timeout": 900,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -634,12 +153,17 @@ Object {
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
               "Principal": Object {
-                "Service": "codebuild.amazonaws.com",
+                "Service": "lambda.amazonaws.com",
               },
             },
           ],
           "Version": "2012-10-17",
         },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Sub": "arn:\${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+          },
+        ],
       },
       "Type": "AWS::IAM::Role",
     },
@@ -808,11 +332,6 @@ Object {
                   },
                 ],
                 "Name": "TestAndBuild",
-                "OutputArtifacts": Array [
-                  Object {
-                    "Name": "Artifact_TestAndBuild_TestAndBuild",
-                  },
-                ],
                 "RoleArn": Object {
                   "Fn::GetAtt": Array [
                     "PipelineTestAndBuildCodePipelineActionRole184C3838",
@@ -824,107 +343,9 @@ Object {
             ],
             "Name": "TestAndBuild",
           },
-          Object {
-            "Actions": Array [
-              Object {
-                "ActionTypeId": Object {
-                  "Category": "Build",
-                  "Owner": "AWS",
-                  "Provider": "CodeBuild",
-                  "Version": "1",
-                },
-                "Configuration": Object {
-                  "ProjectName": Object {
-                    "Ref": "Deploy7B206E61",
-                  },
-                },
-                "InputArtifacts": Array [
-                  Object {
-                    "Name": "Artifact_TestAndBuild_TestAndBuild",
-                  },
-                ],
-                "Name": "Deploy",
-                "OutputArtifacts": Array [
-                  Object {
-                    "Name": "Artifact_Deploy_Deploy",
-                  },
-                ],
-                "RoleArn": Object {
-                  "Fn::GetAtt": Array [
-                    "PipelineDeployCodePipelineActionRole8B83082E",
-                    "Arn",
-                  ],
-                },
-                "RunOrder": 1,
-              },
-            ],
-            "Name": "Deploy",
-          },
         ],
       },
       "Type": "AWS::CodePipeline::Pipeline",
-    },
-    "PipelineDeployCodePipelineActionRole8B83082E": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":iam::",
-                      Object {
-                        "Ref": "AWS::AccountId",
-                      },
-                      ":root",
-                    ],
-                  ],
-                },
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::IAM::Role",
-    },
-    "PipelineDeployCodePipelineActionRoleDefaultPolicyEE6D615B": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "codebuild:BatchGetBuilds",
-                "codebuild:StartBuild",
-                "codebuild:StopBuild",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "Deploy7B206E61",
-                  "Arn",
-                ],
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "PipelineDeployCodePipelineActionRoleDefaultPolicyEE6D615B",
-        "Roles": Array [
-          Object {
-            "Ref": "PipelineDeployCodePipelineActionRole8B83082E",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
     },
     "PipelineRoleD68726F7": Object {
       "Properties": Object {
@@ -1000,16 +421,6 @@ Object {
               "Resource": Object {
                 "Fn::GetAtt": Array [
                   "PipelineTestAndBuildCodePipelineActionRole184C3838",
-                  "Arn",
-                ],
-              },
-            },
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "PipelineDeployCodePipelineActionRole8B83082E",
                   "Arn",
                 ],
               },
@@ -1207,7 +618,20 @@ Object {
           "Type": "CODEPIPELINE",
         },
         "Cache": Object {
-          "Type": "NO_CACHE",
+          "Location": Object {
+            "Fn::Join": Array [
+              "/",
+              Array [
+                Object {
+                  "Ref": "CacheBucket41D9D0B0",
+                },
+                Object {
+                  "Ref": "AWS::NoValue",
+                },
+              ],
+            ],
+          },
+          "Type": "S3",
         },
         "EncryptionKey": "alias/aws/s3",
         "Environment": Object {
@@ -1275,6 +699,43 @@ Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject",
+                "s3:PutObjectLegalHold",
+                "s3:PutObjectRetention",
+                "s3:PutObjectTagging",
+                "s3:PutObjectVersionTagging",
+                "s3:Abort*",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "CacheBucket41D9D0B0",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "CacheBucket41D9D0B0",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
             Object {
               "Action": Array [
                 "logs:CreateLogStream",
@@ -1778,13 +1239,6 @@ Object {
                 "s3:GetObject*",
                 "s3:GetBucket*",
                 "s3:List*",
-                "s3:DeleteObject*",
-                "s3:PutObject",
-                "s3:PutObjectLegalHold",
-                "s3:PutObjectRetention",
-                "s3:PutObjectTagging",
-                "s3:PutObjectVersionTagging",
-                "s3:Abort*",
               ],
               "Effect": "Allow",
               "Resource": Array [

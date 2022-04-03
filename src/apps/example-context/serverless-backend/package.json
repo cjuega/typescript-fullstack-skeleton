@@ -21,7 +21,6 @@
     "restoreSetup:aws": "../../../../scripts/restore-setup-aws.sh",
     "deploy:aws": "../../../../scripts/deploy-aws.sh",
     "test:features:aws": "../../../../scripts/test-features-aws.sh",
-    "build:aws": "yarn docs:bundle && ../../../../scripts/build-aws.sh",
     "destroy:aws": "../../../../scripts/destroy-aws.sh"
   },
   "devDependencies": {

@@ -19,12 +19,6 @@ endif
 start_database:
 	docker-compose up -d dynamodb
 
-# Build deployment code for AWS
-.PHONY = build
-build:
-	yarn build
-	yarn build:aws pro
-
 # Run tests
 .PHONY = test
 test: deps start_database
