@@ -90,7 +90,8 @@ export class CICDStack extends Stack {
                 repo,
                 branch,
                 output,
-                connectionArn: connection.ref
+                connectionArn: connection.ref,
+                codeBuildCloneOutput: true
             });
 
         return [action, output];

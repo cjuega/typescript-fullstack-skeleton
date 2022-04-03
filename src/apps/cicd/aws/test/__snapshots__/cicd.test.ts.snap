@@ -294,6 +294,7 @@ Object {
                     "Ref": "ConnectionToRepository",
                   },
                   "FullRepositoryId": "cjuega/typescript-fullstack-skeleton",
+                  "OutputArtifactFormat": "CODEBUILD_CLONE_REF",
                 },
                 "Name": "Source",
                 "OutputArtifacts": Array [
@@ -1263,6 +1264,13 @@ Object {
                   ],
                 },
               ],
+            },
+            Object {
+              "Action": "codestar-connections:UseConnection",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Ref": "ConnectionToRepository",
+              },
             },
           ],
           "Version": "2012-10-17",

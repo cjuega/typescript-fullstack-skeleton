@@ -1,6 +1,7 @@
 version: 0.2
 
 env:
+  git-credential-helper: yes
   secrets-manager:
     dockerhub_username: $SECRET_ID:username
     dockerhub_password: $SECRET_ID:password
