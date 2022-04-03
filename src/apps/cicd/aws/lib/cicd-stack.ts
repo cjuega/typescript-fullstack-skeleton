@@ -1,5 +1,7 @@
 /* eslint-disable import/prefer-default-export */
-import { CfnParameter, Stack, StackProps } from 'aws-cdk-lib';
+import {
+    CfnParameter, RemovalPolicy, Stack, StackProps
+} from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { Secret, SecretStringValueBeta1 } from 'aws-cdk-lib/aws-secretsmanager';
 import {
@@ -9,6 +11,7 @@ import { Artifact, Pipeline } from 'aws-cdk-lib/aws-codepipeline';
 import { CodeStarConnectionsSourceAction, CodeBuildAction, Action } from 'aws-cdk-lib/aws-codepipeline-actions';
 import { CfnConnection } from 'aws-cdk-lib/aws-codestarconnections';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 
 export class CICDStack extends Stack {
     private readonly sourceProvider: 'Bitbucket' | 'GitHub';
@@ -100,6 +103,14 @@ export class CICDStack extends Stack {
                     SECRET_ID: {
                         type: BuildEnvironmentVariableType.PLAINTEXT,
                         value: dockerSecret.secretArn
+                    }
+                },
+                logging: {
+                    cloudWatch: {
+                        logGroup: new LogGroup(this, 'TestAndBuildLogGroup', {
+                            retention: RetentionDays.ONE_WEEK,
+                            removalPolicy: RemovalPolicy.DESTROY
+                        })
                     }
                 }
             }),
@@ -324,6 +335,14 @@ export class CICDStack extends Stack {
                 }),
                 environment: {
                     buildImage: LinuxBuildImage.STANDARD_5_0
+                },
+                logging: {
+                    cloudWatch: {
+                        logGroup: new LogGroup(this, 'DeployLogGroup', {
+                            retention: RetentionDays.ONE_WEEK,
+                            removalPolicy: RemovalPolicy.DESTROY
+                        })
+                    }
                 }
             }),
             output = new Artifact(),

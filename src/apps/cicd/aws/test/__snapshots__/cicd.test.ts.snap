@@ -42,6 +42,14 @@ Object {
           "PrivilegedMode": false,
           "Type": "LINUX_CONTAINER",
         },
+        "LogsConfig": Object {
+          "CloudWatchLogs": Object {
+            "GroupName": Object {
+              "Ref": "DeployLogGroupEE686BC5",
+            },
+            "Status": "ENABLED",
+          },
+        },
         "ServiceRole": Object {
           "Fn::GetAtt": Array [
             "DeployRoleFF7E9D15",
@@ -69,10 +77,31 @@ Object {
       },
       "Type": "AWS::CodeBuild::Project",
     },
+    "DeployLogGroupEE686BC5": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "RetentionInDays": 7,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Delete",
+    },
     "DeployRoleDefaultPolicy9A3389B6": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
+            Object {
+              "Action": Array [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "DeployLogGroupEE686BC5",
+                  "Arn",
+                ],
+              },
+            },
             Object {
               "Action": Array [
                 "logs:CreateLogGroup",
@@ -1197,6 +1226,14 @@ Object {
           "PrivilegedMode": true,
           "Type": "LINUX_CONTAINER",
         },
+        "LogsConfig": Object {
+          "CloudWatchLogs": Object {
+            "GroupName": Object {
+              "Ref": "TestAndBuildLogGroup5EE3D5D3",
+            },
+            "Status": "ENABLED",
+          },
+        },
         "ServiceRole": Object {
           "Fn::GetAtt": Array [
             "TestAndBuildRoleCAE734CE",
@@ -1208,6 +1245,14 @@ Object {
         },
       },
       "Type": "AWS::CodeBuild::Project",
+    },
+    "TestAndBuildLogGroup5EE3D5D3": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "RetentionInDays": 7,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Delete",
     },
     "TestAndBuildRoleCAE734CE": Object {
       "Properties": Object {
@@ -1230,6 +1275,19 @@ Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
+            Object {
+              "Action": Array [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "TestAndBuildLogGroup5EE3D5D3",
+                  "Arn",
+                ],
+              },
+            },
             Object {
               "Action": Array [
                 "logs:CreateLogGroup",
