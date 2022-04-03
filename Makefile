@@ -29,6 +29,7 @@ build:
 .PHONY = test
 test: deps start_database
 	yarn test
+	yarn lint
 
 # Deploy code to an environment in AWS (cicd by default)
 env = cicd
