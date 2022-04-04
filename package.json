@@ -30,6 +30,8 @@
     "destroy:aws": "npx lerna run destroy:aws --scope @app/* --stream --"
   },
   "devDependencies": {
+    "@commitlint/cli": "^16.2.3",
+    "@commitlint/config-conventional": "^16.2.1",
     "husky": "^7.0.4",
     "lerna": "^4.0.0"
   }
