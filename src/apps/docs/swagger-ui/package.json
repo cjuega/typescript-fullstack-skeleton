@@ -1,0 +1,11 @@
+{
+  "name": "@app/swagger-ui-docs",
+  "version": "1.0.0",
+  "description": "Swagger UI website to share API documentation",
+  "author": "Carlos Juega",
+  "license": "MIT",
+  "scripts": {
+    "build": "./build.sh",
+    "deploy:aws": "./deploy.sh"
+  }
+}
