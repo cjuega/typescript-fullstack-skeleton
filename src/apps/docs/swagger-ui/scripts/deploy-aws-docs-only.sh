@@ -37,4 +37,9 @@ echo '---- Cleaning up $S3_BUCKET_NAME S3 bucket -->'
 aws s3 rm s3://$DOCS_S3_BUCKET --recursive $AWS_ARGS
 
 echo '---- Uploading SwaggerUI to S3 -->'
-aws s3 sync dist/ s3://$DOCS_S3_BUCKET/ --cache-control no-cache $AWS_ARGS
+aws s3 sync dist/ s3://$DOCS_S3_BUCKET/ $AWS_ARGS
+
+CLOUDFRONT_DISTRIBUTION_ID=$(scripts/describe-aws.sh $ENV | jq -r '.CloudfrontDistributionId')
+if [ "$CLOUDFRONT_DISTRIBUTION_ID" != "null" ]; then
+    aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths '/*' $AWS_ARGS
+fi

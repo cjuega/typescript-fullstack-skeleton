@@ -6115,6 +6115,11 @@ caseless@~0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
+cdk-spa-deploy@^2.0.0-alpha.1:
+  version "2.0.0-alpha.1"
+  resolved "https://registry.yarnpkg.com/cdk-spa-deploy/-/cdk-spa-deploy-2.0.0-alpha.1.tgz#c2020203cc27b226fde91f59863f633da315771f"
+  integrity sha512-eKepFms5nZ12nyJ1Ui2NONxTfhpwa2ozUWNf9tNYNkmDKqPTuMvKapoq9XO1B21iRQGLaqG1zrRldUREU3GpmA==
+
 chalk@^2.0.0:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-2.4.2.tgz#cd42541677a54333cf541a49108c1432b44c9424"

@@ -17,7 +17,7 @@ source .env.$ENV
 rm -rf .tmp/
 mkdir .tmp
 rm -rf dist/
-mkdir -p dist/docs/apis
+mkdir -p dist/apis
 
 cd .tmp
 
@@ -45,5 +45,5 @@ if [ ! -z "$AWS_PROFILE" ]; then
 fi
 
 echo '---- Retrieve exising API swagger files -->'
-aws s3 cp s3://$DOCS_S3_BUCKET/docs-list.json ../dist/docs/docs-list.json $AWS_ARGS
-aws s3 sync s3://$DOCS_S3_BUCKET/apis/ ../dist/docs/apis/ $AWS_ARGS
+aws s3 cp s3://$DOCS_S3_BUCKET/docs-list.json ../dist/docs-list.json $AWS_ARGS
+aws s3 sync s3://$DOCS_S3_BUCKET/apis/ ../dist/apis/ $AWS_ARGS

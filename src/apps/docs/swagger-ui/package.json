@@ -5,7 +5,41 @@
   "author": "Carlos Juega",
   "license": "MIT",
   "scripts": {
-    "build": "./build.sh",
-    "deploy:aws": "./deploy.sh"
+    "precommit": "npx lint-staged",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "build": "scripts/build.sh",
+    "describe:aws": "scripts/describe-aws.sh",
+    "saveSetup:aws": "../../../../scripts/save-setup-aws.sh",
+    "restoreSetup:aws": "../../../../scripts/restore-setup-aws.sh",
+    "deploy:aws": "scripts/deploy-aws.sh",
+    "deploy:aws:docs:only": "scripts/deploy-aws-docs-only.sh",
+    "destroy:aws": "scripts/destroy-aws.sh",
+    "build:cdk": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.10",
+    "@types/node": "10.17.27",
+    "@typescript-eslint/eslint-plugin": "^5.12.1",
+    "@typescript-eslint/parser": "^5.12.1",
+    "aws-cdk": "2.17.0",
+    "eslint": "^8.10.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jest": "^26.1.1",
+    "eslint-plugin-module-resolver": "^1.4.0",
+    "jest": "^26.4.2",
+    "ts-jest": "^26.2.0",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.5.5"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "2.17.0",
+    "cdk-spa-deploy": "^2.0.0-alpha.1",
+    "constructs": "^10.0.0",
+    "source-map-support": "^0.5.16"
   }
 }
