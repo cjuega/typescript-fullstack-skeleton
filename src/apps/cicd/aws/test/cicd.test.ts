@@ -1,6 +1,6 @@
 import { App } from 'aws-cdk-lib';
 import { Template } from 'aws-cdk-lib/assertions';
-import { CICDStack } from '../lib/cicd-stack';
+import CICDStack from '../lib/cicd-stack';
 
 describe('cicdStack', () => {
     // eslint-disable-next-line jest/prefer-expect-assertions,jest/expect-expect

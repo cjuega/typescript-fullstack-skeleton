@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import {
     CfnParameter, RemovalPolicy, Stack, StackProps
 } from 'aws-cdk-lib';
@@ -14,7 +13,7 @@ import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 
-export class CICDStack extends Stack {
+export default class CICDStack extends Stack {
     private readonly sourceProvider: 'Bitbucket' | 'GitHub';
 
     private readonly repository: string;
