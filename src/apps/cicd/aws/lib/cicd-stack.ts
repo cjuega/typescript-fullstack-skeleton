@@ -297,9 +297,12 @@ export default class CICDStack extends Stack {
             new PolicyStatement({
                 actions: ['events:*'],
                 resources: this.services
-                    .map((s) => `arn:aws:events:${region}:${account}:event-bus/${s}*`)
-                    .concat(this.services.map((s) => `arn:aws:events:${region}:${account}:rules/${s}*`))
-                    .concat(this.services.map((s) => `arn:aws:events:${region}:${account}:rule/${s}*`))
+                    .map((s) => [
+                        `arn:aws:events:${region}:${account}:event-bus/${s}*`,
+                        `arn:aws:events:${region}:${account}:rules/${s}*`,
+                        `arn:aws:events:${region}:${account}:rule/${s}*`
+                    ])
+                    .flat()
             })
         );
 
