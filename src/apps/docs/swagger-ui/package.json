@@ -13,6 +13,7 @@
     "restoreSetup:aws": "../../../../scripts/restore-setup-aws.sh",
     "deploy:aws": "scripts/deploy-aws.sh",
     "deploy:aws:docs:only": "scripts/deploy-aws-docs-only.sh",
+    "publish:aws:single:api": "scripts/publish-aws-single-api.sh",
     "destroy:aws": "scripts/destroy-aws.sh",
     "build:cdk": "tsc",
     "watch": "tsc -w",

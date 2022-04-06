@@ -12,7 +12,9 @@ This package is a modified version of Swagger UI that allows multiple APIs to be
 
 * [aws-cli](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)
 
-* [jq](https://stedolan.github.io/jq/download/)
+* [jq](https://stedolangithub.io/jq/download/)
+
+* [yq](https://github.com/mikefarah/yq#install)
 
 ## Setup
 
@@ -36,5 +38,6 @@ The table below indicates the environment variables you can define within these 
 * `yarn restoreSetup:aws <env>` retrieves `.env.<env>` file from AWS Parameter Store.
 * `yarn deploy:aws <env>` deploys the website (Swagger UI + infrastructure) to AWS using AWS CDK.
 * `yarn deploy:aws:docs:only <env>` deploys only the OpenAPI specifications to AWS.
+* `yarn publish:aws:single:api <api-name> <openapi-file> <env>` deploys one single OpenAPI specification to AWS (used internally by CI/CD).
 * `yarn destroy:aws <env>` destroys the website in AWS using AWS CDK.
 * `yarn cdk ...` launches AWS CDK commands.
