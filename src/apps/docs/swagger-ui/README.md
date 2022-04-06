@@ -16,6 +16,23 @@ This package is a modified version of Swagger UI that allows multiple APIs to be
 
 * [yq](https://github.com/mikefarah/yq#install)
 
+## How it works
+
+You may want to publish more than one OpenAPI specification in the same Swagger UI instance and this solution allows that. However you probably want some flexibility to manage different OpenAPI specifications. Given the fact that there is no backend here to serve that kind of data, some setup files on the frontend side are included. In particular, there is a static json (`src/docs-list.json`) file that is read when Swagger UI is loaded for the first time. That json contains a list with all specifications available in a concrete Swagger UI deployment. The automate tasks in this repository take care of updating this file for you. But you might need to change it manually.
+
+`docs-list.json` looks like:
+
+```json
+[
+    {
+        "name": "Example Context Serverless (v1.0.0)",
+        "url": "apis/example-context/serverless-backend/v1.0.0/openapi.yml"
+    }
+]
+```
+
+Each item is available in the top right dropdown within the website. `name` property is the human-readable text displayed in the dropdown. Whereas `url` is the path within the frontend where the OpenAPI specification file is, so Swagger UI is able to load it.
+
 ## Setup
 
 You must create a dotenv file for each environment you want to deploy. These dotenv files are in the format `.env.<env>`. For instance, `.env.pro` for a production environment.
