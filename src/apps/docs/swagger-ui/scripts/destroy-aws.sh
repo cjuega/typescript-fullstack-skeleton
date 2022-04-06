@@ -14,9 +14,6 @@ fi
 
 source .env.$ENV
 
-
-yarn build $ENV
-
 AWS_ARGS=""
 
 if [ ! -z "$AWS_REGION" ]; then
@@ -25,6 +22,11 @@ fi
 
 if [ ! -z "$AWS_PROFILE" ]; then
     AWS_ARGS="$AWS_ARGS --profile $AWS_PROFILE"
+fi
+
+# FIXME: this should be done within CDK, but autoDeleteObjects property can't be set on an existing bucket
+if [ ! -z "$DOCS_S3_BUCKET" ]; then
+    aws s3 rm s3://$DOCS_S3_BUCKET --recursive $AWS_ARGS
 fi
 
 npx cdk destroy $AWS_ARGS
