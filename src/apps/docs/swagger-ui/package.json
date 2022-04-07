@@ -17,7 +17,7 @@
     "destroy:aws": "scripts/destroy-aws.sh",
     "build:cdk": "tsc",
     "watch": "tsc -w",
-    "test": "[ ! -z \"$CODEBUILD_SRC_DIR\" ] && yarn restoreSetup:aws pro && yarn build pro no-download; jest",
+    "test": "[ ! -z \"$CODEBUILD_SRC_DIR\" ] && echo \"Skipping tests for @app/swagger-ui-docs in CI/CD\" || npx jest",
     "cdk": "cdk"
   },
   "devDependencies": {
