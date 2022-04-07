@@ -11,6 +11,10 @@ phases:
     runtime-versions:
       nodejs: 14.x
     commands:
+      - CODEBUILD_GIT_BRANCH="$(git rev-parse HEAD | xargs git name-rev | cut -d' ' -f2 | sed 's/remotes\/origin\///g')";
+      - git checkout $CODEBUILD_GIT_BRANCH
+      - git config --global user.email "no-reply@example.com"
+      - git config --global user.name "CI/CD user"
       - apt-get install jq
       - wget https://github.com/mikefarah/yq/releases/download/v4.23.1/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq
       - pip3 install docker-compose
@@ -32,6 +36,7 @@ phases:
       - make test
       - make deploy env=cicd
       - yarn test:features:aws cicd
+      - yarn publish:version
       - make deploy env=pro
       - yarn publish:docs:aws pro
 
