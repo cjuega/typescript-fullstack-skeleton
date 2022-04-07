@@ -1,4 +1,4 @@
-# typescript-fullstack-skeleton
+# ExampleContext Serverless
 
 [![serverless](http://public.serverless.com/badges/v3.svg)](https://serverless.com)
 
