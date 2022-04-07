@@ -5,7 +5,6 @@
   "author": "Carlos Juega",
   "license": "MIT",
   "scripts": {
-    "preversion": "yarn test",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
