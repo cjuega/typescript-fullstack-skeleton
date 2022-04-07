@@ -2,4 +2,4 @@ Resources:
   DomainEventBus:
     Type: AWS::Events::EventBus
     Properties:
-      Name: ${env:PROJECT}-${self:provider.stage}-events
+      Name: ${env:SERVICE_NAME}-${self:provider.stage}-events

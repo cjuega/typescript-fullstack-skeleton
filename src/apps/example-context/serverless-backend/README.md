@@ -33,7 +33,7 @@ There two types of configuration files in this repository. On one hand, dotenv (
 A dotenv file is as follows:
 
 ```sh
-PROJECT=example-context
+SERVICE_NAME=example-context
 AWS_REGION=eu-west-1
 DEBUG=*
 ```
@@ -71,7 +71,7 @@ The table below indicates the environment variables you can define within these 
 
 | Name               | Mandatory | Description                                                            | Used by |
 | ------------------ | --------- |----------------------------------------------------------------------- | ------- |
-| PROJECT            | yes       | An arbitrary name that identifies this service in AWS, it's also used to save/restore dotenv and config files in AWS Parameter Store. | `yarn deploy:aws <env>`<br/>`yarn saveSetup:aws <env>`<br/>`yarn restoreSetup:aws <env>`<br/>`yarn test:features:aws <env>`<br/>`yarn describe:aws <env>`<br/>`yarn destroy:aws <env>` |
+| SERVICE_NAME       | yes       | An arbitrary name that identifies this service in AWS, it's also used to save/restore dotenv and config files in AWS Parameter Store. | `yarn deploy:aws <env>`<br/>`yarn saveSetup:aws <env>`<br/>`yarn restoreSetup:aws <env>`<br/>`yarn test:features:aws <env>`<br/>`yarn describe:aws <env>`<br/>`yarn destroy:aws <env>` |
 | AWS_PROFILE        | no        | AWS profile used to interact with AWS. If it is not set, then the default configuration is used. | `yarn deploy:aws <env>`<br/>`yarn saveSetup:aws <env>`<br/>`yarn restoreSetup:aws <env>`<br/>`yarn test:features:aws <env>`<br/>`yarn describe:aws <env>`<br/>`yarn destroy:aws <env>` |
 | AWS_REGION         | no        | AWS region to interact with. If it is not set, then the default configuration is used. | `yarn deploy:aws <env>`<br/>`yarn saveSetup:aws <env>`<br/>`yarn restoreSetup:aws <env>`<br/>`yarn test:features:aws <env>`<br/>`yarn describe:aws <env>`<br/>`yarn destroy:aws <env>` |
 | DEBUG              | no        | debug level in the Serverless Framework. Typically set to `DEBUG=*` |  `yarn start`<br/>`yarn test` |

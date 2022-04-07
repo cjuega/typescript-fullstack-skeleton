@@ -66,8 +66,7 @@ const files = [`${__dirname}/default.json`],
             source: {
                 docs: "Source used by the EventBridge's client when sending messages.",
                 format: String,
-                default: '',
-                env: 'PROJECT'
+                default: ''
             },
             eventBusName: {
                 docs: 'Optional EventBridge bus name which the eventbridge client sends messages to.',

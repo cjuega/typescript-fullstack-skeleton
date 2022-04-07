@@ -2,7 +2,7 @@ Resources:
   Database:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: ${env:PROJECT}-${self:provider.stage}-table
+      TableName: ${env:SERVICE_NAME}-${self:provider.stage}-table
       AttributeDefinitions:
         -
           AttributeName: pk
@@ -29,7 +29,7 @@ Resources:
         WriteCapacityUnits: 5
       GlobalSecondaryIndexes:
         -
-          IndexName: ${env:PROJECT}-${self:provider.stage}-gsi1
+          IndexName: ${env:SERVICE_NAME}-${self:provider.stage}-gsi1
           KeySchema:
             -
               AttributeName: gsi1pk
@@ -47,8 +47,8 @@ Resources:
         Enabled: TRUE
       Tags:
         -
-          Key: Project
-          Value: ${env:PROJECT}
+          Key: ServiceName
+          Value: ${env:SERVICE_NAME}
         -
           Key: Env
           Value: ${self:provider.stage}

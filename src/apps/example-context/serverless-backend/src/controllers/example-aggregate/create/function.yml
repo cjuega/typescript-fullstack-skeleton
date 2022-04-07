@@ -25,5 +25,5 @@ exampleAggregatePutController:
           schemas:
             application/json: ${file(../../../../docs/example-context/example-aggregate/example-aggregate-put-body.yml):ExampleAggregatePutBody}
   tags:
-    Project: ${env:PROJECT}
+    ServiceName: ${env:SERVICE_NAME}
     Env: ${self:provider.stage}

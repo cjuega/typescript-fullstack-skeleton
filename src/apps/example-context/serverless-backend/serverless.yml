@@ -1,4 +1,4 @@
-service: ${env:PROJECT}
+service: ${env:SERVICE_NAME}
 
 useDotenv: true
 

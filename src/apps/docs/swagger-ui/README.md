@@ -41,7 +41,7 @@ The table below indicates the environment variables you can define within these 
 
 | Name               | Mandatory | Description                                                            | Used by |
 | ------------------ | --------- |----------------------------------------------------------------------- | ------- |
-| PROJECT            | no        | An arbitrary name that identifies dotenv files in AWS Parameter Store. If it is not set, dependent commands may not work properly. | `yarn saveSetup:aws <env>`<br/>`yarn restoreSetup:aws <env>` |
+| SERVICE_NAME       | no        | An arbitrary name that identifies dotenv files in AWS Parameter Store. If it is not set, dependent commands may not work properly. | `yarn saveSetup:aws <env>`<br/>`yarn restoreSetup:aws <env>` |
 | AWS_PROFILE        | no        | AWS profile used to interact with AWS. If it is not set, then the default configuration is used. | `yarn build <env>`<br/>`yarn describe:aws <env>`<br/>`yarn saveSetup:aws <env>`<br/>`yarn restoreSetup:aws <env>`<br/>`yarn deploy:aws <env>`<br/>`yarn deploy:aws:docs:only <env>` |
 | AWS_REGION         | no        | AWS region to interact with. If it is not set, then the default configuration is used. | `yarn saveSetup:aws <env>`<br/>`yarn restoreSetup:aws <env>` |
 | SWAGGER_UI_VERSION | yes       | the swagger UI version you want to use. For instance, `3.43.0`. | `yarn build <env>` | 

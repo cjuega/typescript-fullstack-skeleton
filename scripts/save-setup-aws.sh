@@ -24,10 +24,10 @@ if [ ! -z "$AWS_PROFILE" ]; then
     AWS_ARGS="$AWS_ARGS --profile $AWS_PROFILE"
 fi
 
-aws ssm put-parameter --name $PROJECT-$ENV-dotenv --type SecureString --value "$(cat .env.$ENV)" --overwrite $AWS_ARGS
+aws ssm put-parameter --name $SERVICE_NAME-$ENV-dotenv --type SecureString --value "$(cat .env.$ENV)" --overwrite $AWS_ARGS
 
 if [ -f src/config/$ENV.json ]; then
-    aws ssm put-parameter --name $PROJECT-$ENV-config --type SecureString --value "$(cat ./src/config/$ENV.json)" --overwrite $AWS_ARGS
+    aws ssm put-parameter --name $SERVICE_NAME-$ENV-config --type SecureString --value "$(cat ./src/config/$ENV.json)" --overwrite $AWS_ARGS
 else
     echo "WARNING!!!! Config file <src/config/$ENV.json> doesn't exist! Nothing saved!"
 fi

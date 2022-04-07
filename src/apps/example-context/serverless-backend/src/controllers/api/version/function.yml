@@ -6,5 +6,5 @@ versionGetController:
         path: api/version
         cors: true
   tags:
-    Project: ${env:PROJECT}
+    ServiceName: ${env:SERVICE_NAME}
     Env: ${self:provider.stage}

@@ -7,5 +7,5 @@ subscribers:
           detail-type:
             - company.service.1.event.exampleAggregate.created
   tags:
-    Project: ${env:PROJECT}
+    ServiceName: ${env:SERVICE_NAME}
     Env: ${self:provider.stage}
