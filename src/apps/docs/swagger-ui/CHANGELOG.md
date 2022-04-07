@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://codestar-connections.eu-west-1.amazonaws.com/git-http/406806550794/eu-west-1/5ac84416-c843-48e9-b85b-2c46d4245810/cjuega/typescript-fullstack-skeleton/compare/@app/swagger-ui-docs@1.1.0...@app/swagger-ui-docs@1.1.1) (2022-04-07)
+
+
+### Bug Fixes
+
+* **@app/swagger-ui-docs:** ensure last version of docs is published by publish-aws-single-api.sh ([a4234ef](https://codestar-connections.eu-west-1.amazonaws.com/git-http/406806550794/eu-west-1/5ac84416-c843-48e9-b85b-2c46d4245810/cjuega/typescript-fullstack-skeleton/commits/a4234ef4e85f9157a03c5bcb851de1b52c91a246))
+
+
+
+
+
 # 1.1.0 (2022-04-07)
 
 
