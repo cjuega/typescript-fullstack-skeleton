@@ -60,8 +60,10 @@ Dockerhub Credentials are passed as CloudFormation parameters so they are not le
 For instance:
 
 ```sh
-yarn cdk deploy -c provider=GitHub -c repository=cjuega/typescript-fullstack-skeleton#master -c services=example-context --parameters DockerhubUsername=<username> --parameters DockerhubPassword=<password>
+yarn cdk deploy -c provider=GitHub -c repository=cjuega/typescript-fullstack-skeleton#master -c services=swagger-ui-docs,example-context --parameters DockerhubUsername=<username> --parameters DockerhubPassword=<password>
 ```
+
+Once you deploy the pipeline for the first time, you must go to `AWS console > CodeBuild > Settings > Connections` and complete the registration of the connection by giving access to your particular repository. Unfortunately this step can't be done automatically.
 
 ## Useful commands
 
