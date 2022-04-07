@@ -16,7 +16,7 @@
     "stop:background": "../../../../scripts/stop-sls-offline.sh",
     "test": "yarn start:background && NODE_ENV=offline yarn test:only; status=`echo $?`; yarn stop:background; exit $status",
     "test:only": "yarn docs:bundle && npx jest --verbose --runInBand",
-    "service:aws": "../../../../scripts/service-aws.sh",
+    "describe:aws": "../../../../scripts/describe-aws.sh",
     "saveSetup:aws": "../../../../scripts/save-setup-aws.sh",
     "restoreSetup:aws": "../../../../scripts/restore-setup-aws.sh",
     "deploy:aws": "../../../../scripts/deploy-aws.sh",

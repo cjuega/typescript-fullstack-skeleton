@@ -14,7 +14,7 @@ fi
 
 source .env.$ENV
 
-SERVICE_URL=$(../../../../scripts/service-aws.sh $ENV)
+SERVICE_URL=$(../../../../scripts/describe-aws.sh $ENV)
 
 if [ -z "$AWS_PROFILE" ]; then
     AWS_REGION=$AWS_REGION NODE_ENV=$ENV CLOUD_URL=$SERVICE_URL yarn test:only
