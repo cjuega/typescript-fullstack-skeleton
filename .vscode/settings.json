@@ -1,5 +1,5 @@
 {
-    "eslint.workingDirectories": ["src/apps/example-context/angular-frontend", "src/apps/example-context/serverless-backend", "src/contexts/example-context", "src/contexts/shared"],
+    "eslint.workingDirectories": ["src/apps/cicd/aws", "src/apps/docs/swagger-ui", "src/apps/example-context/angular-frontend", "src/apps/example-context/serverless-backend", "src/contexts/example-context", "src/contexts/shared"],
     "yaml.customTags": [
         "!And",
         "!And sequence",
