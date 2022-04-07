@@ -868,6 +868,97 @@ Object {
               },
             },
             Object {
+              "Action": "ssm:GetParameter",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:ssm:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":parameter/swagger-ui-docs*",
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": "cloudformation:Describe*",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:cloudformation:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":stack/DocsWebsiteStack*/*",
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": "s3:List*",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:s3:::",
+                    Object {
+                      "Fn::ImportValue": "DocsWebsiteStack-BucketName",
+                    },
+                    "*",
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": "s3:*",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:s3:::",
+                    Object {
+                      "Fn::ImportValue": "DocsWebsiteStack-BucketName",
+                    },
+                    "*/*",
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": "cloudfront:CreateInvalidation",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:cloudfront::",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":distribution/",
+                    Object {
+                      "Fn::ImportValue": "DocsWebsiteStack-CloudfrontDistributionId",
+                    },
+                  ],
+                ],
+              },
+            },
+            Object {
               "Action": Array [
                 "apigateway:GET",
                 "apigateway:PATCH",

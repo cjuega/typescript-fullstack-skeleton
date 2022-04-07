@@ -13,12 +13,16 @@ import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 
+const SWAGGER_UI_DOCS_SERVICE_NAME = 'swagger-ui-docs';
+
 export default class CICDStack extends Stack {
     private readonly sourceProvider: 'Bitbucket' | 'GitHub';
 
     private readonly repository: string;
 
     private readonly services: string[];
+
+    private readonly hasDocsService: boolean;
 
     private readonly bucketCache: Bucket;
 
@@ -27,7 +31,11 @@ export default class CICDStack extends Stack {
 
         this.sourceProvider = this.node.tryGetContext('provider');
         this.repository = this.node.tryGetContext('repository');
-        this.services = this.node.tryGetContext('services').split(',');
+
+        const services: string[] = this.node.tryGetContext('services').split(',');
+
+        this.hasDocsService = services.includes(SWAGGER_UI_DOCS_SERVICE_NAME);
+        this.services = services.filter((s) => s !== SWAGGER_UI_DOCS_SERVICE_NAME);
 
         this.bucketCache = new Bucket(this, 'CacheBucket', {
             removalPolicy: RemovalPolicy.DESTROY,
@@ -126,7 +134,11 @@ export default class CICDStack extends Stack {
 
         dockerSecret.grantRead(project);
 
-        this.buildBasicPermissionsForCDK().forEach((statement) => {
+        this.buildPermissionsForCDK().forEach((statement) => {
+            project.addToRolePolicy(statement);
+        });
+
+        this.buildPermissionsForSwaggerUI().forEach((statement) => {
             project.addToRolePolicy(statement);
         });
 
@@ -141,7 +153,7 @@ export default class CICDStack extends Stack {
         return action;
     }
 
-    private buildBasicPermissionsForCDK(): PolicyStatement[] {
+    private buildPermissionsForCDK(): PolicyStatement[] {
         const { account } = Stack.of(this),
             statements = [];
 
@@ -151,6 +163,53 @@ export default class CICDStack extends Stack {
                 resources: [`arn:aws:iam::${account}:role/cdk-*`]
             })
         );
+
+        return statements;
+    }
+
+    private buildPermissionsForSwaggerUI(): PolicyStatement[] {
+        const { region, account } = Stack.of(this),
+            statements = [];
+
+        // FIXME: get rid of hardcoded behavior
+        if (this.hasDocsService) {
+            statements.push(
+                new PolicyStatement({
+                    actions: ['ssm:GetParameter'],
+                    resources: [`arn:aws:ssm:${region}:${account}:parameter/${SWAGGER_UI_DOCS_SERVICE_NAME}*`]
+                })
+            );
+
+            statements.push(
+                new PolicyStatement({
+                    actions: ['cloudformation:Describe*'],
+                    resources: [`arn:aws:cloudformation:${region}:${account}:stack/DocsWebsiteStack*/*`]
+                })
+            );
+
+            statements.push(
+                new PolicyStatement({
+                    actions: ['s3:List*'],
+                    resources: [`arn:aws:s3:::${Fn.importValue('DocsWebsiteStack-BucketName')}*`]
+                })
+            );
+
+            statements.push(
+                new PolicyStatement({
+                    actions: ['s3:*'],
+                    resources: [`arn:aws:s3:::${Fn.importValue('DocsWebsiteStack-BucketName')}*/*`]
+                })
+            );
+
+            statements.push(
+                new PolicyStatement({
+                    actions: ['cloudfront:CreateInvalidation'],
+                    resources: [
+                        `arn:aws:cloudfront::${account}:distribution/${Fn.importValue('DocsWebsiteStack-CloudfrontDistributionId')}`
+                    ]
+                })
+            );
+        }
 
         return statements;
     }
@@ -323,39 +382,6 @@ export default class CICDStack extends Stack {
                     .flat()
             })
         );
-
-        // FIXME: get rid of hardcoded behavior
-        if (this.services.includes('swagger-ui-docs')) {
-            statements.push(
-                new PolicyStatement({
-                    actions: ['cloudformation:Describe*'],
-                    resources: [`arn:aws:cloudformation:${region}:${account}:stack/DocsWebsiteStack*/*`]
-                })
-            );
-
-            statements.push(
-                new PolicyStatement({
-                    actions: ['s3:List*'],
-                    resources: [`arn:aws:s3:::${Fn.importValue('DocsWebsiteStack-BucketName')}*`]
-                })
-            );
-
-            statements.push(
-                new PolicyStatement({
-                    actions: ['s3:*'],
-                    resources: [`arn:aws:s3:::${Fn.importValue('DocsWebsiteStack-BucketName')}*/*`]
-                })
-            );
-
-            statements.push(
-                new PolicyStatement({
-                    actions: ['cloudfront:CreateInvalidation'],
-                    resources: [
-                        `arn:aws:cloudfront::${account}:distribution/${Fn.importValue('DocsWebsiteStack-CloudfrontDistributionId')}`
-                    ]
-                })
-            );
-        }
 
         statements.push(
             new PolicyStatement({
