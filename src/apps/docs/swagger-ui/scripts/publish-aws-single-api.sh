@@ -38,7 +38,7 @@ rm -rf .tmp/
 mkdir .tmp
 
 cp src/docs-list.json .tmp/
-mkdir -p .tmp/$SWAGGER_DIR && cp $OPENAPI_FILEPATH .tmp/$SWAGGER_DIR
+mkdir -p .tmp/$SWAGGER_DIR
 
 AWS_ARGS=""
 
@@ -51,8 +51,10 @@ if [ ! -z "$AWS_PROFILE" ]; then
 fi
 
 aws s3 cp s3://$DOCS_S3_BUCKET/docs-list.json .tmp/docs-list.json $AWS_ARGS
-
 jq ". += [{\"name\": \"$NAME_IN_SWAGGER\", \"url\": \"$URL_IN_SWAGGER\"}] | unique_by(.name) | sort_by(.name) | reverse" .tmp/docs-list.json > .tmp/docs-list.tmp.json && mv .tmp/docs-list.tmp.json .tmp/docs-list.json
+
+aws s3 cp s3://$DOCS_S3_BUCKET/apis/ .tmp/apis/ $AWS_ARGS
+cp $OPENAPI_FILEPATH .tmp/$SWAGGER_DIR
 
 aws s3 sync .tmp/ s3://$DOCS_S3_BUCKET/ $AWS_ARGS
 
