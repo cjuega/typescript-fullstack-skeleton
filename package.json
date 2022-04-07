@@ -28,6 +28,7 @@
     "deploy:aws": "npx lerna run deploy:aws --scope @app/* --since $(git describe --tags --abbrev=0) --stream --",
     "test:features:aws": "npx lerna run test:features:aws --scope @app/* --since $(git describe --tags --abbrev=0) --stream --concurrency 1 --",
     "publish:docs:aws": "npx lerna run publish:docs:aws --scope @app/* --since $(git describe --tags --abbrev=0) --stream --concurrency 1 --",
+    "publish:version": "npx lerna version --conventional-commits --no-commit-hooks --yes",
     "destroy:aws": "npx lerna run destroy:aws --scope @app/* --stream --"
   },
   "devDependencies": {

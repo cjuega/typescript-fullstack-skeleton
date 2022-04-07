@@ -7,7 +7,7 @@
   "scripts": {
     "precommit": "npx lint-staged",
     "preversion": "yarn test",
-    "postversion": "sed -i '' -E \"s/version: .*/version: $npm_package_version/\" docs/openapi.yml",
+    "postversion": "sed -i '' -E \"s/version: .*/version: $npm_package_version/\" docs/openapi.yml && git add docs/openapi.yml && git commit --amend --no-edit --no-verify",
     "docs:bundle": "npx swagger-cli bundle docs/openapi.yml -r --outfile dist/docs/api/openapi.yml --type yaml",
     "publish:docs:aws": "yarn docs:bundle && yarn --cwd ../../docs/swagger-ui publish:aws:single:api example-context/serverless-backend $(pwd)/dist/docs/api/openapi.yml",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
