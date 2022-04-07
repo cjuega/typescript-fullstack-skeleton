@@ -6,6 +6,7 @@ if [ $# -lt 1 ]; then
 fi
 
 ENV=$1
+NO_DOWNLOAD=$2
 
 if [ ! -f .env.$ENV ]; then
     echo "dotenv file <.env.$ENV> doesn't exist!"
@@ -27,8 +28,13 @@ cp -r .tmp/swagger-ui-$SWAGGER_UI_VERSION/dist/ dist/
 cp src/index.html dist/
 cp src/docs-list.json dist/
 
+if [ ! -z "$NO_DOWNLOAD" ]; then
+    echo "Ignoring existing OpenAPI specifications in AWS..."
+    exit 0
+fi
+
 if [ -z "$DOCS_S3_BUCKET" ]; then
-    echo "DOCS_S3_BUCKET not found in <.env.$ENV>. I can't try to update docs-list.json from an existing deployment."
+    echo "DOCS_S3_BUCKET not found in <.env.$ENV>. I can't try to download docs-list.json from an existing deployment."
     exit 0
 fi
 
