@@ -1,3 +1,4 @@
+import Datetime from '@context/shared/domain/datetime';
 import CreateExampleAggregateCommand, {
     CreateExampleAggregateCommandParams
 } from '@src/example-aggregate/application/create/createExampleAggregateCommand';
@@ -17,10 +18,10 @@ export default class CreateExampleAggregateCommandMother {
         });
     }
 
-    static applyCommand(command: CreateExampleAggregateCommand, context: { createdAt: string }): ExampleAggregate {
+    static applyCommand(command: CreateExampleAggregateCommand, context: { createdAt: Datetime }): ExampleAggregate {
         return ExampleAggregateMother.create({
             ...command,
-            ...context
+            createdAt: context.createdAt.value
         });
     }
 }
