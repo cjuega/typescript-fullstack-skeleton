@@ -47,6 +47,20 @@ The table below indicates the environment variables you can define within these 
 | SWAGGER_UI_VERSION | yes       | the swagger UI version you want to use. For instance, `3.43.0`. | `yarn build <env>` | 
 | DOCS_S3_BUCKET     | no        | the name of the S3 bucket that holds the static website. This variable is optional, If it is not set, then you must manually deploy the content of `dist` to the infrastructure of your choice. | `yarn build <env>`<br/>`yarn deploy:aws:docs:only <env>`|
 
+## Deploy to AWS
+
+---
+**NOTE**
+
+If this is the first time you use AWS CDK in a given AWS account, then don't forget to bootstrap it!
+
+```sh
+yarn cdk bootstrap
+```
+
+---
+
+Just run `yarn deploy:aws <env>` after setting up a proper `.env.<env>` file.
 ## Useful commands
 
 * `yarn build <env>` creates the dist folder with a modified version of Swagger UI. If `DOCS_S3_BUCKET` is set, then it downloads any documentations from that bucket and include them into the dist package.
