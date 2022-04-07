@@ -17,12 +17,14 @@ export default class WebsiteStack extends Stack {
 
         new CfnOutput(this, 'CloudfrontDistributionId', {
             description: 'CloudfrontDistributionId',
-            value: distribution.distributionId
+            value: distribution.distributionId,
+            exportName: `${id}-CloudfrontDistributionId`
         });
 
         new CfnOutput(this, 'bucket name', {
             description: 'The name of the S3 bucket holding the website',
-            value: websiteBucket.bucketName
+            value: websiteBucket.bucketName,
+            exportName: `${id}-BucketName`
         });
     }
 }

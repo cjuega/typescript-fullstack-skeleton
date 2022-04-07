@@ -1,5 +1,5 @@
 import {
-    CfnParameter, RemovalPolicy, Stack, StackProps
+    CfnParameter, Fn, RemovalPolicy, Stack, StackProps
 } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { Secret, SecretStringValueBeta1 } from 'aws-cdk-lib/aws-secretsmanager';
@@ -305,6 +305,39 @@ export default class CICDStack extends Stack {
                     .flat()
             })
         );
+
+        // FIXME: get rid of hardcoded behavior
+        if (this.services.includes('swagger-ui-docs')) {
+            statements.push(
+                new PolicyStatement({
+                    actions: ['cloudformation:Describe*'],
+                    resources: [`arn:aws:cloudformation:${region}:${account}:stack/DocsWebsiteStack*/*`]
+                })
+            );
+
+            statements.push(
+                new PolicyStatement({
+                    actions: ['s3:List*'],
+                    resources: [`arn:aws:s3:::${Fn.importValue('DocsWebsiteStack-BucketName')}*`]
+                })
+            );
+
+            statements.push(
+                new PolicyStatement({
+                    actions: ['s3:*'],
+                    resources: [`arn:aws:s3:::${Fn.importValue('DocsWebsiteStack-BucketName')}*/*`]
+                })
+            );
+
+            statements.push(
+                new PolicyStatement({
+                    actions: ['cloudfront:CreateInvalidation'],
+                    resources: [
+                        `arn:aws:cloudfront::${account}:distribution/${Fn.importValue('DocsWebsiteStack-CloudfrontDistributionId')}`
+                    ]
+                })
+            );
+        }
 
         statements.push(
             new PolicyStatement({

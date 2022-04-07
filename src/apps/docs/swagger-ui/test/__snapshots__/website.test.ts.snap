@@ -5,6 +5,9 @@ Object {
   "Outputs": Object {
     "CloudfrontDistributionId": Object {
       "Description": "CloudfrontDistributionId",
+      "Export": Object {
+        "Name": "MyTestDocsWebsiteStack-CloudfrontDistributionId",
+      },
       "Value": Object {
         "Ref": "DocscloudfrontDistributionCFDistributionB983AB1C",
       },
@@ -20,6 +23,9 @@ Object {
     },
     "bucketname": Object {
       "Description": "The name of the S3 bucket holding the website",
+      "Export": Object {
+        "Name": "MyTestDocsWebsiteStack-BucketName",
+      },
       "Value": Object {
         "Ref": "DocsWebsiteBucket94CBDF04",
       },
