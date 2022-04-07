@@ -17,6 +17,7 @@
     "lint:contexts": "npx lerna run lint --scope @context/* --since $(git describe --tags --abbrev=0) --stream",
     "lint:apps": "npx lerna run lint --scope @app/* --since $(git describe --tags --abbrev=0) --stream",
     "build": "npx lerna run build --scope @context/* --since $(git describe --tags --abbrev=0)",
+    "build:all": "npx lerna run build --scope @context/*",
     "test": "yarn build && yarn test:unit && yarn test:integration && yarn test:features",
     "test:unit": "npx lerna run test:unit --scope @context/* --since $(git describe --tags --abbrev=0) --stream",
     "test:integration": "npx lerna run test:integration --scope @context/* --since $(git describe --tags --abbrev=0) --stream --concurrency 1",
