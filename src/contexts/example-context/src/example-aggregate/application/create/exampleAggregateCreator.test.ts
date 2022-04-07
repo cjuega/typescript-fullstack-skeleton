@@ -43,7 +43,7 @@ describe('exampleAggregateCreator', () => {
             handler = new CreateExampleAggregateCommandHandler(new ExampleAggregateCreator(clock, repository, eventBus)),
             command = CreateExampleAggregateCommandMother.random(),
             createdAt = DatetimeMother.random(),
-            expected = CreateExampleAggregateCommandMother.applyCommand(command, { createdAt });
+            expected = CreateExampleAggregateCommandMother.applyCommand(command, { createdAt: createdAt.value });
 
         clock.whenNowThenReturn(createdAt);
         repository.whenSearchThenReturn(null);
@@ -63,7 +63,7 @@ describe('exampleAggregateCreator', () => {
             command = CreateExampleAggregateCommandMother.random(),
             createdAt = DatetimeMother.random(),
             expected = ExampleAggregateCreatedDomainEventMother.fromExampleAggregate(
-                CreateExampleAggregateCommandMother.applyCommand(command, { createdAt })
+                CreateExampleAggregateCommandMother.applyCommand(command, { createdAt: createdAt.value })
             );
 
         clock.whenNowThenReturn(createdAt);

@@ -6,28 +6,23 @@ type CreateExampleAggregateDomainEventBody = Readonly<Omit<ExampleAggregatePrimi
 export default class ExampleAggregateCreatedDomainEvent extends DomainEvent {
     static readonly EVENT_NAME = 'company.service.1.event.exampleAggregate.created';
 
-    readonly createdAt: string;
+    readonly body: CreateExampleAggregateDomainEventBody;
 
-    constructor({
-        id,
-        createdAt,
-        eventId,
-        occurredOn
-    }: ExampleAggregatePrimitives & {
+    constructor(args: ExampleAggregatePrimitives & {
         eventId?: string;
         occurredOn?: Date;
     }) {
+        const {
+            id, eventId, occurredOn, ...body
+        } = args;
+
         super(ExampleAggregateCreatedDomainEvent.EVENT_NAME, id, eventId, occurredOn);
 
-        this.createdAt = createdAt;
+        this.body = body;
     }
 
     toPrimitives(): CreateExampleAggregateDomainEventBody {
-        const { createdAt } = this;
-
-        return {
-            createdAt
-        };
+        return this.body;
     }
 
     static fromPrimitives(

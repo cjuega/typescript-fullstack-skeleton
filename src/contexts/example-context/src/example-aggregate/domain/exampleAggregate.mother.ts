@@ -1,18 +1,19 @@
-import ExampleAggregateId from '@src/example-aggregate/domain/exampleAggregateId';
-import Datetime from '@context/shared/domain/datetime';
 import ExampleAggregate from '@src/example-aggregate/domain/exampleAggregate';
 import ExampleAggregateIdMother from '@src/example-aggregate/domain/exampleAggregateId.mother';
 import DatetimeMother from '@context/shared/domain/datetime.mother';
+import { ExampleAggregatePrimitives } from '@src/example-aggregate/domain/exampleAggregatePrimitives';
+import { RecursivePartial } from '@context/shared/domain/recursivePartial.mother';
 
 export default class ExampleAggregateMother {
-    static create(id: ExampleAggregateId, createdAt: Datetime): ExampleAggregate {
-        return new ExampleAggregate(id, createdAt);
+    static create(primitives: ExampleAggregatePrimitives): ExampleAggregate {
+        return ExampleAggregate.fromPrimitives(primitives);
     }
 
-    static random(): ExampleAggregate {
-        const id = ExampleAggregateIdMother.random(),
-            createdAt = DatetimeMother.random();
-
-        return ExampleAggregateMother.create(id, createdAt);
+    static random(overwrites?: RecursivePartial<ExampleAggregatePrimitives>): ExampleAggregate {
+        return ExampleAggregateMother.create({
+            id: ExampleAggregateIdMother.random().value,
+            createdAt: DatetimeMother.random().value,
+            ...overwrites
+        });
     }
 }

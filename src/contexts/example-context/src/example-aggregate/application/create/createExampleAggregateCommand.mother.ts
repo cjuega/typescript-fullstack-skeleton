@@ -1,5 +1,3 @@
-import Datetime from '@context/shared/domain/datetime';
-import DatetimeMother from '@context/shared/domain/datetime.mother';
 import CreateExampleAggregateCommand, {
     CreateExampleAggregateCommandParams
 } from '@src/example-aggregate/application/create/createExampleAggregateCommand';
@@ -12,16 +10,17 @@ export default class CreateExampleAggregateCommandMother {
         return new CreateExampleAggregateCommand(params);
     }
 
-    static random(overwrites?: { id?: string }): CreateExampleAggregateCommand {
-        const id = overwrites?.id ? overwrites.id : ExampleAggregateIdMother.random().value;
-
-        return CreateExampleAggregateCommandMother.create({ id });
+    static random(overwrites?: Partial<CreateExampleAggregateCommandParams>): CreateExampleAggregateCommand {
+        return CreateExampleAggregateCommandMother.create({
+            id: ExampleAggregateIdMother.random().value,
+            ...overwrites
+        });
     }
 
-    static applyCommand(command: CreateExampleAggregateCommand, context: { createdAt: Datetime }): ExampleAggregate {
-        const id = ExampleAggregateIdMother.create(command.id),
-            createdAt = DatetimeMother.create(context.createdAt.value);
-
-        return ExampleAggregateMother.create(id, createdAt);
+    static applyCommand(command: CreateExampleAggregateCommand, context: { createdAt: string }): ExampleAggregate {
+        return ExampleAggregateMother.create({
+            ...command,
+            ...context
+        });
     }
 }
