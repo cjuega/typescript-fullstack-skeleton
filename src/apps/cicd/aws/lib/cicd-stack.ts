@@ -126,6 +126,10 @@ export default class CICDStack extends Stack {
 
         dockerSecret.grantRead(project);
 
+        this.buildBasicPermissionsForCDK().forEach((statement) => {
+            project.addToRolePolicy(statement);
+        });
+
         this.buildBasicPermissionsForServerlessFramework().forEach((statement) => {
             project.addToRolePolicy(statement);
         });
@@ -135,6 +139,20 @@ export default class CICDStack extends Stack {
         });
 
         return action;
+    }
+
+    private buildBasicPermissionsForCDK(): PolicyStatement[] {
+        const { account } = Stack.of(this),
+            statements = [];
+
+        statements.push(
+            new PolicyStatement({
+                actions: ['sts:AssumeRole'],
+                resources: [`arn:aws:iam::${account}:role/cdk-*`]
+            })
+        );
+
+        return statements;
     }
 
     private buildBasicPermissionsForServerlessFramework(): PolicyStatement[] {

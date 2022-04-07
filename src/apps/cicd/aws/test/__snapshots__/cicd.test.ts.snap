@@ -852,6 +852,22 @@ Object {
               },
             },
             Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:iam::",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":role/cdk-*",
+                  ],
+                ],
+              },
+            },
+            Object {
               "Action": Array [
                 "apigateway:GET",
                 "apigateway:PATCH",
