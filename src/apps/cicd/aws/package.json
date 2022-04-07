@@ -1,6 +1,6 @@
 {
   "name": "@app/aws-cicd",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "IaC to deploy a CI/CD pipeline in AWS.",
   "author": "Carlos Juega",
   "license": "MIT",

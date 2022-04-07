@@ -1,6 +1,6 @@
 {
   "name": "@app/angular-fe",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Angular UI of the example-context bounded context",
   "author": "Carlos Juega",
   "license": "MIT",

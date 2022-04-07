@@ -1,6 +1,6 @@
 {
   "name": "@context/example",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Example of a bounded context",
   "author": "Carlos Juega",
   "license": "MIT",
@@ -34,7 +34,7 @@
     "build:tsc": "tsc  && tscpaths -p tsconfig.json -s ./src -o ./dist"
   },
   "dependencies": {
-    "@context/shared": "^1.0.0"
+    "@context/shared": "^1.0.1"
   },
   "devDependencies": {
     "@types/jest": "^27.4.1",
