@@ -6,6 +6,8 @@ The generated CloudFormation template has been adapted to Serverless Framework i
 
 Roughtly speaking, this pipeline monitors a concrete branch of a git repository (both Github and Bitbucket repositories are supported). Whenever new commits come in that branch, the build process is triggered. All tests (unit, integration and e2e) are run locally. If they passed, an actual `cicd` environment is created/updated in AWS; and e2e tests are run against it. If they keep passing, then the code is deployed to a production environment (`pro`).
 
+Pipeline transitions are notified to an SNS topic, so you can easily subscribe emails to it in order to get pipeline results. Optionally, you can set up an slack channel as notification channel well.
+
 ![Architecture](architecture.png)
 
 ---
@@ -44,6 +46,9 @@ AWS CDK commands require some mandatory _context parameters_. In particular, you
 * **provider**: which source provider hosts the code (either `Bitbucket` or `GitHub`).
 * **repository**: the repository and branch that triggers the pipeline. It's in the format `owner/repository#branch`. For instance `cjuega/typescript-fullstack-skeleton#master`.
 * **services**: a list of services the CI/CD pipeline will have access to (separated by commas). For instance `example-context,other-context`. This is needed as AWS CodeBuild is granted access to only the concrete infrastructure created by CloudFormation (instead of granting it Admin access).
+* **slackWorkspaceId** Optional slack workspace id. It will be used to notify pipeline updates to an slack channel within this workspace.
+* **slackChannelId** Optional slack channel id within the given slack workspace. It will be used to notify pipeline updates to this slack channel.
+* **slackChannelName** Optional slack channel name. It will be used to name CloudFormation resources. NOTE: the three params are needed to enable slack integration.
 
 In addition some _CloudFormation parameters_ are also mandatory. The build process will download docker images from dockerhub. AWS is kind of banned in dockerhub due to high traffic. So, to overcome this issue, you can pass concrete dockerhub credentials, so the build process can log in Dockerhub successfully.
 

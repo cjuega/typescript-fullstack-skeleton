@@ -12,6 +12,9 @@ import { CfnConnection } from 'aws-cdk-lib/aws-codestarconnections';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
+import { Topic } from 'aws-cdk-lib/aws-sns';
+import { SlackChannelConfiguration } from 'aws-cdk-lib/aws-chatbot';
+import { NotificationRule } from 'aws-cdk-lib/aws-codestarnotifications';
 
 const SWAGGER_UI_DOCS_SERVICE_NAME = 'swagger-ui-docs';
 
@@ -23,6 +26,8 @@ export default class CICDStack extends Stack {
     private readonly services: string[];
 
     private readonly hasDocsService: boolean;
+
+    private readonly pipeline: Pipeline;
 
     private readonly bucketCache: Bucket;
 
@@ -42,7 +47,9 @@ export default class CICDStack extends Stack {
             autoDeleteObjects: true
         });
 
-        this.buildCICDPipeline(this.buildDockerhubSecret());
+        this.pipeline = this.buildCICDPipeline(this.buildDockerhubSecret());
+
+        this.buildNotificationsFlow();
     }
 
     private buildDockerhubSecret(): Secret {
@@ -62,12 +69,11 @@ export default class CICDStack extends Stack {
         });
     }
 
-    private buildCICDPipeline(dockerSecret: Secret) {
+    private buildCICDPipeline(dockerSecret: Secret): Pipeline {
         const [sourceAction, sourceOutput] = this.buildSourceAction(),
             testAction = this.buildTestAction(sourceOutput, dockerSecret);
 
-        // eslint-disable-next-line no-new
-        new Pipeline(this, 'Pipeline', {
+        return new Pipeline(this, 'Pipeline', {
             crossAccountKeys: false,
             restartExecutionOnUpdate: true,
             stages: [
@@ -398,5 +404,33 @@ export default class CICDStack extends Stack {
         );
 
         return statements;
+    }
+
+    private buildNotificationsFlow() {
+        const topic = new Topic(this, 'CICDNotificationsTopic'),
+            rule = new NotificationRule(this, 'NotificationRule', {
+                source: this.pipeline,
+                events: [
+                    'codepipeline-pipeline-pipeline-execution-started',
+                    'codepipeline-pipeline-pipeline-execution-failed',
+                    'codepipeline-pipeline-pipeline-execution-succeeded'
+                ],
+                targets: [topic]
+            });
+
+        // eslint-disable-next-line one-var
+        const workspaceId = this.node.tryGetContext('slackWorkspaceId'),
+            channelId = this.node.tryGetContext('slackChannelId'),
+            channelName = this.node.tryGetContext('slackChannelName');
+
+        if (workspaceId && channelId && channelName) {
+            const slack = new SlackChannelConfiguration(this, 'CICDSlackChannel', {
+                slackChannelConfigurationName: channelName,
+                slackWorkspaceId: workspaceId,
+                slackChannelId: channelId
+            });
+
+            rule.addTarget(slack);
+        }
     }
 }

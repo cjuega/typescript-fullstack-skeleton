@@ -19,6 +19,35 @@ Object {
     },
   },
   "Resources": Object {
+    "CICDNotificationsTopic926B3CE2": Object {
+      "Type": "AWS::SNS::Topic",
+    },
+    "CICDNotificationsTopicPolicyCE4318E1": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sns:Publish",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "codestar-notifications.amazonaws.com",
+              },
+              "Resource": Object {
+                "Ref": "CICDNotificationsTopic926B3CE2",
+              },
+              "Sid": "0",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Topics": Array [
+          Object {
+            "Ref": "CICDNotificationsTopic926B3CE2",
+          },
+        ],
+      },
+      "Type": "AWS::SNS::TopicPolicy",
+    },
     "CacheBucket41D9D0B0": Object {
       "DeletionPolicy": "Delete",
       "Properties": Object {
@@ -189,6 +218,49 @@ Object {
       },
       "Type": "AWS::SecretsManager::Secret",
       "UpdateReplacePolicy": "Delete",
+    },
+    "NotificationRule44229486": Object {
+      "Properties": Object {
+        "DetailType": "FULL",
+        "EventTypeIds": Array [
+          "codepipeline-pipeline-pipeline-execution-started",
+          "codepipeline-pipeline-pipeline-execution-failed",
+          "codepipeline-pipeline-pipeline-execution-succeeded",
+        ],
+        "Name": "MyTestCICDStackNotificationRule75E91D26",
+        "Resource": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":codepipeline:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "PipelineC660917D",
+              },
+            ],
+          ],
+        },
+        "Targets": Array [
+          Object {
+            "TargetAddress": Object {
+              "Ref": "CICDNotificationsTopic926B3CE2",
+            },
+            "TargetType": "SNS",
+          },
+        ],
+      },
+      "Type": "AWS::CodeStarNotifications::NotificationRule",
     },
     "PipelineArtifactsBucket22248F97": Object {
       "DeletionPolicy": "Retain",

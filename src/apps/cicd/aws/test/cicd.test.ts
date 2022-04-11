@@ -54,6 +54,56 @@ describe('cicdStack', () => {
         template.hasResourceProperties('AWS::CodePipeline::Pipeline', {});
     });
 
+    // eslint-disable-next-line jest/prefer-expect-assertions,jest/expect-expect
+    it('should create an SNS notification topic', () => {
+        const app = new App({
+                context: {
+                    provider: 'GitHub',
+                    repository: 'cjuega/typescript-fullstack-skeleton#master',
+                    services: 'swagger-ui-docs,example-context'
+                }
+            }),
+            stack = new CICDStack(app, 'MyTestCICDStack'),
+            template = Template.fromStack(stack);
+
+        template.hasResourceProperties('AWS::SNS::Topic', {});
+        template.hasResourceProperties('AWS::CodeStarNotifications::NotificationRule', {
+            DetailType: 'FULL',
+            EventTypeIds: [
+                'codepipeline-pipeline-pipeline-execution-started',
+                'codepipeline-pipeline-pipeline-execution-failed',
+                'codepipeline-pipeline-pipeline-execution-succeeded'
+            ],
+            Targets: [
+                {
+                    TargetType: 'SNS'
+                }
+            ]
+        });
+    });
+
+    // eslint-disable-next-line jest/prefer-expect-assertions,jest/expect-expect
+    it('should create an integration with Slack when slack context is given', () => {
+        const app = new App({
+                context: {
+                    provider: 'GitHub',
+                    repository: 'cjuega/typescript-fullstack-skeleton#master',
+                    services: 'swagger-ui-docs,example-context',
+                    slackWorkspaceId: 'WORKSPACEID',
+                    slackChannelId: 'CHANNELID',
+                    slackChannelName: 'CI/CD notifications'
+                }
+            }),
+            stack = new CICDStack(app, 'MyTestCICDStack'),
+            template = Template.fromStack(stack);
+
+        template.hasResourceProperties('AWS::Chatbot::SlackChannelConfiguration', {
+            ConfigurationName: 'CI/CD notifications',
+            SlackWorkspaceId: 'WORKSPACEID',
+            SlackChannelId: 'CHANNELID'
+        });
+    });
+
     it('snapshot testing', () => {
         expect.hasAssertions();
 
