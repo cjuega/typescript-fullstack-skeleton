@@ -22,5 +22,5 @@
             "statements": 95
         }
     },
-    "testMatch": ["<rootDir>/src/**/*.test.ts"]
+    "testMatch": ["<rootDir>/src/**/*.test.ts", "<rootDir>/test/**/*.test.ts"]
 }
