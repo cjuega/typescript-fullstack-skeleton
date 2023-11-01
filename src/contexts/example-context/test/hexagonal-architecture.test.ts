@@ -1,5 +1,7 @@
 import 'tsarch/dist/jest';
 import { FileConditionBuilder, filesOfProject } from 'tsarch';
+import { readdir } from 'fs';
+import { promisify } from 'util';
 
 const TEST_TIMEOUT_IN_MILLISECONDS = 60 * 1000;
 
@@ -22,6 +24,35 @@ describe('hexagonal architecture', () => {
                 .matchingPattern('^(?!.*shared).*');
 
             await expect(rule).toPassAsync();
+        });
+    });
+
+    describe('other modules', () => {
+        const readdirAsync = promisify(readdir);
+        let modules: string[];
+
+        // eslint-disable-next-line jest/no-hooks
+        beforeAll(async () => {
+            modules = (await readdirAsync(`${__dirname}/../src`, { withFileTypes: true }))
+                .filter((d) => d.isDirectory())
+                .map(({ name }) => name)
+                .filter((m) => m !== 'shared');
+        });
+
+        it('should only depend on Commands, Queries or Events from other modules', async () => {
+            expect.hasAssertions();
+
+            for (const module of modules) {
+                const rule = files
+                    .inFolder(module)
+                    .shouldNot()
+                    .dependOnFiles()
+                    // All files in other modules (except shared) that don't finish with Command, Query or DomainEvent
+                    .matchingPattern(`^(?!.*\\/(${module}|shared)\\/.*)(?!.+(Command|Query|DomainEvent)\\.ts$).*$`);
+
+                // eslint-disable-next-line no-await-in-loop
+                await expect(rule).toPassAsync();
+            }
         });
     });
 
