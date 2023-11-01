@@ -28,5 +28,12 @@
         "!Select sequence",
         "!Split",
         "!Split sequence"
+    ],
+    "conventionalCommits.scopes": [
+        "@context/shared",
+        "@context/example",
+        "@app/aws-cicd",
+        "@app/swagger-ui-docs",
+        "@app/serverless"
     ]
 }
