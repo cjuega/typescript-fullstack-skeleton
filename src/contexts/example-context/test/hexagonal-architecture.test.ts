@@ -11,6 +11,20 @@ describe('hexagonal architecture', () => {
         files = filesOfProject(`${__dirname}/../tsconfig.json`);
     });
 
+    describe('shared module', () => {
+        it('shouldn\'t depend on any other module', async () => {
+            expect.hasAssertions();
+
+            const rule = files
+                .inFolder('shared')
+                .shouldNot()
+                .dependOnFiles()
+                .matchingPattern('^(?!.*shared).*');
+
+            await expect(rule).toPassAsync();
+        });
+    });
+
     it('domain code shouldn\'t depend on application code', async () => {
         expect.hasAssertions();
 
