@@ -1,6 +1,6 @@
 import DynamoDB from 'aws-sdk/clients/dynamodb';
 import { Nullable } from '@src/domain/nullable';
-import { Table, OneModelSchema } from 'dynamodb-onetable';
+import { Table, OneModel } from 'dynamodb-onetable';
 import DdbOneTableConfig from '@src/infrastructure/persistence/ddbOneTable/ddbOneTableConfig';
 import fglob from 'fast-glob';
 import { basename, extname } from 'path';
@@ -37,12 +37,13 @@ export default class DdbOneTableClientFactory {
                     isoDates: config.isoDates
                 }
             },
+            partial: true,
             logger: config.logger
         });
     }
 
-    private static async loadModels(config: DdbOneTableConfig): Promise<{ [key: string]: OneModelSchema }> {
-        const models: { [key: string]: OneModelSchema } = {},
+    private static async loadModels(config: DdbOneTableConfig): Promise<{ [key: string]: OneModel }> {
+        const models: { [key: string]: OneModel } = {},
             modelFiles = await fglob(config.models || '**/ddbOneTable/*.model.{ts,js}', { absolute: true });
 
         for (const filepath of modelFiles) {

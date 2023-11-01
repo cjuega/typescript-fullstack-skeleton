@@ -1,5 +1,5 @@
 import AggregateRoot from '@src/domain/aggregateRoot';
-import { Table, Model, OneModelSchema } from 'dynamodb-onetable';
+import { Table, Model, OneModel } from 'dynamodb-onetable';
 
 export default abstract class DdbOneTableRepository<T extends AggregateRoot> {
     private readonly table: Promise<Table>;
@@ -10,7 +10,7 @@ export default abstract class DdbOneTableRepository<T extends AggregateRoot> {
 
     protected abstract modelName(): string;
 
-    protected abstract loadModel(): OneModelSchema;
+    protected abstract loadModel(): OneModel;
 
     protected async getModel(): Promise<Model<any>> {
         const table = await this.table,

@@ -1,12 +1,12 @@
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 
 export default class MotherCreator {
     static uuid(): string {
-        return faker.datatype.uuid();
+        return faker.string.uuid();
     }
 
     static indexNumber(max: number): number {
-        return faker.datatype.number({ min: 0, max });
+        return faker.number.int({ min: 0, max });
     }
 
     static words(): string {
@@ -18,11 +18,11 @@ export default class MotherCreator {
     }
 
     static positiveNumber(max?: number): number {
-        return faker.datatype.number({ min: 1, max });
+        return faker.number.int({ min: 1, max });
     }
 
     static zeroOrPositiveNumber(max?: number): number {
-        return faker.datatype.number({ min: 0, max });
+        return faker.number.int({ min: 0, max });
     }
 
     static email(): string {
@@ -32,7 +32,7 @@ export default class MotherCreator {
     static spanishPhoneNumber(): string {
         const format = MotherCreator.boolean() ? '91#######' : '6########';
 
-        return faker.phone.phoneNumber(format);
+        return faker.phone.number(format);
     }
 
     static text(): string {

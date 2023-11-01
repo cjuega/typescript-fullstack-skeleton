@@ -2,7 +2,6 @@
   "packages": ["src/contexts/*", "src/apps/*/*"],
   "version": "independent",
   "npmClient": "yarn",
-  "useWorkspaces": true,
   "command": {
     "version": {
       "message": "chore(release): publish %s",

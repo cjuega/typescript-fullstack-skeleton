@@ -1,94 +1,99 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`docsWebsiteStack snapshot testing 1`] = `
-Object {
-  "Outputs": Object {
-    "CloudfrontDistributionId": Object {
+{
+  "Outputs": {
+    "CloudfrontDistributionId": {
       "Description": "CloudfrontDistributionId",
-      "Export": Object {
+      "Export": {
         "Name": "MyTestDocsWebsiteStack-CloudfrontDistributionId",
       },
-      "Value": Object {
+      "Value": {
         "Ref": "DocscloudfrontDistributionCFDistributionB983AB1C",
       },
     },
-    "Docscloudfrontdomain759C1280": Object {
+    "Docscloudfrontdomain759C1280": {
       "Description": "The domain of the website",
-      "Value": Object {
-        "Fn::GetAtt": Array [
+      "Value": {
+        "Fn::GetAtt": [
           "DocscloudfrontDistributionCFDistributionB983AB1C",
           "DomainName",
         ],
       },
     },
-    "bucketname": Object {
+    "bucketname": {
       "Description": "The name of the S3 bucket holding the website",
-      "Export": Object {
+      "Export": {
         "Name": "MyTestDocsWebsiteStack-BucketName",
       },
-      "Value": Object {
+      "Value": {
         "Ref": "DocsWebsiteBucket94CBDF04",
       },
     },
   },
-  "Parameters": Object {
-    "BootstrapVersion": Object {
+  "Parameters": {
+    "BootstrapVersion": {
       "Default": "/cdk-bootstrap/hnb659fds/version",
       "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
       "Type": "AWS::SSM::Parameter::Value<String>",
     },
   },
-  "Resources": Object {
-    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536": Object {
-      "DependsOn": Array [
+  "Resources": {
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536": {
+      "DependsOn": [
         "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
         "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
       ],
-      "Properties": Object {
-        "Code": Object {
-          "S3Bucket": Object {
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "f98b78092dcdd31f5e6d47489beb5f804d4835ef86a8085d0a2053cb9ae711da.zip",
+          "S3Key": "9eb41a5505d37607ac419321497a4f8c21cf0ee1f9b4a6b29aa04301aea5c7fd.zip",
+        },
+        "Environment": {
+          "Variables": {
+            "AWS_CA_BUNDLE": "/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem",
+          },
         },
         "Handler": "index.handler",
-        "Layers": Array [
-          Object {
+        "Layers": [
+          {
             "Ref": "DocsBucketDeploymentAwsCliLayerE348AAAA",
           },
         ],
-        "Role": Object {
-          "Fn::GetAtt": Array [
+        "Role": {
+          "Fn::GetAtt": [
             "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
             "Arn",
           ],
         },
-        "Runtime": "python3.7",
+        "Runtime": "python3.9",
         "Timeout": 900,
       },
       "Type": "AWS::Lambda::Function",
     },
-    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
-              "Principal": Object {
+              "Principal": {
                 "Service": "lambda.amazonaws.com",
               },
             },
           ],
           "Version": "2012-10-17",
         },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
               "",
-              Array [
+              [
                 "arn:",
-                Object {
+                {
                   "Ref": "AWS::Partition",
                 },
                 ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
@@ -99,43 +104,43 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
                 "s3:GetObject*",
                 "s3:GetBucket*",
                 "s3:List*",
               ],
               "Effect": "Allow",
-              "Resource": Array [
-                Object {
-                  "Fn::Join": Array [
+              "Resource": [
+                {
+                  "Fn::Join": [
                     "",
-                    Array [
+                    [
                       "arn:",
-                      Object {
+                      {
                         "Ref": "AWS::Partition",
                       },
                       ":s3:::",
-                      Object {
+                      {
                         "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
                       },
                     ],
                   ],
                 },
-                Object {
-                  "Fn::Join": Array [
+                {
+                  "Fn::Join": [
                     "",
-                    Array [
+                    [
                       "arn:",
-                      Object {
+                      {
                         "Ref": "AWS::Partition",
                       },
                       ":s3:::",
-                      Object {
+                      {
                         "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
                       },
                       "/*",
@@ -144,8 +149,8 @@ Object {
                 },
               ],
             },
-            Object {
-              "Action": Array [
+            {
+              "Action": [
                 "s3:GetObject*",
                 "s3:GetBucket*",
                 "s3:List*",
@@ -158,19 +163,19 @@ Object {
                 "s3:Abort*",
               ],
               "Effect": "Allow",
-              "Resource": Array [
-                Object {
-                  "Fn::GetAtt": Array [
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
                     "DocsWebsiteBucket94CBDF04",
                     "Arn",
                   ],
                 },
-                Object {
-                  "Fn::Join": Array [
+                {
+                  "Fn::Join": [
                     "",
-                    Array [
-                      Object {
-                        "Fn::GetAtt": Array [
+                    [
+                      {
+                        "Fn::GetAtt": [
                           "DocsWebsiteBucket94CBDF04",
                           "Arn",
                         ],
@@ -181,8 +186,8 @@ Object {
                 },
               ],
             },
-            Object {
-              "Action": Array [
+            {
+              "Action": [
                 "cloudfront:GetInvalidation",
                 "cloudfront:CreateInvalidation",
               ],
@@ -193,66 +198,66 @@ Object {
           "Version": "2012-10-17",
         },
         "PolicyName": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
-        "Roles": Array [
-          Object {
+        "Roles": [
+          {
             "Ref": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
           },
         ],
       },
       "Type": "AWS::IAM::Policy",
     },
-    "DocsBucketDeploymentAwsCliLayerE348AAAA": Object {
-      "Properties": Object {
-        "Content": Object {
-          "S3Bucket": Object {
+    "DocsBucketDeploymentAwsCliLayerE348AAAA": {
+      "Properties": {
+        "Content": {
+          "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "f331b32a8ad8983464106a58e420e7bc7e6341ba2ffb8ac9ad350d7e32845d95.zip",
+          "S3Key": "3fb6287214999ddeafa7cd0e3e58bc5144c8678bb720f3b5e45e8fd32f333eb3.zip",
         },
         "Description": "/opt/awscli/aws",
       },
       "Type": "AWS::Lambda::LayerVersion",
     },
-    "DocsBucketDeploymentCustomResource66338661": Object {
+    "DocsBucketDeploymentCustomResource66338661": {
       "DeletionPolicy": "Delete",
-      "Properties": Object {
-        "DestinationBucketName": Object {
+      "Properties": {
+        "DestinationBucketName": {
           "Ref": "DocsWebsiteBucket94CBDF04",
         },
-        "DistributionId": Object {
+        "DistributionId": {
           "Ref": "DocscloudfrontDistributionCFDistributionB983AB1C",
         },
-        "DistributionPaths": Array [
+        "DistributionPaths": [
           "/",
           "/index.html",
         ],
         "Prune": true,
-        "ServiceToken": Object {
-          "Fn::GetAtt": Array [
+        "ServiceToken": {
+          "Fn::GetAtt": [
             "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536",
             "Arn",
           ],
         },
-        "SourceBucketNames": Array [
-          Object {
+        "SourceBucketNames": [
+          {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
         ],
-        "SourceObjectKeys": Array [
+        "SourceObjectKeys": [
           "c524a0605a057c549a95c343b22597e9aeeef8eb798d9c7fea9e945bf7893bcb.zip",
         ],
       },
       "Type": "Custom::CDKBucketDeployment",
       "UpdateReplacePolicy": "Delete",
     },
-    "DocsOriginAccessIdentity5261F432": Object {
-      "Properties": Object {
-        "CloudFrontOriginAccessIdentityConfig": Object {
-          "Comment": Object {
-            "Fn::Join": Array [
+    "DocsOriginAccessIdentity5261F432": {
+      "Properties": {
+        "CloudFrontOriginAccessIdentityConfig": {
+          "Comment": {
+            "Fn::Join": [
               "",
-              Array [
-                Object {
+              [
+                {
                   "Ref": "DocsWebsiteBucket94CBDF04",
                 },
                 "-access-identity",
@@ -263,55 +268,55 @@ Object {
       },
       "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
     },
-    "DocsWebsiteBucket94CBDF04": Object {
+    "DocsWebsiteBucket94CBDF04": {
       "DeletionPolicy": "Delete",
-      "Properties": Object {
-        "BucketEncryption": Object {
-          "ServerSideEncryptionConfiguration": Array [
-            Object {
-              "ServerSideEncryptionByDefault": Object {
+      "Properties": {
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
                 "SSEAlgorithm": "AES256",
               },
             },
           ],
         },
-        "Tags": Array [
-          Object {
+        "Tags": [
+          {
             "Key": "aws-cdk:cr-owned:f428c172",
             "Value": "true",
           },
         ],
-        "WebsiteConfiguration": Object {
+        "WebsiteConfiguration": {
           "IndexDocument": "index.html",
         },
       },
       "Type": "AWS::S3::Bucket",
       "UpdateReplacePolicy": "Delete",
     },
-    "DocsWebsiteBucketPolicy71E3AF06": Object {
-      "Properties": Object {
-        "Bucket": Object {
+    "DocsWebsiteBucketPolicy71E3AF06": {
+      "Properties": {
+        "Bucket": {
           "Ref": "DocsWebsiteBucket94CBDF04",
         },
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
+        "PolicyDocument": {
+          "Statement": [
+            {
               "Action": "s3:GetObject",
               "Effect": "Allow",
-              "Principal": Object {
-                "CanonicalUser": Object {
-                  "Fn::GetAtt": Array [
+              "Principal": {
+                "CanonicalUser": {
+                  "Fn::GetAtt": [
                     "DocsOriginAccessIdentity5261F432",
                     "S3CanonicalUserId",
                   ],
                 },
               },
-              "Resource": Object {
-                "Fn::Join": Array [
+              "Resource": {
+                "Fn::Join": [
                   "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
+                  [
+                    {
+                      "Fn::GetAtt": [
                         "DocsWebsiteBucket94CBDF04",
                         "Arn",
                       ],
@@ -327,33 +332,33 @@ Object {
       },
       "Type": "AWS::S3::BucketPolicy",
     },
-    "DocscloudfrontDistributionCFDistributionB983AB1C": Object {
-      "Properties": Object {
-        "DistributionConfig": Object {
-          "CustomErrorResponses": Array [
-            Object {
+    "DocscloudfrontDistributionCFDistributionB983AB1C": {
+      "Properties": {
+        "DistributionConfig": {
+          "CustomErrorResponses": [
+            {
               "ErrorCode": 403,
               "ResponseCode": 200,
               "ResponsePagePath": "/index.html",
             },
-            Object {
+            {
               "ErrorCode": 404,
               "ResponseCode": 200,
               "ResponsePagePath": "/index.html",
             },
           ],
-          "DefaultCacheBehavior": Object {
-            "AllowedMethods": Array [
+          "DefaultCacheBehavior": {
+            "AllowedMethods": [
               "GET",
               "HEAD",
             ],
-            "CachedMethods": Array [
+            "CachedMethods": [
               "GET",
               "HEAD",
             ],
             "Compress": true,
-            "ForwardedValues": Object {
-              "Cookies": Object {
+            "ForwardedValues": {
+              "Cookies": {
                 "Forward": "none",
               },
               "QueryString": false,
@@ -365,24 +370,24 @@ Object {
           "Enabled": true,
           "HttpVersion": "http2",
           "IPV6Enabled": true,
-          "Origins": Array [
-            Object {
+          "Origins": [
+            {
               "ConnectionAttempts": 3,
               "ConnectionTimeout": 10,
-              "DomainName": Object {
-                "Fn::GetAtt": Array [
+              "DomainName": {
+                "Fn::GetAtt": [
                   "DocsWebsiteBucket94CBDF04",
                   "RegionalDomainName",
                 ],
               },
               "Id": "origin1",
-              "S3OriginConfig": Object {
-                "OriginAccessIdentity": Object {
-                  "Fn::Join": Array [
+              "S3OriginConfig": {
+                "OriginAccessIdentity": {
+                  "Fn::Join": [
                     "",
-                    Array [
+                    [
                       "origin-access-identity/cloudfront/",
-                      Object {
+                      {
                         "Ref": "DocsOriginAccessIdentity5261F432",
                       },
                     ],
@@ -392,7 +397,7 @@ Object {
             },
           ],
           "PriceClass": "PriceClass_100",
-          "ViewerCertificate": Object {
+          "ViewerCertificate": {
             "CloudFrontDefaultCertificate": true,
           },
         },
@@ -400,22 +405,22 @@ Object {
       "Type": "AWS::CloudFront::Distribution",
     },
   },
-  "Rules": Object {
-    "CheckBootstrapVersion": Object {
-      "Assertions": Array [
-        Object {
-          "Assert": Object {
-            "Fn::Not": Array [
-              Object {
-                "Fn::Contains": Array [
-                  Array [
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
                     "1",
                     "2",
                     "3",
                     "4",
                     "5",
                   ],
-                  Object {
+                  {
                     "Ref": "BootstrapVersion",
                   },
                 ],
