@@ -116,6 +116,7 @@ Check each package's README for more details regarding any configuration files t
 * `yarn deploy:all:aws <env>` deploys all services to a concrete AWS environment.
 * `yarn publish:docs:aws <env>` deploys the documentation of all services that have changed since the last git tag to a concrete AWS environment.
 * `yarn destroy:aws <env>` deletes all services in a concrete AWS environment.
+* `yarn clean:libs` deletes node_modules recursively.
 
 ### Make
 
