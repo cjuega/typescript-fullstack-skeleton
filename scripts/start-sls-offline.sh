@@ -21,7 +21,7 @@ PID=$!
 
 echo $PID > .tmp/.offline.pid
 
-while ! grep "Enter \"rp\" to replay the last request" $TMPFILE
+while ! grep "Server ready" $TMPFILE
 do
   sleep 1;
 done
