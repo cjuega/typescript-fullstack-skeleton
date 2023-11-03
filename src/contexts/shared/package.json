@@ -2,7 +2,6 @@
   "name": "@context/shared",
   "version": "1.0.1",
   "description": "Shared bounded context with common utilities",
-  "keywords": [],
   "author": "Carlos Juega",
   "license": "MIT",
   "files": [
@@ -25,7 +24,7 @@
     "test:unit": "NODE_ENV=test jest --verbose --passWithNoTests",
     "build": "yarn build:clean && yarn build:tsc",
     "build:clean": "rm -r dist; exit 0",
-    "build:tsc": "tsc && tscpaths -p tsconfig.json -s ./src -o ./dist"
+    "build:tsc": "tsc --build tsconfig.build.json && tscpaths -p tsconfig.build.json -s ./src -o ./dist"
   },
   "dependencies": {
     "@faker-js/faker": "^8.2.0",

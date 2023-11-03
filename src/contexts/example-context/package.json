@@ -25,7 +25,7 @@
     "test:integration": "NODE_ENV=test jest --config=jest.config.integration.js --verbose --runInBand --passWithNoTests",
     "build": "yarn build:clean && yarn build:tsc",
     "build:clean": "rm -r dist; exit 0",
-    "build:tsc": "tsc  && tscpaths -p tsconfig.json -s ./src -o ./dist"
+    "build:tsc": "tsc --build tsconfig.build.json && tscpaths -p tsconfig.build.json -s ./src -o ./dist"
   },
   "dependencies": {
     "@context/shared": "^1.0.1"
