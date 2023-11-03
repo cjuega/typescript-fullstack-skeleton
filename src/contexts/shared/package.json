@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@faker-js/faker": "^8.2.0",
-    "aws-sdk": "^2.1082.0",
+    "aws-sdk": "^2.1487.0",
     "aws-xray-sdk": "^3.3.4",
     "dynamodb-onetable": "^2.3.2",
     "fast-glob": "^3.2.11",
