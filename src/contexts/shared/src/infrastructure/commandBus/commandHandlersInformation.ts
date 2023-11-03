@@ -11,7 +11,7 @@ export default class CommandHandlersInformation {
 
     // eslint-disable-next-line class-methods-use-this
     private formatHandlers(commandHandlers: Array<CommandHandler<Command>>): Map<Command, CommandHandler<Command>> {
-        const handlersMap = new Map();
+        const handlersMap = new Map<Command, CommandHandler<Command>>();
 
         commandHandlers.forEach((commandHandler) => {
             handlersMap.set(commandHandler.subscribedTo(), commandHandler);

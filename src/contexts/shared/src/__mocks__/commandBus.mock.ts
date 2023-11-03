@@ -3,7 +3,7 @@ import Command from '@src/domain/commandBus/command';
 import { CommandBus } from '@src/domain/commandBus/commandBus';
 
 export default class CommandBusMock implements CommandBus {
-    private mockDispatch = jest.fn();
+    private mockDispatch = jest.fn<Promise<void | Error>, Command[], CommandBusMock>();
 
     async dispatch(command: Command): Promise<void> {
         await this.mockDispatch(command);

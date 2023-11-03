@@ -49,10 +49,10 @@ export default class DdbOneTableClientFactory {
         for (const filepath of modelFiles) {
             const modelFile = basename(filepath, extname(filepath)).split('.')[0],
                 modelName = modelFile.charAt(0).toLocaleUpperCase() + modelFile.slice(1),
-                // eslint-disable-next-line no-await-in-loop
+                // eslint-disable-next-line no-await-in-loop, @typescript-eslint/no-unsafe-assignment
                 { default: model } = await import(filepath);
 
-            models[modelName] = model;
+            models[modelName] = model as OneModel;
         }
 
         return models;

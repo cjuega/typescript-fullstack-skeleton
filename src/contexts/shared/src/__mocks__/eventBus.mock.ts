@@ -3,7 +3,7 @@ import { DomainEvent } from '@src/domain/eventBus/domainEvent';
 import { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
 
 export default class EventBusMock implements EventBus {
-    private mockPublish = jest.fn();
+    private mockPublish = jest.fn<Promise<void>, DomainEvent[][], EventBusMock>();
 
     async publish(events: DomainEvent[]): Promise<void> {
         await this.mockPublish(events);
@@ -41,6 +41,7 @@ export default class EventBusMock implements EventBus {
 
     assertPublishedEventsAre(events: DomainEvent[]): void {
         const { mock } = this.mockPublish,
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             callsArgument = mock.calls.map((c) => this.getDataFromDomainEvent(c[0][0]));
 
         expect(mock.calls).toHaveLength(events.length);

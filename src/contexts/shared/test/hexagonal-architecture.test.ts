@@ -11,7 +11,7 @@ describe('hexagonal architecture', () => {
         files = filesOfProject(`${__dirname}/../tsconfig.json`);
     });
 
-    it('domain code shouldn\'t depend on application code', async () => {
+    it('domain code shouldn\'t depend on application code', () => {
         expect.hasAssertions();
 
         const rule = files
@@ -20,10 +20,10 @@ describe('hexagonal architecture', () => {
             .dependOnFiles()
             .inFolder('application');
 
-        await expect(rule).toPassAsync();
+        expect(rule).toPassAsync();
     }, TEST_TIMEOUT_IN_MILLISECONDS);
 
-    it('domain code shouldn\'t depend on infrastructure code', async () => {
+    it('domain code shouldn\'t depend on infrastructure code', () => {
         expect.hasAssertions();
 
         const rule = files
@@ -32,10 +32,10 @@ describe('hexagonal architecture', () => {
             .dependOnFiles()
             .inFolder('infrastructure');
 
-        await expect(rule).toPassAsync();
+        expect(rule).toPassAsync();
     }, TEST_TIMEOUT_IN_MILLISECONDS);
 
-    it('application code shouldn\'t depend on infrastructure code', async () => {
+    it('application code shouldn\'t depend on infrastructure code', () => {
         expect.hasAssertions();
 
         const rule = files
@@ -44,10 +44,10 @@ describe('hexagonal architecture', () => {
             .dependOnFiles()
             .inFolder('infrastructure');
 
-        await expect(rule).toPassAsync();
+        expect(rule).toPassAsync();
     }, TEST_TIMEOUT_IN_MILLISECONDS);
 
-    it('production code shouldn\'t depend on test files (mocks and mothers)', async () => {
+    it('production code shouldn\'t depend on test files (mocks and mothers)', () => {
         expect.hasAssertions();
 
         const rule = files
@@ -57,10 +57,10 @@ describe('hexagonal architecture', () => {
             .dependOnFiles()
             .matchingPattern('\\.(mock|mother)\\.ts');
 
-        await expect(rule).toPassAsync();
+        expect(rule).toPassAsync();
     }, TEST_TIMEOUT_IN_MILLISECONDS);
 
-    it('there shouldn\'t be cycles in code references', async () => {
+    it('there shouldn\'t be cycles in code references', () => {
         expect.hasAssertions();
 
         const rule = files
@@ -68,6 +68,6 @@ describe('hexagonal architecture', () => {
             .should()
             .beFreeOfCycles();
 
-        await expect(rule).toPassAsync();
+        expect(rule).toPassAsync();
     }, TEST_TIMEOUT_IN_MILLISECONDS);
 });

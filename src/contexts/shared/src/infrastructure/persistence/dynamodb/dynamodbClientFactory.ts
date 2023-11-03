@@ -28,7 +28,7 @@ export default class DynamodbClientFactory {
         return client;
     }
 
-    private static extractClientConfig(config: DynamodbConfig): any {
+    private static extractClientConfig(config: DynamodbConfig): DynamoDB.Types.ClientConfiguration | undefined {
         const { region, endpoint, sslEnabled } = config,
             clientConfig = {};
 

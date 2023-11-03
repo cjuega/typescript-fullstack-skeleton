@@ -1,7 +1,7 @@
 import { DomainEvent } from '@src/domain/eventBus/domainEvent';
 import { Marshaller } from '@src/domain/eventBus/marshaller';
 
-type JsonApi = {
+export type JsonApi = {
     data: {
         id: string;
         type: string;

@@ -33,7 +33,7 @@ export default class IotClientFactory {
         return client;
     }
 
-    private static extractClientConfig(config: IotCoreConfig): any {
+    private static extractClientConfig(config: IotCoreConfig): Iot.ClientConfiguration | undefined {
         const { region, endpoint } = config,
             clientConfig = {};
 

@@ -1,7 +1,9 @@
-import DynamoDB from 'aws-sdk/clients/dynamodb';
+import DynamoDB, { DocumentClient } from 'aws-sdk/clients/dynamodb';
 import { captureAWSClient } from 'aws-xray-sdk';
 import { Nullable } from '@src/domain/nullable';
 import DynamodbConfig from '@src/infrastructure/persistence/dynamodb/dynamodbConfig';
+
+type DynamoDbClientOptions = (DocumentClient.DocumentClientOptions & DynamoDB.Types.ClientConfiguration) | undefined;
 
 export default class DynamodbDocClientFactory {
     private static clients: { [key: string]: DynamoDB.DocumentClient } = {};
@@ -24,16 +26,18 @@ export default class DynamodbDocClientFactory {
 
     private static create(config: DynamodbConfig): DynamoDB.DocumentClient {
         const awsConfig = this.extractClientConfig(config),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             client: any = new DynamoDB.DocumentClient(awsConfig);
 
         if (config.enableTracing) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             captureAWSClient(client.service);
         }
 
-        return client;
+        return client as DynamoDB.DocumentClient;
     }
 
-    private static extractClientConfig(config: DynamodbConfig): any {
+    private static extractClientConfig(config: DynamodbConfig): DynamoDbClientOptions {
         const { region, endpoint, sslEnabled } = config,
             clientConfig = {};
 

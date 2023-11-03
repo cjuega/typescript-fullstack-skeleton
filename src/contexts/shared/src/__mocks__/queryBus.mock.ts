@@ -4,28 +4,28 @@ import { Response } from '@src/domain/queryBus/response';
 import { when } from 'jest-when';
 
 export default class QueryBusMock implements QueryBus {
-    private mockAsk = jest.fn();
+    private mockAsk = jest.fn<Promise<Response>, Query[], QueryBusMock>();
 
     async ask<R extends Response>(query: Query): Promise<R> {
-        return this.mockAsk(query);
+        return this.mockAsk(query) as Promise<R>;
     }
 
     whenAskThenReturn(response: Response): void {
-        this.mockAsk.mockReturnValue(response);
+        this.mockAsk.mockResolvedValue(response);
     }
 
-    whenAskThenReturnBasedOn(map: Map<any, any>): void {
+    whenAskThenReturnBasedOn(map: Map<Response, Query>): void {
         map.forEach((response, query) => {
             if (response instanceof Error) {
                 when(this.mockAsk).calledWith(query).mockRejectedValue(response);
             } else {
-                when(this.mockAsk).calledWith(query).mockReturnValue(response);
+                when(this.mockAsk).calledWith(query).mockResolvedValue(response);
             }
         });
     }
 
     whenAskThenReturnValueOnce(response: Response): void {
-        this.mockAsk.mockReturnValueOnce(response);
+        this.mockAsk.mockResolvedValueOnce(response);
     }
 
     whenAskThenThrow(error: Error): void {

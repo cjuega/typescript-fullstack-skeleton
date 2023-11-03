@@ -12,14 +12,13 @@
         "@typescript-eslint"
     ],
     "rules": {
-        "strict": [2, "global"],
-        "no-var": 0,
-        "one-var": [2, {
+        "strict": ["error", "global"],
+        "one-var": ["error", {
             "initialized": "always",
             "uninitialized": "never"
         }],
-        "comma-dangle": [2, "never"],
-        "indent": [2, 4, {
+        "comma-dangle": ["error", "never"],
+        "indent": ["error", 4, {
             "CallExpression": {
                 "arguments": "first"
             },
@@ -27,10 +26,10 @@
                 "parameters": "first"
             }
         }],
-        "max-len": [2, {
+        "max-len": ["error", {
             "code": 140
         }],
-        "jest/require-hook": 0,
+        "jest/require-hook": "off",
         "no-restricted-syntax": [
             "error",
             {
@@ -45,20 +44,32 @@
                 "selector": "WithStatement",
                 "message": "`with` is disallowed in strict mode because it makes code impossible to predict and optimize."
             }
-        ]
+        ],
+        "@typescript-eslint/ban-types": ["error",
+            {
+                "types": {
+                    "Function": false
+                },
+                "extendDefaults": true
+            }
+        ],
+        "@typescript-eslint/no-explicit-any": "warn",
+        "@typescript-eslint/no-unused-vars": ["error", { "varsIgnorePattern": "_" }]
     },
     "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "project": "./tsconfig.json"
+    },
     "env": {},
     "overrides": [{
         "files": ["*.steps.ts"],
         "rules": {
-            "jest/no-done-callback": 0,
-            "jest/expect-expect": 0,
-            "jest/prefer-expect-assertions": 0,
-            "jest/require-top-level-describe": 0,
-            "jest/no-hooks": 0
+            "jest/no-done-callback": "off",
+            "jest/expect-expect": "off",
+            "jest/prefer-expect-assertions": "off",
+            "jest/require-top-level-describe": "off",
+            "jest/no-hooks": "off"
         }
-
     }],
     "settings": {
         "import/core-modules": ["terser-webpack-plugin"],

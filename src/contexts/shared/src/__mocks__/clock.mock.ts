@@ -2,7 +2,7 @@ import { Clock } from '@src/domain/clock';
 import Datetime from '@src/domain/datetime';
 
 export default class ClockMock implements Clock {
-    private mockNow = jest.fn();
+    private mockNow = jest.fn<Datetime, void[], ClockMock>();
 
     now(): Datetime {
         return this.mockNow();

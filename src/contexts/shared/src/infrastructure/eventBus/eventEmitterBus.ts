@@ -17,6 +17,7 @@ export default class EventEmitterBus extends EventEmitter {
 
     private registerSubscriber(subscriber: DomainEventSubscriber<DomainEvent>): void {
         subscriber.subscribedTo().forEach((event) => {
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             this.on(event.EVENT_NAME, subscriber.on.bind(subscriber));
         });
     }

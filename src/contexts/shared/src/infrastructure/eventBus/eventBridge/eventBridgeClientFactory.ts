@@ -33,7 +33,7 @@ export default class EventBridgeClientFactory {
         return client;
     }
 
-    private static extractClientConfig(config: EventBridgeConfig): any {
+    private static extractClientConfig(config: EventBridgeConfig): EventBridge.ClientConfiguration | undefined {
         const { region, endpoint } = config,
             clientConfig = {};
 

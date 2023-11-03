@@ -2,6 +2,7 @@ import { Nullable } from '@context/shared/domain/nullable';
 import DdbOneTableRepository from '@context/shared/infrastructure/persistence/ddbOneTable/ddbOneTableRepository';
 import ExampleAggregate from '@src/example-aggregate/domain/exampleAggregate';
 import ExampleAggregateId from '@src/example-aggregate/domain/exampleAggregateId';
+import { ExampleAggregatePrimitives } from '@src/example-aggregate/domain/exampleAggregatePrimitives';
 import { ExampleAggregateRepository } from '@src/example-aggregate/domain/exampleAggregateRepository';
 import ExampleAggregateModel from '@src/example-aggregate/infrastructure/persistence/ddbOneTable/exampleAggregate.model';
 
@@ -14,7 +15,7 @@ export default class DdbOneTableExampleAggregateRepository
     }
 
     // eslint-disable-next-line class-methods-use-this
-    protected loadModel(): any {
+    protected loadModel(): typeof ExampleAggregateModel {
         return ExampleAggregateModel;
     }
 
@@ -24,8 +25,8 @@ export default class DdbOneTableExampleAggregateRepository
 
     async search(id: ExampleAggregateId): Promise<Nullable<ExampleAggregate>> {
         const model = await this.getModel(),
-            primitives = await model.get({ id: id.value });
+            primitives = await model.get({ id: id.value }) as ExampleAggregatePrimitives;
 
-        return primitives ? ExampleAggregate.fromPrimitives(primitives as any) : null;
+        return primitives ? ExampleAggregate.fromPrimitives(primitives) : null;
     }
 }

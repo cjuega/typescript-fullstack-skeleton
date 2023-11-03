@@ -9,7 +9,7 @@ export default class IotCoreDomainEventsInformation {
     }
 
     private static formatBuilders(iotTopicBuilders: Array<IotTopicBuilder<DomainEvent>>): Map<DomainEvent, IotTopicBuilder<DomainEvent>> {
-        const buildersMap = new Map();
+        const buildersMap = new Map<DomainEvent, IotTopicBuilder<DomainEvent>>();
 
         iotTopicBuilders.forEach((iotTopicBuilder) => {
             buildersMap.set(iotTopicBuilder.iotTopicFor(), iotTopicBuilder);
@@ -19,7 +19,7 @@ export default class IotCoreDomainEventsInformation {
     }
 
     composeIotTopic(event: DomainEvent): string | undefined {
-        const builder = this.domainEventsMap.get(event.constructor as any);
+        const builder = this.domainEventsMap.get(event);
 
         if (!builder) {
             return undefined;

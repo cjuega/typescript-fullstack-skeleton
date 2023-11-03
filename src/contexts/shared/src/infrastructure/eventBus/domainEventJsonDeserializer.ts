@@ -1,5 +1,6 @@
 import { DomainEvent } from '@src/domain/eventBus/domainEvent';
 import DomainEventMapping from '@src/infrastructure/eventBus/domainEventMapping';
+import { JsonApi } from '@src/infrastructure/eventBus/domainEventJsonMarshaller';
 
 export default class DomainEventJsonDeserializer {
     private mapping: DomainEventMapping;
@@ -9,7 +10,7 @@ export default class DomainEventJsonDeserializer {
     }
 
     deserialize(event: string): DomainEvent {
-        const eventData = JSON.parse(event).data,
+        const eventData = (JSON.parse(event) as JsonApi).data,
             eventName = eventData.type,
             eventClass = this.mapping.for(eventName);
 

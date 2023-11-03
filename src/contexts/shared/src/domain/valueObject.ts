@@ -24,6 +24,7 @@ export default abstract class ValueObject<T extends Primitives> {
     }
 
     toString(): string {
+        // eslint-disable-next-line @typescript-eslint/no-base-to-string
         return this.value.toString();
     }
 }

@@ -23,8 +23,9 @@ class DomainEventSubscriberDummy implements DomainEventSubscriber<DummyEvent> {
         return [DummyEvent];
     }
 
-    on(domainEvent: DummyEvent): void {
+    on(domainEvent: DummyEvent): Promise<void> {
         console.log(domainEvent);
+        return Promise.resolve();
     }
 }
 
@@ -39,13 +40,14 @@ describe('inMemoryAsyncEventBus', () => {
 
         subscriber = new DomainEventSubscriberDummy();
 
-        subscriber.on = (): void => {
+        subscriber.on = (): Promise<void> => {
             expect(true).toBe(true);
             done();
+            return Promise.resolve();
         };
 
         eventBus = new InMemoryAsyncEventBus([subscriber]);
 
-        eventBus.publish([event]);
+        eventBus.publish([event]).catch(() => {});
     });
 });

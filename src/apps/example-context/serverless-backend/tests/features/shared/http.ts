@@ -16,7 +16,7 @@ async function iSendAGetRequest(route: string): Promise<void> {
 async function iSendAPutRequest(route: string, body: string): Promise<void> {
     req = request(serverUrl).put(route);
 
-    response = await req.send(JSON.parse(body));
+    response = await req.send(JSON.parse(body) as object);
 }
 
 function extractPathParams(url: string, docPath: string): { [key: string]: string } {

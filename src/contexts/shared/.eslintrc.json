@@ -5,21 +5,20 @@
         "plugin:import/errors",
         "plugin:import/warnings",
         "plugin:import/typescript",
-        "plugin:@typescript-eslint/recommended"
+        "plugin:@typescript-eslint/recommended-type-checked"
     ],
     "plugins": [
         "jest",
         "@typescript-eslint"
     ],
     "rules": {
-        "strict": [2, "global"],
-        "no-var": 0,
-        "one-var": [2, {
+        "strict": ["error", "global"],
+        "one-var": ["error", {
             "initialized": "always",
             "uninitialized": "never"
         }],
-        "comma-dangle": [2, "never"],
-        "indent": [2, 4, {
+        "comma-dangle": ["error", "never"],
+        "indent": ["error", 4, {
             "CallExpression": {
                 "arguments": "first"
             },
@@ -27,10 +26,10 @@
                 "parameters": "first"
             }
         }],
-        "max-len": [2, {
+        "max-len": ["error", {
             "code": 140
         }],
-        "jest/require-hook": 0,
+        "jest/require-hook": "off",
         "no-restricted-syntax": [
             "error",
             {
@@ -45,22 +44,35 @@
                 "selector": "WithStatement",
                 "message": "`with` is disallowed in strict mode because it makes code impossible to predict and optimize."
             }
-        ]
+        ],
+        "no-empty-function": "off",
+        "@typescript-eslint/ban-types": ["error",
+            {
+                "types": {
+                    "Function": false
+                },
+                "extendDefaults": true
+            }
+        ],
+        "@typescript-eslint/no-explicit-any": "warn"
     },
     "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "project": "./tsconfig.eslint.json"
+    },
     "env": {},
     "overrides": [{
             "files": ["*.test.ts"],
             "rules": {
-                "jest/no-mocks-import": 0,
-                "jest/prefer-expect-resolves": 0,
-                "jest/require-hook": 2
+                "jest/no-mocks-import": "off",
+                "jest/prefer-expect-resolves": "off",
+                "jest/require-hook": "error"
             }
         },
         {
             "files": ["*.mock.ts"],
             "rules": {
-                "jest/no-standalone-expect": 0
+                "jest/no-standalone-expect": "off"
             }
         }
     ],

@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/ban-types */
 import { DomainEvent } from '@src/domain/eventBus/domainEvent';
 import { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
 import { EventBus } from '@src/domain/eventBus/eventBus';
 import { EventBusMiddleware } from '@src/domain/eventBus/eventBusMiddleware';
 
 type Subscription = {
-    boundedCallback: Function;
-    originalCallback: Function;
+    boundedCallback: (event: DomainEvent) => Promise<void>;
+    originalCallback: (event: DomainEvent) => Promise<void>;
 };
 
 export default class InMemorySyncEventBus implements EventBus {
@@ -15,13 +14,13 @@ export default class InMemorySyncEventBus implements EventBus {
     private middlewares: EventBusMiddleware[];
 
     constructor(...middlewares: EventBusMiddleware[]) {
-        this.subscriptions = new Map();
+        this.subscriptions = new Map<string, Array<Subscription>>();
         this.middlewares = middlewares;
     }
 
     async publish(domainEvents: Array<DomainEvent>): Promise<void> {
         const events = await this.applyMiddlewares(domainEvents),
-            executions: any = [];
+            executions: Array<Promise<void>> = [];
 
         events.forEach((event) => {
             const subscribers = this.subscriptions.get(event.eventName);
@@ -50,13 +49,14 @@ export default class InMemorySyncEventBus implements EventBus {
         subscribers.map((subscriber) => subscriber
             .subscribedTo()
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            .map((event) => this.subscribe(event.EVENT_NAME!, subscriber)));
+            .map((event) => this.subscribe(event.EVENT_NAME, subscriber)));
     }
 
     private subscribe(topic: string, subscriber: DomainEventSubscriber<DomainEvent>): void {
         const currentSubscriptions = this.subscriptions.get(topic),
             subscription = {
                 boundedCallback: subscriber.on.bind(subscriber),
+                // eslint-disable-next-line @typescript-eslint/unbound-method, jest/unbound-method
                 originalCallback: subscriber.on
             };
 

@@ -5,7 +5,6 @@ import ConsoleLogger from '@context/shared/infrastructure/consoleLogger';
 
 const logger = new ConsoleLogger();
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export type ErrorMapping = { clazz: Function; errorCode: number };
 
 function handleCustomException(exceptions: ErrorMapping[], error: Error): Nullable<APIGatewayProxyResult> {

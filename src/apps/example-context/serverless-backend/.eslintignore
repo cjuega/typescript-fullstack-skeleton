@@ -8,3 +8,4 @@ scripts
 .webpack
 _warmup
 .vscode
+esbuild-plugins.js

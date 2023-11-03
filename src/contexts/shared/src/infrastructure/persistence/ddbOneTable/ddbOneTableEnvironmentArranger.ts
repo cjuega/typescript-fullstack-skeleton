@@ -1,5 +1,5 @@
 import EnvironmentArranger from '@src/infrastructure/arranger/environmentArranger';
-import { Table } from 'dynamodb-onetable';
+import { Table, OneProperties } from 'dynamodb-onetable';
 import { chunk } from 'lodash';
 
 export default class DdbOneTableEnvironmentArranger extends EnvironmentArranger {
@@ -42,7 +42,7 @@ export default class DdbOneTableEnvironmentArranger extends EnvironmentArranger 
         } while (next);
     }
 
-    private async deleteItems(items: any[]): Promise<void> {
+    private async deleteItems(items: OneProperties[]): Promise<void> {
         await Promise.all(
             chunk(items, DdbOneTableEnvironmentArranger.MAX_BATCH_WRITE_ITEMS).map(async (list) => {
                 const batch = {};

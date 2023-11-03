@@ -3,7 +3,6 @@ import { Template } from 'aws-cdk-lib/assertions';
 import CICDStack from '../lib/cicd-stack';
 
 describe('cicdStack', () => {
-    // eslint-disable-next-line jest/prefer-expect-assertions,jest/expect-expect
     it('should contain a DockerhubPassword parameter with noEcho flag enabled', () => {
         const app = new App({
                 context: {
@@ -20,7 +19,6 @@ describe('cicdStack', () => {
         });
     });
 
-    // eslint-disable-next-line jest/prefer-expect-assertions,jest/expect-expect
     it("should store dockerhub user and pass within SecretsManager and they aren't readable in the template", () => {
         const app = new App({
                 context: {
@@ -39,7 +37,6 @@ describe('cicdStack', () => {
         });
     });
 
-    // eslint-disable-next-line jest/prefer-expect-assertions,jest/expect-expect
     it('should codepipeline is created', () => {
         const app = new App({
                 context: {
@@ -54,7 +51,6 @@ describe('cicdStack', () => {
         template.hasResourceProperties('AWS::CodePipeline::Pipeline', {});
     });
 
-    // eslint-disable-next-line jest/prefer-expect-assertions,jest/expect-expect
     it('should create an SNS notification topic', () => {
         const app = new App({
                 context: {
@@ -82,7 +78,6 @@ describe('cicdStack', () => {
         });
     });
 
-    // eslint-disable-next-line jest/prefer-expect-assertions,jest/expect-expect
     it('should create an integration with Slack when slack context is given', () => {
         const app = new App({
                 context: {
