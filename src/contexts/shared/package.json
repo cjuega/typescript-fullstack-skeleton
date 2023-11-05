@@ -27,8 +27,12 @@
     "build:tsc": "tsc --build tsconfig.build.json && tscpaths -p tsconfig.build.json -s ./src -o ./dist"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.441.0",
+    "@aws-sdk/client-eventbridge": "^3.441.0",
+    "@aws-sdk/client-iot": "^3.441.0",
+    "@aws-sdk/client-iot-data-plane": "^3.441.0",
+    "@aws-sdk/lib-dynamodb": "^3.441.0",
     "@faker-js/faker": "^8.2.0",
-    "aws-sdk": "^2.1487.0",
     "aws-xray-sdk": "^3.3.4",
     "dynamodb-onetable": "^2.3.2",
     "fast-glob": "^3.2.11",

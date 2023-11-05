@@ -1,62 +1,38 @@
-import DynamoDB, { DocumentClient } from 'aws-sdk/clients/dynamodb';
-import { captureAWSClient } from 'aws-xray-sdk';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { Nullable } from '@src/domain/nullable';
 import DynamodbConfig from '@src/infrastructure/persistence/dynamodb/dynamodbConfig';
-
-type DynamoDbClientOptions = (DocumentClient.DocumentClientOptions & DynamoDB.Types.ClientConfiguration) | undefined;
+import { captureAWSv3Client } from 'aws-xray-sdk';
 
 export default class DynamodbDocClientFactory {
-    private static clients: { [key: string]: DynamoDB.DocumentClient } = {};
+    private static clients: Record<string, DynamoDBDocumentClient> = {};
 
-    static createClient(contextName: string, config: DynamodbConfig): DynamoDB.DocumentClient {
+    static createClient(contextName: string, ddbClient: DynamoDBClient, config: DynamodbConfig): DynamoDBDocumentClient {
         let client = DynamodbDocClientFactory.getClient(contextName);
 
         if (!client) {
-            client = DynamodbDocClientFactory.create(config);
-
+            client = DynamodbDocClientFactory.create(ddbClient, config);
             DynamodbDocClientFactory.registerClient(client, contextName);
         }
 
         return client;
     }
 
-    private static getClient(contextName: string): Nullable<DynamoDB.DocumentClient> {
-        return DynamodbDocClientFactory.clients[contextName];
+    private static getClient(contextName: string): Nullable<DynamoDBDocumentClient> {
+        return DynamodbDocClientFactory.clients[contextName] || null;
     }
 
-    private static create(config: DynamodbConfig): DynamoDB.DocumentClient {
-        const awsConfig = this.extractClientConfig(config),
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            client: any = new DynamoDB.DocumentClient(awsConfig);
+    private static create(ddbClient: DynamoDBClient, config: DynamodbConfig): DynamoDBDocumentClient {
+        const client = DynamoDBDocumentClient.from(ddbClient);
 
         if (config.enableTracing) {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            captureAWSClient(client.service);
+            captureAWSv3Client(client);
         }
 
-        return client as DynamoDB.DocumentClient;
+        return client;
     }
 
-    private static extractClientConfig(config: DynamodbConfig): DynamoDbClientOptions {
-        const { region, endpoint, sslEnabled } = config,
-            clientConfig = {};
-
-        if (region) {
-            Object.assign(clientConfig, { region });
-        }
-
-        if (endpoint) {
-            Object.assign(clientConfig, { endpoint });
-        }
-
-        if (sslEnabled !== undefined) {
-            Object.assign(clientConfig, { sslEnabled });
-        }
-
-        return Object.keys(clientConfig).length > 0 ? clientConfig : undefined;
-    }
-
-    private static registerClient(client: DynamoDB.DocumentClient, contextName: string): void {
+    private static registerClient(client: DynamoDBDocumentClient, contextName: string): void {
         DynamodbDocClientFactory.clients[contextName] = client;
     }
 }

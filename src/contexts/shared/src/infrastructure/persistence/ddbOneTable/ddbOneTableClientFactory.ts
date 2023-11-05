@@ -1,14 +1,15 @@
-import DynamoDB from 'aws-sdk/clients/dynamodb';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { Nullable } from '@src/domain/nullable';
 import { Table, OneModel } from 'dynamodb-onetable';
+import Dynamo from 'dynamodb-onetable/Dynamo';
 import DdbOneTableConfig from '@src/infrastructure/persistence/ddbOneTable/ddbOneTableConfig';
 import fglob from 'fast-glob';
 import { basename, extname } from 'path';
 
 export default class DdbOneTableClientFactory {
-    private static clients: { [key: string]: Table } = {};
+    private static clients: Record<string, Table> = {};
 
-    static async createClient(contextName: string, ddbClient: DynamoDB.DocumentClient, config: DdbOneTableConfig): Promise<Table> {
+    static async createClient(contextName: string, ddbClient: DynamoDBClient, config: DdbOneTableConfig): Promise<Table> {
         let client = DdbOneTableClientFactory.getClient(contextName);
 
         if (!client) {
@@ -24,10 +25,10 @@ export default class DdbOneTableClientFactory {
         return DdbOneTableClientFactory.clients[contextName];
     }
 
-    private static async create(ddbClient: DynamoDB.DocumentClient, config: DdbOneTableConfig): Promise<Table> {
+    private static async create(ddbClient: DynamoDBClient, config: DdbOneTableConfig): Promise<Table> {
         return new Table({
             name: config.tableName,
-            client: ddbClient,
+            client: new Dynamo({ client: ddbClient }),
             schema: {
                 format: 'onetable:1.1.0',
                 version: '0.0.1',

@@ -33,7 +33,7 @@ export default class DdbOneTableEnvironmentArranger extends EnvironmentArranger 
 
         do {
             // eslint-disable-next-line no-await-in-loop
-            const response = await (await this.table).scanItems();
+            const response = await (await this.table).scanItems(undefined, { parse: true, hidden: true });
 
             // eslint-disable-next-line no-await-in-loop
             await this.deleteItems(response);

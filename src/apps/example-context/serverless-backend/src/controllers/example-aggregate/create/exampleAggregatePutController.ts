@@ -7,7 +7,7 @@ import cors from '@middy/http-cors';
 import handleError from '@src/controllers/handleError';
 import ConsoleLogger from '@context/shared/infrastructure/consoleLogger';
 import CurrentTimeClock from '@context/shared/infrastructure/currentTimeClock';
-import DynamodbDocClientFactory from '@context/shared/infrastructure/persistence/dynamodb/dynamodbDocClientFactory';
+import DynamodbClientFactory from '@context/shared/infrastructure/persistence/dynamodb/dynamodbClientFactory';
 import DynamodbConfigFactory from '@src/config/infrastructure/persistence/dynamodb/dynamodbConfigFactory';
 import DdbOneTableClientFactory from '@context/shared/infrastructure/persistence/ddbOneTable/ddbOneTableClientFactory';
 import DdbOneTableConfigFactory from '@src/config/infrastructure/persistence/ddbOneTable/ddbOneTableConfigFactory';
@@ -28,7 +28,7 @@ const logger = new ConsoleLogger(),
     CONTEXT_NAME = 'example-context',
     table = DdbOneTableClientFactory.createClient(
         CONTEXT_NAME,
-        DynamodbDocClientFactory.createClient(CONTEXT_NAME, DynamodbConfigFactory.createConfig()),
+        DynamodbClientFactory.createClient(CONTEXT_NAME, DynamodbConfigFactory.createConfig()),
         DdbOneTableConfigFactory.createConfig()
     ),
     repository = new DdbOneTableExampleAggregateRepository(table),

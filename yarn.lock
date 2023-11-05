@@ -745,7 +745,7 @@
     tslib "^2.5.0"
     uuid "^8.3.2"
 
-"@aws-sdk/client-dynamodb@^3.405.0", "@aws-sdk/client-dynamodb@^3.410.0":
+"@aws-sdk/client-dynamodb@^3.405.0", "@aws-sdk/client-dynamodb@^3.410.0", "@aws-sdk/client-dynamodb@^3.441.0":
   version "3.441.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.441.0.tgz#7e2b177c4f1721ae46e062bba66acdba1664581b"
   integrity sha512-glwb6qg+QCTPKIZu/F3cPJr24fAg6H6w5PWSfbl4IaephWiFEEbX4KXDeXzseBK7Ng/kohLbgPA0/YXckYK3zg==
@@ -793,7 +793,7 @@
     tslib "^2.5.0"
     uuid "^8.3.2"
 
-"@aws-sdk/client-eventbridge@^3.315.0":
+"@aws-sdk/client-eventbridge@^3.315.0", "@aws-sdk/client-eventbridge@^3.441.0":
   version "3.441.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/client-eventbridge/-/client-eventbridge-3.441.0.tgz#f2b41e7f5ffa34895ad9832fa968f1c69b855166"
   integrity sha512-5VDGNks7vjzseaxQQIaXfJRS/WOGO00CfP6lTo7I/YlgGgzReIcpxZ43l+KHjbqR0qW6FwwLJHUzEpPxiFSt7g==
@@ -838,6 +838,98 @@
     "@smithy/util-retry" "^2.0.5"
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.5.0"
+
+"@aws-sdk/client-iot-data-plane@^3.441.0":
+  version "3.441.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-iot-data-plane/-/client-iot-data-plane-3.441.0.tgz#6b9db3df1a8f918b7013cc491b42d746da6aca66"
+  integrity sha512-pFaJwtObIX2H6hqzDQDy20vz3dFYlPdoETsEzx1VAIVH/SgSHy/ABsPENiwj7UGnMI1ySd5+c7bMBpdp0cmmMg==
+  dependencies:
+    "@aws-crypto/sha256-browser" "3.0.0"
+    "@aws-crypto/sha256-js" "3.0.0"
+    "@aws-sdk/client-sts" "3.441.0"
+    "@aws-sdk/core" "3.441.0"
+    "@aws-sdk/credential-provider-node" "3.441.0"
+    "@aws-sdk/middleware-host-header" "3.433.0"
+    "@aws-sdk/middleware-logger" "3.433.0"
+    "@aws-sdk/middleware-recursion-detection" "3.433.0"
+    "@aws-sdk/middleware-signing" "3.433.0"
+    "@aws-sdk/middleware-user-agent" "3.438.0"
+    "@aws-sdk/region-config-resolver" "3.433.0"
+    "@aws-sdk/types" "3.433.0"
+    "@aws-sdk/util-endpoints" "3.438.0"
+    "@aws-sdk/util-user-agent-browser" "3.433.0"
+    "@aws-sdk/util-user-agent-node" "3.437.0"
+    "@smithy/config-resolver" "^2.0.16"
+    "@smithy/fetch-http-handler" "^2.2.4"
+    "@smithy/hash-node" "^2.0.12"
+    "@smithy/invalid-dependency" "^2.0.12"
+    "@smithy/middleware-content-length" "^2.0.14"
+    "@smithy/middleware-endpoint" "^2.1.3"
+    "@smithy/middleware-retry" "^2.0.18"
+    "@smithy/middleware-serde" "^2.0.12"
+    "@smithy/middleware-stack" "^2.0.6"
+    "@smithy/node-config-provider" "^2.1.3"
+    "@smithy/node-http-handler" "^2.1.8"
+    "@smithy/protocol-http" "^3.0.8"
+    "@smithy/smithy-client" "^2.1.12"
+    "@smithy/types" "^2.4.0"
+    "@smithy/url-parser" "^2.0.12"
+    "@smithy/util-base64" "^2.0.0"
+    "@smithy/util-body-length-browser" "^2.0.0"
+    "@smithy/util-body-length-node" "^2.1.0"
+    "@smithy/util-defaults-mode-browser" "^2.0.16"
+    "@smithy/util-defaults-mode-node" "^2.0.21"
+    "@smithy/util-endpoints" "^1.0.2"
+    "@smithy/util-retry" "^2.0.5"
+    "@smithy/util-stream" "^2.0.17"
+    "@smithy/util-utf8" "^2.0.0"
+    tslib "^2.5.0"
+
+"@aws-sdk/client-iot@^3.441.0":
+  version "3.441.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-iot/-/client-iot-3.441.0.tgz#ada35ad166a3a37d42bf3a05f79252bdadf676d4"
+  integrity sha512-guShJ+Q5cCA5hGYbBB7FsSa+dqu9neYxGbAbSeN40eGMwcuGvySe/HwOY4+P0fCxaTUj7BITWxygkqNz4JB9rQ==
+  dependencies:
+    "@aws-crypto/sha256-browser" "3.0.0"
+    "@aws-crypto/sha256-js" "3.0.0"
+    "@aws-sdk/client-sts" "3.441.0"
+    "@aws-sdk/core" "3.441.0"
+    "@aws-sdk/credential-provider-node" "3.441.0"
+    "@aws-sdk/middleware-host-header" "3.433.0"
+    "@aws-sdk/middleware-logger" "3.433.0"
+    "@aws-sdk/middleware-recursion-detection" "3.433.0"
+    "@aws-sdk/middleware-signing" "3.433.0"
+    "@aws-sdk/middleware-user-agent" "3.438.0"
+    "@aws-sdk/region-config-resolver" "3.433.0"
+    "@aws-sdk/types" "3.433.0"
+    "@aws-sdk/util-endpoints" "3.438.0"
+    "@aws-sdk/util-user-agent-browser" "3.433.0"
+    "@aws-sdk/util-user-agent-node" "3.437.0"
+    "@smithy/config-resolver" "^2.0.16"
+    "@smithy/fetch-http-handler" "^2.2.4"
+    "@smithy/hash-node" "^2.0.12"
+    "@smithy/invalid-dependency" "^2.0.12"
+    "@smithy/middleware-content-length" "^2.0.14"
+    "@smithy/middleware-endpoint" "^2.1.3"
+    "@smithy/middleware-retry" "^2.0.18"
+    "@smithy/middleware-serde" "^2.0.12"
+    "@smithy/middleware-stack" "^2.0.6"
+    "@smithy/node-config-provider" "^2.1.3"
+    "@smithy/node-http-handler" "^2.1.8"
+    "@smithy/protocol-http" "^3.0.8"
+    "@smithy/smithy-client" "^2.1.12"
+    "@smithy/types" "^2.4.0"
+    "@smithy/url-parser" "^2.0.12"
+    "@smithy/util-base64" "^2.0.0"
+    "@smithy/util-body-length-browser" "^2.0.0"
+    "@smithy/util-body-length-node" "^2.1.0"
+    "@smithy/util-defaults-mode-browser" "^2.0.16"
+    "@smithy/util-defaults-mode-node" "^2.0.21"
+    "@smithy/util-endpoints" "^1.0.2"
+    "@smithy/util-retry" "^2.0.5"
+    "@smithy/util-utf8" "^2.0.0"
+    tslib "^2.5.0"
+    uuid "^8.3.2"
 
 "@aws-sdk/client-lambda@^3.423.0":
   version "3.441.0"
@@ -1069,6 +1161,14 @@
     mnemonist "0.38.3"
     tslib "^2.5.0"
 
+"@aws-sdk/lib-dynamodb@^3.441.0":
+  version "3.441.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.441.0.tgz#a9f2e2775e91da196a0ee65b39382b75aa12a702"
+  integrity sha512-f2LpEtRedqgIYPNq5ZJHnobiE2W9/V17GosYUVgXmu/mFVfimcHDW2BRrN+Lc7OuhQYCFm2j1L717RZ+UzimOQ==
+  dependencies:
+    "@aws-sdk/util-dynamodb" "3.441.0"
+    tslib "^2.5.0"
+
 "@aws-sdk/middleware-endpoint-discovery@3.433.0":
   version "3.433.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/middleware-endpoint-discovery/-/middleware-endpoint-discovery-3.433.0.tgz#e292b876c0d9b20992c108d95502f4fddab5a495"
@@ -1217,7 +1317,7 @@
     "@smithy/types" "^2.4.0"
     tslib "^2.5.0"
 
-"@aws-sdk/util-dynamodb@^3.405.0", "@aws-sdk/util-dynamodb@^3.410.0":
+"@aws-sdk/util-dynamodb@3.441.0", "@aws-sdk/util-dynamodb@^3.405.0", "@aws-sdk/util-dynamodb@^3.410.0":
   version "3.441.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.441.0.tgz#e4d6f8de918818333f49c258d2c046e23ef5820c"
   integrity sha512-v4KSeT2MyVYUuN1u+u9AVotuGj0vX8RNCBNntWu13NTpRF+NjnaiSUwtWAh0biEZGAtX9dKpV8o4NIGKSKN5lA==
@@ -5936,22 +6036,6 @@ aws-sdk@^2.1404.0:
   version "2.1486.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1486.0.tgz#66919ee00af3a13df22133539ed773179b963d6b"
   integrity sha512-YVGhKGWP5mHWIla6/a7MXwHyKrjcy2xIo65Z6rCvG2uxVa3NxGz4Wo7yNRqA8QGCS6buYz9MmRJLv2KOtkb7JQ==
-  dependencies:
-    buffer "4.9.2"
-    events "1.1.1"
-    ieee754 "1.1.13"
-    jmespath "0.16.0"
-    querystring "0.2.0"
-    sax "1.2.1"
-    url "0.10.3"
-    util "^0.12.4"
-    uuid "8.0.0"
-    xml2js "0.5.0"
-
-aws-sdk@^2.1487.0:
-  version "2.1487.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1487.0.tgz#b071de08f9cf64a359b28bfc293cf8b91aae9b75"
-  integrity sha512-EqDn+beJU0pfANLdg8mh7OER5TH2W6DgZ78WWWgt9fOwczhJQYkQhqevSlCV700vtHtatRjYPG+Q47f5aurZVQ==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"

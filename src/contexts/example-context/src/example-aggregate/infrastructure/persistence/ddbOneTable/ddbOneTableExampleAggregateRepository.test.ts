@@ -1,4 +1,4 @@
-import DynamodbDocClientFactory from '@context/shared/infrastructure/persistence/dynamodb/dynamodbDocClientFactory';
+import DynamodbClientFactory from '@context/shared/infrastructure/persistence/dynamodb/dynamodbClientFactory';
 import DdbOneTableClientFactory from '@context/shared/infrastructure/persistence/ddbOneTable/ddbOneTableClientFactory';
 import DdbOneTableEnvironmentArranger from '@context/shared/infrastructure/persistence/ddbOneTable/ddbOneTableEnvironmentArranger';
 // eslint-disable-next-line max-len
@@ -8,7 +8,7 @@ import ExampleAggregateIdMother from '@src/example-aggregate/domain/exampleAggre
 
 const table = DdbOneTableClientFactory.createClient(
         'integration-tests',
-        DynamodbDocClientFactory.createClient('integration-tests', {
+        DynamodbClientFactory.createClient('integration-tests', {
             region: 'localhost',
             endpoint: 'http://localhost:8000',
             sslEnabled: false

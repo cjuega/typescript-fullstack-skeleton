@@ -1,26 +1,26 @@
+import { EventBridgeClient, PutEventsCommand, PutEventsRequestEntry } from '@aws-sdk/client-eventbridge';
 import { DomainEvent } from '@src/domain/eventBus/domainEvent';
 import { EventBus } from '@src/domain/eventBus/eventBus';
 import { Marshaller } from '@src/domain/eventBus/marshaller';
-import EventBridge, { PutEventsRequestEntryList } from 'aws-sdk/clients/eventbridge';
 import EventBridgeConfig from '@src/infrastructure/eventBus/eventBridge/eventBridgeConfig';
 import { chunk } from 'lodash';
 
 export default class EventBridgeEventBus implements EventBus {
     protected static MAX_ENTRIES_IN_PUT_EVENTS = 10;
 
-    private readonly eventBridge: EventBridge;
+    private readonly eventBridge: EventBridgeClient;
 
     private readonly marshaller: Marshaller;
 
     private config: EventBridgeConfig;
 
-    constructor(eventBridge: EventBridge, marshaller: Marshaller, config: EventBridgeConfig) {
+    constructor(eventBridge: EventBridgeClient, marshaller: Marshaller, config: EventBridgeConfig) {
         this.eventBridge = eventBridge;
         this.marshaller = marshaller;
         this.config = config;
     }
 
-    protected client(): EventBridge {
+    protected client(): EventBridgeClient {
         return this.eventBridge;
     }
 
@@ -33,14 +33,14 @@ export default class EventBridgeEventBus implements EventBus {
     }
 
     private async publishToEventBridge(events: DomainEvent[]): Promise<void> {
-        const params = {
+        const command = new PutEventsCommand({
             Entries: this.mapDomainEventsToEventBridgeEvents(events)
-        };
+        });
 
-        await this.client().putEvents(params).promise();
+        await this.client().send(command);
     }
 
-    private mapDomainEventsToEventBridgeEvents(events: DomainEvent[]): PutEventsRequestEntryList {
+    private mapDomainEventsToEventBridgeEvents(events: DomainEvent[]): PutEventsRequestEntry[] {
         return events.map((e) => ({
             Time: e.occurredOn,
             Source: this.config.source,

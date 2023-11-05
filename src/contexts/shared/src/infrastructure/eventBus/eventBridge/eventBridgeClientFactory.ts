@@ -1,12 +1,12 @@
-import EventBridge from 'aws-sdk/clients/eventbridge';
+import { EventBridgeClient, EventBridgeClientConfig } from '@aws-sdk/client-eventbridge';
+import { captureAWSv3Client } from 'aws-xray-sdk';
 import { Nullable } from '@src/domain/nullable';
 import EventBridgeConfig from '@src/infrastructure/eventBus/eventBridge/eventBridgeConfig';
-import { captureAWSClient } from 'aws-xray-sdk';
 
 export default class EventBridgeClientFactory {
-    private static clients: { [key: string]: EventBridge } = {};
+    private static clients: Record<string, EventBridgeClient> = {};
 
-    static createClient(contextName: string, config: EventBridgeConfig): EventBridge {
+    static createClient(contextName: string, config: EventBridgeConfig): EventBridgeClient {
         let client = EventBridgeClientFactory.getClient(contextName);
 
         if (!client) {
@@ -18,22 +18,22 @@ export default class EventBridgeClientFactory {
         return client;
     }
 
-    private static getClient(contextName: string): Nullable<EventBridge> {
-        return EventBridgeClientFactory.clients[contextName];
+    private static getClient(contextName: string): Nullable<EventBridgeClient> {
+        return EventBridgeClientFactory.clients[contextName] || null;
     }
 
-    private static create(config: EventBridgeConfig): EventBridge {
+    private static create(config: EventBridgeConfig): EventBridgeClient {
         const awsConfig = this.extractClientConfig(config),
-            client = new EventBridge(awsConfig);
+            client = new EventBridgeClient(awsConfig);
 
         if (config.enableTracing) {
-            captureAWSClient(client);
+            captureAWSv3Client(client);
         }
 
         return client;
     }
 
-    private static extractClientConfig(config: EventBridgeConfig): EventBridge.ClientConfiguration | undefined {
+    private static extractClientConfig(config: EventBridgeConfig): EventBridgeClientConfig {
         const { region, endpoint } = config,
             clientConfig = {};
 
@@ -45,10 +45,10 @@ export default class EventBridgeClientFactory {
             Object.assign(clientConfig, { endpoint });
         }
 
-        return Object.keys(clientConfig).length > 0 ? clientConfig : undefined;
+        return Object.keys(clientConfig).length > 0 ? clientConfig : {};
     }
 
-    private static registerClient(client: EventBridge, contextName: string): void {
+    private static registerClient(client: EventBridgeClient, contextName: string): void {
         EventBridgeClientFactory.clients[contextName] = client;
     }
 }

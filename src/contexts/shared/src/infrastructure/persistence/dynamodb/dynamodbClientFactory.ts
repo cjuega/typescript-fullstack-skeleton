@@ -1,11 +1,12 @@
-import DynamoDB from 'aws-sdk/clients/dynamodb';
+import { DynamoDBClient, DynamoDBClientConfig } from '@aws-sdk/client-dynamodb';
+import { captureAWSv3Client } from 'aws-xray-sdk';
 import { Nullable } from '@src/domain/nullable';
 import DynamodbConfig from '@src/infrastructure/persistence/dynamodb/dynamodbConfig';
 
 export default class DynamodbClientFactory {
-    private static clients: { [key: string]: DynamoDB } = {};
+    private static clients: Record<string, DynamoDBClient> = {};
 
-    static createClient(contextName: string, config: DynamodbConfig): DynamoDB {
+    static createClient(contextName: string, config: DynamodbConfig): DynamoDBClient {
         let client = DynamodbClientFactory.getClient(contextName);
 
         if (!client) {
@@ -17,18 +18,22 @@ export default class DynamodbClientFactory {
         return client;
     }
 
-    private static getClient(contextName: string): Nullable<DynamoDB> {
+    private static getClient(contextName: string): Nullable<DynamoDBClient> {
         return DynamodbClientFactory.clients[contextName];
     }
 
-    private static create(config: DynamodbConfig): DynamoDB {
+    private static create(config: DynamodbConfig): DynamoDBClient {
         const awsConfig = this.extractClientConfig(config),
-            client = new DynamoDB(awsConfig);
+            client = new DynamoDBClient(awsConfig);
+
+        if (config.enableTracing) {
+            captureAWSv3Client(client);
+        }
 
         return client;
     }
 
-    private static extractClientConfig(config: DynamodbConfig): DynamoDB.Types.ClientConfiguration | undefined {
+    private static extractClientConfig(config: DynamodbConfig): DynamoDBClientConfig {
         const { region, endpoint, sslEnabled } = config,
             clientConfig = {};
 
@@ -41,13 +46,13 @@ export default class DynamodbClientFactory {
         }
 
         if (sslEnabled !== undefined) {
-            Object.assign(clientConfig, { sslEnabled });
+            Object.assign(clientConfig, { tls: sslEnabled });
         }
 
-        return Object.keys(clientConfig).length > 0 ? clientConfig : undefined;
+        return Object.keys(clientConfig).length > 0 ? clientConfig : {};
     }
 
-    private static registerClient(client: DynamoDB, contextName: string): void {
+    private static registerClient(client: DynamoDBClient, contextName: string): void {
         DynamodbClientFactory.clients[contextName] = client;
     }
 }

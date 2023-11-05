@@ -1,13 +1,13 @@
+import { DescribeEndpointCommand, IoTClient } from '@aws-sdk/client-iot';
+import { IoTDataPlaneClient, PublishCommand } from '@aws-sdk/client-iot-data-plane';
 import { DomainEvent } from '@src/domain/eventBus/domainEvent';
 import { EventBus } from '@src/domain/eventBus/eventBus';
 import { Marshaller } from '@src/domain/eventBus/marshaller';
-import Iot from 'aws-sdk/clients/iot';
-import IotData from 'aws-sdk/clients/iotdata';
 import IotCoreConfig from '@src/infrastructure/eventBus/iotCore/iotCoreConfig';
 import IotCoreDomainEventsInformation from '@src/infrastructure/eventBus/iotCore/iotCoreDomainEventsInformation';
 
 export default class IotCoreEventBus implements EventBus {
-    private readonly iot: Iot;
+    private readonly iot: IoTClient;
 
     private readonly eventsInformation: IotCoreDomainEventsInformation;
 
@@ -15,9 +15,9 @@ export default class IotCoreEventBus implements EventBus {
 
     private readonly config: IotCoreConfig;
 
-    private dataClient: IotData | undefined;
+    private dataClient: IoTDataPlaneClient | undefined;
 
-    constructor(iot: Iot, eventsInformation: IotCoreDomainEventsInformation, marshaller: Marshaller, config: IotCoreConfig) {
+    constructor(iot: IoTClient, eventsInformation: IotCoreDomainEventsInformation, marshaller: Marshaller, config: IotCoreConfig) {
         this.iot = iot;
         this.eventsInformation = eventsInformation;
         this.marshaller = marshaller;
@@ -35,23 +35,25 @@ export default class IotCoreEventBus implements EventBus {
             events
                 .filter((event) => this.getTopicFor(event))
                 .map((event) => {
-                    const params = {
+                    const command = new PublishCommand({
                         topic: this.getTopicFor(event)!,
                         qos: 0,
                         payload: JSON.stringify(this.marshaller.marshall(event))
-                    };
+                    });
 
-                    return client.publish(params).promise();
+                    return client.send(command);
                 })
         );
     }
 
-    private async client(): Promise<IotData> {
+    private async client(): Promise<IoTDataPlaneClient> {
         if (!this.dataClient) {
-            const params = { endpointType: 'iot:Data' },
-                { endpointAddress } = await this.iot.describeEndpoint(params).promise();
+            const command = new DescribeEndpointCommand({
+                    endpointType: 'iot:Data'
+                }),
+                { endpointAddress } = await this.iot.send(command);
 
-            this.dataClient = new IotData({ endpoint: endpointAddress });
+            this.dataClient = new IoTDataPlaneClient({ endpoint: endpointAddress });
         }
 
         return this.dataClient;
