@@ -64,6 +64,7 @@
     "convict": "^6.2.1",
     "convict-format-with-validator": "^6.2.0",
     "esbuild-plugin-copy": "^2.1.1",
+    "node-dependency-injection": "^3.1.0",
     "source-map-support": "^0.5.21"
   }
 }
