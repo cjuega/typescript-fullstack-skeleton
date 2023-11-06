@@ -43,6 +43,12 @@ const files = [`${__dirname}/default.json`],
             env: 'NODE_ENV',
             arg: 'stage'
         },
+        serviceName: {
+            format: String,
+            doc: 'The name of the service.',
+            default: 'example-context',
+            env: 'SERVICE_NAME'
+        },
         eventbridge: {
             region: {
                 doc: 'Optional AWS region to setup EventBridge client.',
