@@ -6,23 +6,14 @@ import {
     andTheResponseBodyIsEmpty,
     andTheRequestIsOpenAPIValid
 } from '@tests/features/shared/http';
-import DynamodbClientFactory from '@context/shared/infrastructure/persistence/dynamodb/dynamodbClientFactory';
-import DynamodbConfigFactory from '@src/config/infrastructure/persistence/dynamodb/dynamodbConfigFactory';
-import DdbOneTableClientFactory from '@context/shared/infrastructure/persistence/ddbOneTable/ddbOneTableClientFactory';
-import DdbOneTableConfigFactory from '@src/config/infrastructure/persistence/ddbOneTable/ddbOneTableConfigFactory';
-import DdbOneTableEnvironmentArranger from '@context/shared/infrastructure/persistence/ddbOneTable/ddbOneTableEnvironmentArranger';
+import EnvironmentArranger from '@context/shared/infrastructure/arranger/environmentArranger';
+import container from '@tests/config/dependency-injection';
 
 const feature = loadFeature(
         'tests/features/example-aggregate/create-example-aggregate.feature',
         isOffline ? { tagFilter: 'not @exclude-offline' } : undefined
     ),
-    CONTEXT_NAME = 'example-context',
-    table = DdbOneTableClientFactory.createClient(
-        CONTEXT_NAME,
-        DynamodbClientFactory.createClient(CONTEXT_NAME, DynamodbConfigFactory.createConfig()),
-        DdbOneTableConfigFactory.createConfig()
-    ),
-    environmentArranger = new DdbOneTableEnvironmentArranger(table);
+    environmentArranger: EnvironmentArranger = container.get('Tests.EnvironmentArranger');
 
 defineFeature(feature, (test) => {
     beforeEach(async () => {
