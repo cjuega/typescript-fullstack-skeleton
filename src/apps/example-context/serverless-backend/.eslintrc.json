@@ -76,6 +76,13 @@
             "rules": {
                 "max-len": "off"
             }
+        },{
+            "files": ["*Controller.ts"],
+            "rules": {
+                "import/prefer-default-export": "off",
+                "one-var": "off",
+                "max-len": "off"
+            }
         }
     ],
     "settings": {

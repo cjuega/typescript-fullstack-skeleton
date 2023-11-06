@@ -1,15 +1,17 @@
 // eslint-disable-next-line import/no-unresolved
 import { EventBridgeHandler } from 'aws-lambda';
 import 'source-map-support/register';
-import ConsoleLogger from '@context/shared/infrastructure/consoleLogger';
-import CurrentTimeClock from '@context/shared/infrastructure/currentTimeClock';
+import { Logger } from '@context/shared/domain/logger';
+import { Clock } from '@context/shared/domain/clock';
 import DomainEventJsonDeserializer from '@context/shared/infrastructure/eventBus/domainEventJsonDeserializer';
-import InMemorySyncEventBus from '@context/shared/infrastructure/eventBus/inMemorySyncEventBus';
+import { EventBus } from '@context/shared/domain/eventBus/eventBus';
+import container from '@src/config/dependency-injection';
+import registerSubscribers from '@src/subscribers/registerSubscribers';
 
-const logger = new ConsoleLogger(),
-    clock = new CurrentTimeClock(),
-    deserializer = new DomainEventJsonDeserializer(),
-    eventBus = new InMemorySyncEventBus();
+const logger: Logger = container.get('Shared.Logger'),
+    clock: Clock = container.get('Shared.Clock'),
+    deserializer: DomainEventJsonDeserializer = container.get('Shared.EventBus.DomainEventJsonDeserializer'),
+    eventBus: EventBus = registerSubscribers(container);
 
 // eslint-disable-next-line one-var,import/prefer-default-export
 export const on: EventBridgeHandler<string, Record<string, unknown>, void> = async (event) => {

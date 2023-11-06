@@ -3,10 +3,11 @@ import { APIGatewayProxyHandler } from 'aws-lambda';
 import 'source-map-support/register';
 import middy from '@middy/core';
 import cors from '@middy/http-cors';
-import ConsoleLogger from '@context/shared/infrastructure/consoleLogger';
+import { Logger } from '@context/shared/domain/logger';
+import container from '@src/config/dependency-injection';
 import { version } from '../../../../package.json';
 
-const logger = new ConsoleLogger(),
+const logger: Logger = container.get('Shared.Logger'),
     handler: APIGatewayProxyHandler = async (event) => {
         logger.debug(`REQUEST:: ${JSON.stringify(event, null, 2)}`);
 
@@ -16,5 +17,4 @@ const logger = new ConsoleLogger(),
         };
     };
 
-// eslint-disable-next-line import/prefer-default-export,one-var
 export const get = middy(handler).use(cors());
