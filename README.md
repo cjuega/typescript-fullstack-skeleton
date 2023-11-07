@@ -1,6 +1,7 @@
 # typescript-fullstack-skeleton
 
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
+![tests](https://github.com/cjuega/typescript-fullstack-skeleton/actions/workflows/ci.yml/badge.svg)
 
 Monorepo boilerplate for backend/frontend projects written in Typescript and following the Hexagonal Architecture and Domain-Driven Design.
 
