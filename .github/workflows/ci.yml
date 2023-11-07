@@ -5,6 +5,10 @@ on:
   pull_request:
     paths-ignore:
       - "**.md"
+env:
+  # Dummy values so aws clients don´t complain (integration tests are using a dockerized local dynamodb)
+  AWS_ACCESS_KEY_ID: key
+  AWS_SECRET_ACCESS_KEY: secret
 jobs:
   test:
     runs-on: ubuntu-latest
