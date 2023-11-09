@@ -80,6 +80,12 @@
             "rules": {
                 "no-template-curly-in-string": "off"
             }
+        },
+        {
+            "files": ["**/domain/*.ts"],
+            "rules": {
+                "no-underscore-dangle": "off"
+            }
         }
     ],
     "settings": {

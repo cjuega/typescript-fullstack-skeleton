@@ -5,18 +5,22 @@ import { ExampleAggregatePrimitives } from '@src/example-aggregate/domain/exampl
 import ExampleAggregateCreatedDomainEvent from '@src/example-aggregate/domain/exampleAggregateCreatedDomainEvent';
 
 export default class ExampleAggregate extends AggregateRoot {
-    readonly id: ExampleAggregateId;
+    private readonly _id: ExampleAggregateId;
 
-    readonly createdAt: Datetime;
+    private readonly createdAt: Datetime;
 
-    constructor(id: ExampleAggregateId, createdAt: Datetime) {
+    get id(): string {
+        return this._id.value;
+    }
+
+    constructor(id: string, createdAt: Datetime) {
         super();
 
-        this.id = id;
+        this._id = new ExampleAggregateId(id);
         this.createdAt = createdAt;
     }
 
-    static create(id: ExampleAggregateId, createdAt: Datetime): ExampleAggregate {
+    static create(id: string, createdAt: Datetime): ExampleAggregate {
         const aggregate = new ExampleAggregate(id, createdAt);
 
         aggregate.record(new ExampleAggregateCreatedDomainEvent(aggregate.toPrimitives()));
@@ -25,12 +29,12 @@ export default class ExampleAggregate extends AggregateRoot {
     }
 
     static fromPrimitives({ id, createdAt }: ExampleAggregatePrimitives): ExampleAggregate {
-        return new ExampleAggregate(new ExampleAggregateId(id), new Datetime(createdAt));
+        return new ExampleAggregate(id, new Datetime(createdAt));
     }
 
     toPrimitives(): ExampleAggregatePrimitives {
         return {
-            id: this.id.value,
+            id: this._id.value,
             createdAt: this.createdAt.value
         };
     }

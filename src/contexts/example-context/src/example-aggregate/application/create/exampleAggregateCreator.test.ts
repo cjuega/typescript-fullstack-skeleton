@@ -18,7 +18,7 @@ describe('exampleAggregateCreator', () => {
             eventBus = new EventBusMock(),
             handler = new CreateExampleAggregateCommandHandler(new ExampleAggregateCreator(clock, repository, eventBus)),
             exampleAggregate = ExampleAggregateMother.random(),
-            command = CreateExampleAggregateCommandMother.random({ id: exampleAggregate.id.value });
+            command = CreateExampleAggregateCommandMother.random({ id: exampleAggregate.id });
 
         clock.whenNowThenReturn(DatetimeMother.random());
         repository.whenSearchThenReturn(exampleAggregate);

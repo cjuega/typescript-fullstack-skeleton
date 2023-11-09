@@ -5,6 +5,7 @@ import DdbOneTableEnvironmentArranger from '@context/shared/infrastructure/persi
 import DdbOneTableExampleAggregateRepository from '@src/example-aggregate/infrastructure/persistence/ddbOneTable/ddbOneTableExampleAggregateRepository';
 import ExampleAggregateMother from '@src/example-aggregate/domain/exampleAggregate.mother';
 import ExampleAggregateIdMother from '@src/example-aggregate/domain/exampleAggregateId.mother';
+import ExampleAggregateId from '@src/example-aggregate/domain/exampleAggregateId';
 
 const table = DdbOneTableClientFactory.createClient(
         'integration-tests',
@@ -59,7 +60,7 @@ describe('ddbOneTableExampleAggregateRepository', () => {
 
             await repository.save(expected);
 
-            expect(await repository.search(expected.id)).toStrictEqual(expected);
+            expect(await repository.search(new ExampleAggregateId(expected.id))).toStrictEqual(expected);
         });
     });
 });
