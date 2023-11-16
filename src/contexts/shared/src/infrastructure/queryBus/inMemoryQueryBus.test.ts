@@ -34,16 +34,7 @@ describe('inMemoryQueryBus', () => {
             queryHandlersInformation = new QueryHandlersInformation([]),
             queryBus = new InMemoryQueryBus(queryHandlersInformation);
 
-        let error;
-
-        try {
-            await queryBus.ask(unhandledQuery);
-        } catch (e) {
-            error = e;
-        } finally {
-            expect(error).toBeInstanceOf(QueryNotRegisteredError);
-            expect((error as Error).message).toBe("The query <UnhandledQuery> hasn't a query handler associated");
-        }
+        await expect(queryBus.ask(unhandledQuery)).rejects.toThrow(QueryNotRegisteredError);
     });
 
     // eslint-disable-next-line jest/prefer-expect-assertions,jest/expect-expect

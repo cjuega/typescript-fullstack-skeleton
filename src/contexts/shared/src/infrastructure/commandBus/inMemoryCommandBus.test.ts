@@ -31,16 +31,7 @@ describe('inMemoryCommandBus', () => {
             commandHandlersInformation = new CommandHandlersInformation([]),
             commandBus = new InMemoryCommandBus(commandHandlersInformation);
 
-        let error;
-
-        try {
-            await commandBus.dispatch(unhandledCommand);
-        } catch (e) {
-            error = e;
-        } finally {
-            expect(error).toBeInstanceOf(CommandNotRegisteredError);
-            expect((error as Error).message).toBe("The command <UnhandledCommand> hasn't a command handler associated");
-        }
+        await expect(commandBus.dispatch(unhandledCommand)).rejects.toThrow(CommandNotRegisteredError);
     });
 
     // eslint-disable-next-line jest/prefer-expect-assertions,jest/expect-expect

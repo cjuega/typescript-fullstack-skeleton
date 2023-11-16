@@ -23,15 +23,7 @@ describe('exampleAggregateCreator', () => {
         clock.whenNowThenReturn(createdAt);
         repository.whenSearchThenReturn(exampleAggregate);
 
-        let error;
-
-        try {
-            await handler.handle(command);
-        } catch (e) {
-            error = e;
-        } finally {
-            expect(error).toBeInstanceOf(ExampleAggregateAlreadyExists);
-        }
+        await expect(handler.handle(command)).rejects.toThrow(ExampleAggregateAlreadyExists);
     });
 
     it('should create a valid exampleAggregate', async () => {
