@@ -1,10 +1,10 @@
-import { ExampleAggregatePrimitives } from '@src/example-aggregate/domain/exampleAggregatePrimitives';
 import ExampleAggregateCreatedDomainEvent from '@src/example-aggregate/domain/exampleAggregateCreatedDomainEvent';
 import ExampleAggregate from '@src/example-aggregate/domain/exampleAggregate';
+import { Primitives } from '@context/shared/domain/primitives';
 
 export default class ExampleAggregateCreatedDomainEventMother {
     static create(
-        params: ExampleAggregatePrimitives & {
+        params: Primitives<ExampleAggregate> & {
             eventId?: string;
             occurredOn?: Date;
         }

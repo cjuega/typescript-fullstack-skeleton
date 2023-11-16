@@ -1,13 +1,10 @@
 import Command from '@context/shared/domain/commandBus/command';
-
-export type CreateExampleAggregateCommandParams = {
-    id: string;
-};
+import { Primitives } from '@context/shared/domain/primitives';
 
 export default class CreateExampleAggregateCommand extends Command {
     readonly id: string;
 
-    constructor({ id }: CreateExampleAggregateCommandParams) {
+    constructor({ id }: Primitives<CreateExampleAggregateCommand>) {
         super();
 
         this.id = id;

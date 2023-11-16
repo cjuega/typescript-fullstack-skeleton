@@ -1,7 +1,6 @@
 import InvalidArgument from '@src/domain/invalidArgument';
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-type Primitives = String | string | number | Boolean | boolean | Date;
+type Primitives = string | number | boolean | Date;
 
 export default abstract class ValueObject<T extends Primitives> {
     readonly value: T;
@@ -24,7 +23,6 @@ export default abstract class ValueObject<T extends Primitives> {
     }
 
     toString(): string {
-        // eslint-disable-next-line @typescript-eslint/no-base-to-string
         return this.value.toString();
     }
 }

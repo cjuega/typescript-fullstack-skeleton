@@ -86,6 +86,12 @@
             "rules": {
                 "no-underscore-dangle": "off"
             }
+        },
+        {
+            "files": ["**/domain/*DomainEvent.ts"],
+            "rules": {
+                "import/no-cycle": "off"
+            }
         }
     ],
     "settings": {

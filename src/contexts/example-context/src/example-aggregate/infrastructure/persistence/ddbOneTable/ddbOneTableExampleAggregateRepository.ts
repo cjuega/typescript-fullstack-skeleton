@@ -1,8 +1,8 @@
+import { Primitives } from '@context/shared/domain/primitives';
 import { Nullable } from '@context/shared/domain/nullable';
 import DdbOneTableRepository from '@context/shared/infrastructure/persistence/ddbOneTable/ddbOneTableRepository';
 import ExampleAggregate from '@src/example-aggregate/domain/exampleAggregate';
 import ExampleAggregateId from '@src/example-aggregate/domain/exampleAggregateId';
-import { ExampleAggregatePrimitives } from '@src/example-aggregate/domain/exampleAggregatePrimitives';
 import { ExampleAggregateRepository } from '@src/example-aggregate/domain/exampleAggregateRepository';
 import ExampleAggregateModel from '@src/example-aggregate/infrastructure/persistence/ddbOneTable/exampleAggregate.model';
 
@@ -25,8 +25,8 @@ export default class DdbOneTableExampleAggregateRepository
 
     async search(id: ExampleAggregateId): Promise<Nullable<ExampleAggregate>> {
         const model = await this.getModel(),
-            primitives = await model.get({ id: id.value }) as ExampleAggregatePrimitives;
+            primitives = await model.get({ id: id.value }) as Primitives<ExampleAggregate>;
 
-        return primitives ? ExampleAggregate.fromPrimitives(primitives) : null;
+        return primitives ? new ExampleAggregate(primitives) : null;
     }
 }

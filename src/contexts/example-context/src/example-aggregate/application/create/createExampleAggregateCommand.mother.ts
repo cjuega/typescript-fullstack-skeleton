@@ -1,17 +1,16 @@
 import Datetime from '@context/shared/domain/datetime';
-import CreateExampleAggregateCommand, {
-    CreateExampleAggregateCommandParams
-} from '@src/example-aggregate/application/create/createExampleAggregateCommand';
+import { Primitives } from '@context/shared/domain/primitives';
+import CreateExampleAggregateCommand from '@src/example-aggregate/application/create/createExampleAggregateCommand';
 import ExampleAggregate from '@src/example-aggregate/domain/exampleAggregate';
 import ExampleAggregateMother from '@src/example-aggregate/domain/exampleAggregate.mother';
 import ExampleAggregateIdMother from '@src/example-aggregate/domain/exampleAggregateId.mother';
 
 export default class CreateExampleAggregateCommandMother {
-    static create(params: CreateExampleAggregateCommandParams): CreateExampleAggregateCommand {
+    static create(params: Primitives<CreateExampleAggregateCommand>): CreateExampleAggregateCommand {
         return new CreateExampleAggregateCommand(params);
     }
 
-    static random(overwrites?: Partial<CreateExampleAggregateCommandParams>): CreateExampleAggregateCommand {
+    static random(overwrites?: Partial<Primitives<CreateExampleAggregateCommand>>): CreateExampleAggregateCommand {
         return CreateExampleAggregateCommandMother.create({
             id: ExampleAggregateIdMother.random().value,
             ...overwrites

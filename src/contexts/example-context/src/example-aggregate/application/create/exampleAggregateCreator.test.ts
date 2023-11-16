@@ -5,7 +5,6 @@ import ExampleAggregateAlreadyExists from '@src/example-aggregate/domain/example
 import CreateExampleAggregateCommandHandler from '@src/example-aggregate/application/create/createExampleAggregateCommandHandler';
 import ExampleAggregateCreator from '@src/example-aggregate/application/create/exampleAggregateCreator';
 import CreateExampleAggregateCommandMother from '@src/example-aggregate/application/create/createExampleAggregateCommand.mother';
-import ExampleAggregateMother from '@src/example-aggregate/domain/exampleAggregate.mother';
 import DatetimeMother from '@context/shared/domain/datetime.mother';
 import ExampleAggregateCreatedDomainEventMother from '@src/example-aggregate/domain/exampleAggregateCreatedDomainEvent.mother';
 
@@ -17,10 +16,11 @@ describe('exampleAggregateCreator', () => {
             repository = new ExampleAggregateRepositoryMock(),
             eventBus = new EventBusMock(),
             handler = new CreateExampleAggregateCommandHandler(new ExampleAggregateCreator(clock, repository, eventBus)),
-            exampleAggregate = ExampleAggregateMother.random(),
-            command = CreateExampleAggregateCommandMother.random({ id: exampleAggregate.id });
+            command = CreateExampleAggregateCommandMother.random(),
+            createdAt = DatetimeMother.random(),
+            exampleAggregate = CreateExampleAggregateCommandMother.applyCommand(command, { createdAt });
 
-        clock.whenNowThenReturn(DatetimeMother.random());
+        clock.whenNowThenReturn(createdAt);
         repository.whenSearchThenReturn(exampleAggregate);
 
         let error;

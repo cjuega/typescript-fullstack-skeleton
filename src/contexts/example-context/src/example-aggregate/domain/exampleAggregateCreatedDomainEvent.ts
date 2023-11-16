@@ -1,14 +1,15 @@
 import { DomainEvent } from '@context/shared/domain/eventBus/domainEvent';
-import { ExampleAggregatePrimitives } from '@src/example-aggregate/domain/exampleAggregatePrimitives';
+import { Primitives } from '@context/shared/domain/primitives';
+import ExampleAggregate from '@src/example-aggregate/domain/exampleAggregate';
 
-type CreateExampleAggregateDomainEventBody = Readonly<Omit<ExampleAggregatePrimitives, 'id'>>;
+type CreateExampleAggregateDomainEventBody = Readonly<Omit<Primitives<ExampleAggregate>, 'id'>>;
 
 export default class ExampleAggregateCreatedDomainEvent extends DomainEvent {
     static readonly EVENT_NAME = 'company.service.1.event.exampleAggregate.created';
 
     readonly body: CreateExampleAggregateDomainEventBody;
 
-    constructor(args: ExampleAggregatePrimitives & {
+    constructor(args: Primitives<ExampleAggregate> & {
         eventId?: string;
         occurredOn?: Date;
     }) {
