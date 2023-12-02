@@ -33,6 +33,7 @@
     "@aws-sdk/client-iot-data-plane": "^3.441.0",
     "@aws-sdk/lib-dynamodb": "^3.441.0",
     "@faker-js/faker": "^8.2.0",
+    "avsc": "^5.7.7",
     "aws-xray-sdk": "^3.3.4",
     "dynamodb-onetable": "^2.3.2",
     "fast-glob": "^3.2.11",

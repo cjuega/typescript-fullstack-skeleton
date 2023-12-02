@@ -1,0 +1,46 @@
+{
+    "namespace": "tests.avro",
+    "type": "record",
+    "name": "DummyEvent",
+    "fields": [
+        {
+            "name": "data",
+            "type": {
+                "type": "record",
+                "fields": [
+                    {
+                        "name": "id",
+                        "type": "string"
+                    },
+                    {
+                        "name": "type",
+                        "type": "string"
+                    },
+                    {
+                        "name": "occurredOn",
+                        "type": "string"
+                    },
+                    {
+                        "name": "attributes",
+                        "type": {
+                            "type": "record",
+                            "fields": [
+                                {
+                                    "name": "id",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "meta",
+                        "type": {
+                            "type": "record",
+                            "fields": []
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
