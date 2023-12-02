@@ -81,7 +81,7 @@ export default class KafkaEventBus implements EventBus {
             }
 
             map[topic].push({
-                value: JSON.stringify(this.marshaller.marshall(event))
+                value: this.marshaller.marshall(event) as string | Buffer
             });
 
             return map;

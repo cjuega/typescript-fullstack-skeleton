@@ -21,8 +21,8 @@ export default class DomainEventJsonMarshaller implements DomainEventMarshaller,
     }
 
     // eslint-disable-next-line class-methods-use-this
-    marshall(e: DomainEvent): JsonApi {
-        return {
+    marshall(e: DomainEvent): string {
+        const jsonApi = {
             data: {
                 id: e.eventId,
                 type: e.eventName,
@@ -34,10 +34,13 @@ export default class DomainEventJsonMarshaller implements DomainEventMarshaller,
                 meta: {}
             }
         };
+
+        return JSON.stringify(jsonApi);
     }
 
-    unmarshall(infraEvent: JsonApi): DomainEvent {
-        const eventData = infraEvent.data,
+    unmarshall(infraEventStr: string | Buffer): DomainEvent {
+        const infraEvent = JSON.parse(Buffer.isBuffer(infraEventStr) ? infraEventStr.toString() : infraEventStr) as JsonApi,
+            eventData = infraEvent.data,
             eventName = eventData.type,
             eventCtor = this.mapping.for(eventName);
 

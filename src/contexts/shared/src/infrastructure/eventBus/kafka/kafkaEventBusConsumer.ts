@@ -66,7 +66,7 @@ export default class KafkaEventBusConsumer implements EventBusConsumer {
                     return;
                 }
 
-                const domainEvent = this.unmarshaller.unmarshall(JSON.parse(message.value.toString()));
+                const domainEvent = this.unmarshaller.unmarshall(message.value);
 
                 await this.internalBus.publish([domainEvent]);
             }

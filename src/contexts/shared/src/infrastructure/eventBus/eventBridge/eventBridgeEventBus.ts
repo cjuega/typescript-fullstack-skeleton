@@ -46,7 +46,7 @@ export default class EventBridgeEventBus implements EventBus {
             Source: this.config.source,
             EventBusName: this.config.eventBusName || undefined,
             DetailType: e.eventName,
-            Detail: JSON.stringify(this.marshaller.marshall(e))
+            Detail: this.marshaller.marshall(e) as string
         }));
     }
 }

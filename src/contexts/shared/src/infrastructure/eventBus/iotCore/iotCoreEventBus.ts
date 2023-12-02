@@ -43,7 +43,7 @@ export default class IotCoreEventBus implements EventBus {
                     const command = new PublishCommand({
                         topic: this.getTopicFor(event)!,
                         qos: 0,
-                        payload: JSON.stringify(this.marshaller.marshall(event))
+                        payload: this.marshaller.marshall(event) as string
                     });
 
                     return client.send(command);
