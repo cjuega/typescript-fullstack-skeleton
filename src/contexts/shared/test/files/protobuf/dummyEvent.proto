@@ -1,0 +1,20 @@
+syntax = "proto3";
+package packageName;
+
+message DummyEvent {
+    Data data = 1;
+
+    message Data {
+        string id = 1;
+        string type = 2;
+        string occurredOn = 3;
+        Attributes attributes = 4;
+        Meta meta = 5;
+
+        message Attributes {
+            string id = 1;
+        }
+
+        message Meta {}
+    }
+}

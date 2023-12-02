@@ -40,6 +40,7 @@
     "kafkajs": "^2.2.4",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
+    "protobufjs": "^7.2.5",
     "uuid-validate": "^0.0.3"
   },
   "devDependencies": {
