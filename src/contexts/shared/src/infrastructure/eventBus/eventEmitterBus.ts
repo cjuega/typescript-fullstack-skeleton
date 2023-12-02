@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 import { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
-import { DomainEvent } from '@src/domain/eventBus/domainEvent';
+import DomainEvent from '@src/domain/eventBus/domainEvent';
 
 export default class EventEmitterBus extends EventEmitter {
     constructor(subscribers: Array<DomainEventSubscriber<DomainEvent>>) {
@@ -18,7 +18,7 @@ export default class EventEmitterBus extends EventEmitter {
     private registerSubscriber(subscriber: DomainEventSubscriber<DomainEvent>): void {
         subscriber.subscribedTo().forEach((event) => {
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
-            this.on(event.EVENT_NAME, subscriber.on.bind(subscriber));
+            this.on(event.eventName, subscriber.on.bind(subscriber));
         });
     }
 

@@ -1,6 +1,6 @@
 import { EventBusMiddleware } from '@src/domain/eventBus/eventBusMiddleware';
 import { DomainEventDeduplicator } from '@src/domain/eventBus/domainEventDeduplicator';
-import { DomainEvent } from '@src/domain/eventBus/domainEvent';
+import DomainEvent from '@src/domain/eventBus/domainEvent';
 
 export default class EventBusDeduplicatorMiddleware implements EventBusMiddleware {
     private deduplicator: DomainEventDeduplicator;

@@ -1,6 +1,6 @@
 import { ContainerBuilder, Definition } from 'node-dependency-injection';
 import { DomainEventSubscriber } from '@context/shared/domain/eventBus/domainEventSubscriber';
-import { DomainEvent } from '@context/shared/domain/eventBus/domainEvent';
+import DomainEvent from '@context/shared/domain/eventBus/domainEvent';
 import { EventBus } from '@context/shared/domain/eventBus/eventBus';
 
 const registerSubscribers = (container: ContainerBuilder): EventBus => {

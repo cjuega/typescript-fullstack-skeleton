@@ -1,25 +1,30 @@
 import { DescribeEndpointCommand, IoTClient } from '@aws-sdk/client-iot';
 import { IoTDataPlaneClient, PublishCommand } from '@aws-sdk/client-iot-data-plane';
-import { DomainEvent } from '@src/domain/eventBus/domainEvent';
+import DomainEvent from '@src/domain/eventBus/domainEvent';
+import { DomainEventMarshaller } from '@src/domain/eventBus/domainEventMarshaller';
 import { EventBus } from '@src/domain/eventBus/eventBus';
-import { Marshaller } from '@src/domain/eventBus/marshaller';
 import IotCoreConfig from '@src/infrastructure/eventBus/iotCore/iotCoreConfig';
-import IotCoreDomainEventsInformation from '@src/infrastructure/eventBus/iotCore/iotCoreDomainEventsInformation';
+import IotCoreDomainEventsMapper from '@src/infrastructure/eventBus/iotCore/iotCoreDomainEventsMappers';
 
 export default class IotCoreEventBus implements EventBus {
     private readonly iot: IoTClient;
 
-    private readonly eventsInformation: IotCoreDomainEventsInformation;
+    private readonly eventsMapper: IotCoreDomainEventsMapper;
 
-    private readonly marshaller: Marshaller;
+    private readonly marshaller: DomainEventMarshaller;
 
     private readonly config: IotCoreConfig;
 
     private dataClient: IoTDataPlaneClient | undefined;
 
-    constructor(iot: IoTClient, eventsInformation: IotCoreDomainEventsInformation, marshaller: Marshaller, config: IotCoreConfig) {
+    constructor(
+        iot: IoTClient,
+        eventsInformation: IotCoreDomainEventsMapper,
+        marshaller: DomainEventMarshaller,
+        config: IotCoreConfig
+    ) {
         this.iot = iot;
-        this.eventsInformation = eventsInformation;
+        this.eventsMapper = eventsInformation;
         this.marshaller = marshaller;
         this.config = config;
     }
@@ -60,7 +65,7 @@ export default class IotCoreEventBus implements EventBus {
     }
 
     private getTopicFor(event: DomainEvent): string | undefined {
-        const topic = this.eventsInformation.composeIotTopic(event);
+        const topic = this.eventsMapper.composeIotTopic(event);
 
         return topic || this.config.fallbackTopic;
     }

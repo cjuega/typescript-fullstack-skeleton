@@ -6,8 +6,7 @@ import ConsoleLogger from '@context/shared/infrastructure/consoleLogger';
 import DynamodbClientFactory from '@context/shared/infrastructure/persistence/dynamodb/dynamodbClientFactory';
 import DdbOneTableClientFactory from '@context/shared/infrastructure/persistence/ddbOneTable/ddbOneTableClientFactory';
 import EventBridgeClientFactory from '@context/shared/infrastructure/eventBus/eventBridge/eventBridgeClientFactory';
-import DomainEventMapping from '@context/shared/infrastructure/eventBus/domainEventMapping';
-import DomainEventJsonDeserializer from '@context/shared/infrastructure/eventBus/domainEventJsonDeserializer';
+import DomainEventMapping from '@context/shared/domain/eventBus/domainEventMapping';
 import DomainEventJsonMarshaller from '@context/shared/infrastructure/eventBus/domainEventJsonMarshaller';
 import EventBridgeEventBus from '@context/shared/infrastructure/eventBus/eventBridge/eventBridgeEventBus';
 import InMemorySyncEventBus from '@context/shared/infrastructure/eventBus/inMemorySyncEventBus';
@@ -41,10 +40,8 @@ const serviceName = config.get('serviceName'),
         container.register('Shared.EventBus.DomainEventMapping', DomainEventMapping).addArgument(new TagReference('domainEventSubscriber'));
 
         container
-            .register('Shared.EventBus.DomainEventJsonDeserializer', DomainEventJsonDeserializer)
+            .register('Shared.EventBus.EventMarshaller', DomainEventJsonMarshaller)
             .addArgument(new Reference('Shared.EventBus.DomainEventMapping'));
-
-        container.register('Shared.EventBus.EventMarshaller', DomainEventJsonMarshaller);
 
         container
             .register('Shared.EventBus', EventBridgeEventBus)

@@ -3,7 +3,7 @@ import DomainEvent from '@src/domain/eventBus/domainEvent';
 import { DomainEventName } from '@src/domain/eventBus/domainEventName';
 import { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
 import UuidMother from '@src/domain/uuid.mother';
-import InMemoryAsyncEventBus from '@src/infrastructure/eventBus/inMemoryAsyncEventBus';
+import InMemorySyncEventBus from '@src/infrastructure/eventBus/inMemorySyncEventBus';
 
 class DummyEvent extends DomainEvent {
     static eventName = 'dummy:event';
@@ -43,13 +43,13 @@ class DomainEventSubscriberDummy implements DomainEventSubscriber<DummyEvent> {
     }
 }
 
-describe('inMemoryAsyncEventBus', () => {
+describe('inMemorySyncEventBus', () => {
     it('the subscriber should be called when the event it is subscribed to is published', async () => {
         expect.assertions(1);
 
         const event = new DummyEvent({ id: UuidMother.random() }),
             subscriber = new DomainEventSubscriberDummy(),
-            eventBus = new InMemoryAsyncEventBus([subscriber]);
+            eventBus = new InMemorySyncEventBus([subscriber]);
 
         subscriber.setExpectation((actual: DummyEvent) => {
             expect(actual).toStrictEqual(event);

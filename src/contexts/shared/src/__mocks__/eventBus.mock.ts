@@ -1,5 +1,5 @@
 import { EventBus } from '@src/domain/eventBus/eventBus';
-import { DomainEvent } from '@src/domain/eventBus/domainEvent';
+import DomainEvent from '@src/domain/eventBus/domainEvent';
 import { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
 
 export default class EventBusMock implements EventBus {

@@ -1,4 +1,4 @@
-import { v4 } from 'uuid';
+import { randomUUID } from 'crypto';
 import validate from 'uuid-validate';
 import InvalidArgument from '@src/domain/invalidArgument';
 import ValueObject from '@src/domain/valueObject';
@@ -11,7 +11,7 @@ export default class Uuid extends ValueObject<string> {
     }
 
     static random(): Uuid {
-        return new Uuid(v4());
+        return new Uuid(randomUUID());
     }
 
     private ensureIsValidUuid(id: string): void {

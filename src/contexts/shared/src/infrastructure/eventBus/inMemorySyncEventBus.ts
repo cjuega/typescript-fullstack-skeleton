@@ -1,64 +1,41 @@
-import { DomainEvent } from '@src/domain/eventBus/domainEvent';
+import DomainEvent from '@src/domain/eventBus/domainEvent';
 import { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
 import { EventBus } from '@src/domain/eventBus/eventBus';
-import { EventBusMiddleware } from '@src/domain/eventBus/eventBusMiddleware';
-
-type Subscription = {
-    boundedCallback: (event: DomainEvent) => Promise<void>;
-    originalCallback: (event: DomainEvent) => Promise<void>;
-};
 
 export default class InMemorySyncEventBus implements EventBus {
-    private subscriptions: Map<string, Array<Subscription>>;
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    private readonly subscriptions: Map<string, Function[]> = new Map();
 
-    private middlewares: EventBusMiddleware[];
-
-    constructor(...middlewares: EventBusMiddleware[]) {
-        this.subscriptions = new Map<string, Array<Subscription>>();
-        this.middlewares = middlewares;
+    constructor(subscribers: DomainEventSubscriber<DomainEvent>[]) {
+        this.registerSubscribers(subscribers);
     }
 
-    async publish(domainEvents: Array<DomainEvent>): Promise<void> {
-        const events = await this.applyMiddlewares(domainEvents),
-            executions: Array<Promise<void>> = [];
+    async publish(events: DomainEvent[]): Promise<void> {
+        const executions: Array<Promise<void>> = [];
 
         events.forEach((event) => {
             const subscribers = this.subscriptions.get(event.eventName);
 
             if (subscribers) {
-                subscribers.map((subscriber) => executions.push(subscriber.boundedCallback(event)));
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                subscribers.map((subscriber) => executions.push(subscriber(event)));
             }
         });
 
         await Promise.all(executions);
     }
 
-    private async applyMiddlewares(domainEvents: Array<DomainEvent>): Promise<Array<DomainEvent>> {
-        let events = domainEvents;
-
-        for (const middleware of this.middlewares) {
-            // eslint-disable-next-line no-await-in-loop
-            events = await middleware.run(events);
-        }
-
-        return events;
-    }
-
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    addSubscribers(subscribers: Array<DomainEventSubscriber<DomainEvent>>) {
-        subscribers.map((subscriber) => subscriber
-            .subscribedTo()
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            .map((event) => this.subscribe(event.EVENT_NAME, subscriber)));
+    private registerSubscribers(subscribers: DomainEventSubscriber<DomainEvent>[]): void {
+        subscribers.forEach((subscriber) => {
+            subscriber.subscribedTo().forEach((event) => {
+                this.subscribe(event.eventName, subscriber);
+            });
+        });
     }
 
     private subscribe(topic: string, subscriber: DomainEventSubscriber<DomainEvent>): void {
         const currentSubscriptions = this.subscriptions.get(topic),
-            subscription = {
-                boundedCallback: subscriber.on.bind(subscriber),
-                // eslint-disable-next-line @typescript-eslint/unbound-method, jest/unbound-method
-                originalCallback: subscriber.on
-            };
+            subscription = subscriber.on.bind(subscriber);
 
         if (currentSubscriptions) {
             currentSubscriptions.push(subscription);

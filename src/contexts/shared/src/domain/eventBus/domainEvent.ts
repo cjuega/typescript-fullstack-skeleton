@@ -1,13 +1,9 @@
 import Uuid from '@src/domain/uuid';
 
-export abstract class DomainEvent {
-    static EVENT_NAME: string;
-
-    static fromPrimitives: (...args: any[]) => any;
+export default abstract class DomainEvent {
+    readonly eventId: string;
 
     readonly aggregateId: string;
-
-    readonly eventId: string;
 
     readonly occurredOn: Date;
 
@@ -22,8 +18,3 @@ export abstract class DomainEvent {
 
     abstract toPrimitives(): unknown;
 }
-
-export type DomainEventClass = {
-    EVENT_NAME: string;
-    fromPrimitives(...args: any[]): DomainEvent;
-};

@@ -38,7 +38,6 @@
     "fast-glob": "^3.2.11",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
-    "uuid": "^9.0.1",
     "uuid-validate": "^0.0.3"
   },
   "devDependencies": {

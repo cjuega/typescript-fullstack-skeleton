@@ -16,6 +16,11 @@ class ConsoleLogger implements Logger {
     info(message: string): void {
         console.info(message);
     }
+
+    // eslint-disable-next-line class-methods-use-this
+    warn(message: string): void {
+        console.warn(message);
+    }
 }
 
 export default ConsoleLogger;
