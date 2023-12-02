@@ -4,7 +4,7 @@ import DomainEventMapping from '@src/domain/eventBus/domainEventMapping';
 import { DomainEventName } from '@src/domain/eventBus/domainEventName';
 import { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
 import UuidMother from '@src/domain/uuid.mother';
-import DomainEventJsonMarshaller from '@src/infrastructure/eventBus/domainEventJsonMarshaller';
+import DomainEventJsonMarshaller from '@src/infrastructure/eventBus/marshallers/json/domainEventJsonMarshaller';
 import KafkaClientFactory from '@src/infrastructure/eventBus/kafka/kafkaClientFactory';
 import KafkaConfig from '@src/infrastructure/eventBus/kafka/kafkaConfig';
 import KafkaDomainEventsMapper from '@src/infrastructure/eventBus/kafka/kafkaDomainEventsMapper';

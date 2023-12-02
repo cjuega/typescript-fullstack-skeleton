@@ -3,7 +3,7 @@ import { DomainEventMarshaller } from '@src/domain/eventBus/domainEventMarshalle
 import { DomainEventUnmarshaller } from '@src/domain/eventBus/domainEventUnmarshaller';
 import DomainEventMapping from '@src/domain/eventBus/domainEventMapping';
 
-export type JsonApi = {
+type JsonApi = {
     data: {
         id: string;
         type: string;
@@ -22,7 +22,7 @@ export default class DomainEventJsonMarshaller implements DomainEventMarshaller,
 
     // eslint-disable-next-line class-methods-use-this
     marshall(e: DomainEvent): string {
-        const jsonApi = {
+        const jsonApi: JsonApi = {
             data: {
                 id: e.eventId,
                 type: e.eventName,

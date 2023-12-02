@@ -7,7 +7,7 @@ import DynamodbClientFactory from '@context/shared/infrastructure/persistence/dy
 import DdbOneTableClientFactory from '@context/shared/infrastructure/persistence/ddbOneTable/ddbOneTableClientFactory';
 import EventBridgeClientFactory from '@context/shared/infrastructure/eventBus/eventBridge/eventBridgeClientFactory';
 import DomainEventMapping from '@context/shared/domain/eventBus/domainEventMapping';
-import DomainEventJsonMarshaller from '@context/shared/infrastructure/eventBus/domainEventJsonMarshaller';
+import DomainEventJsonMarshaller from '@context/shared/infrastructure/eventBus/marshallers/json/domainEventJsonMarshaller';
 import EventBridgeEventBus from '@context/shared/infrastructure/eventBus/eventBridge/eventBridgeEventBus';
 import InMemorySyncEventBus from '@context/shared/infrastructure/eventBus/inMemorySyncEventBus';
 import config from '@src/config/config';
