@@ -36,6 +36,7 @@
     "aws-xray-sdk": "^3.3.4",
     "dynamodb-onetable": "^2.3.2",
     "fast-glob": "^3.2.11",
+    "kafkajs": "^2.2.4",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "uuid-validate": "^0.0.3"

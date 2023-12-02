@@ -14,14 +14,24 @@ ifndef DOCKER_COMPOSE
 endif
 	yarn install --force
 
+# Start infrastructure containers in background
+.PHONY = start_infra
+start_infra:
+	docker-compose up -d
+
 # Start databases containers in background
 .PHONY = start_database
 start_database:
 	docker-compose up -d dynamodb
 
+# Start messaging containers in background
+.PHONY = start_messaging
+start_messaging:
+	docker-compose up -d kafka kafka-ui
+
 # Run tests
 .PHONY = test
-test: deps start_database
+test: deps start_infra
 	yarn test
 	yarn lint
 

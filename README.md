@@ -55,15 +55,14 @@ Assuming `pro` is your production environment.
 ## Launch tests
 
 ```sh
-make start_database # launches any infrastructure needed by integration and e2e tests
 make test # run unit, integration and e2e tests
-make clean # destroys any docker containers launched by make start_database
+make clean # destroys any docker containers launched by make start_infra
 ```
 
 or
 
 ```sh
-make start_database
+make start_infra
 yarn test
 make clean
 ```
@@ -122,9 +121,9 @@ Check each package's README for more details regarding any configuration files t
 ### Make
 
 * `make deps` check if you have docker installed and installs all dependencies.
-* `make start_database` launches docker containers for integration and e2e testing. You can mimic managed AWS services like SQS, Dynamodb, etc. But also unify any instrastructure needed by your system (databases, message brokers, etc.).
+* `make start_infra` launches docker containers for integration and e2e testing. You can mimic managed AWS services like SQS, Dynamodb, etc. But also unify any instrastructure needed by your system (databases, message brokers, etc.).
 * `make test` runs linter and tests.
-* `make clean` destroys any docker container launched by `make start_database`.
+* `make clean` destroys any docker container launched by `make start_infra`.
 * `make deploy env=<env>` deploys services to the given AWS environment. It first attempts to get configuration files for that environment using `yarn restoreSetup:aws <env>` command.
 
 ## Advanced tips

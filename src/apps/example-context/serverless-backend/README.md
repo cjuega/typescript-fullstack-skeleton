@@ -94,7 +94,7 @@ yarn test
 ---
 **NOTE**
 
-For offline testing make sure you have called `make start_database` before running tests, so any required infrastructure is up when they are launched!
+For offline testing make sure you have called `make start_infra` before running tests, so any required infrastructure is up when they are launched!
 
 ---
 

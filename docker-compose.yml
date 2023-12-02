@@ -1,10 +1,49 @@
 version: '3.8'
 
 services:
-  dynamodb:
-    image: amazon/dynamodb-local:latest
-    volumes:
-      - ./.data/dynamodb:/data:delegated
-    ports:
-      - 8000:8000
-    command: ["-jar", "DynamoDBLocal.jar", "-sharedDb", "-inMemory"]
+    dynamodb:
+        image: amazon/dynamodb-local:latest
+        volumes:
+            - ./.data/dynamodb:/data:delegated
+        ports:
+            - 8000:8000
+        command: ['-jar', 'DynamoDBLocal.jar', '-sharedDb', '-inMemory']
+
+    kafka:
+        image: confluentinc/cp-kafka:latest
+        hostname: broker
+        container_name: broker
+        ports:
+            - '9092:9092'
+            - '9101:9101'
+        environment:
+            KAFKA_NODE_ID: 1
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
+            KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092'
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+            KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+            KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+            KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+            KAFKA_JMX_PORT: 9101
+            KAFKA_JMX_HOSTNAME: localhost
+            KAFKA_PROCESS_ROLES: 'broker,controller'
+            KAFKA_CONTROLLER_QUORUM_VOTERS: '1@broker:29093'
+            KAFKA_LISTENERS: 'PLAINTEXT://broker:29092,CONTROLLER://broker:29093,PLAINTEXT_HOST://0.0.0.0:9092'
+            KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+            KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+            KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+            # Replace CLUSTER_ID with a unique base64 UUID using "bin/kafka-storage.sh random-uuid"
+            # See https://docs.confluent.io/kafka/operations-tools/kafka-tools.html#kafka-storage-sh
+            CLUSTER_ID: 'WZEKwK-b123oT3ZOSU0dgw'
+
+    kafka-ui:
+        container_name: kafka-ui
+        image: provectuslabs/kafka-ui:latest
+        ports:
+            - 8080:8080
+        depends_on:
+            - kafka
+        environment:
+            DYNAMIC_CONFIG_ENABLED: 'true'
+            KAFKA_CLUSTERS_0_NAME: dockerized-kafka
+            KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
