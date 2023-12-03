@@ -8,8 +8,10 @@ export default class WinstonLogger implements Logger {
         const outputFormat = format.printf(({
                 level, message, timestamp, ...meta
             }) => JSON.stringify({
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 timestamp,
                 level: level.toUpperCase(),
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 message,
                 meta: JSON.stringify(meta)
             })),
