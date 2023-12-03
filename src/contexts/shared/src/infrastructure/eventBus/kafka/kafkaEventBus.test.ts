@@ -79,6 +79,16 @@ const config: KafkaConfig = {
     arranger = new KafkaEnvironmentArranger(client, config);
 
 describe('kafkaEventBus', () => {
+    // Hacky trick to make sure __consumer_offsets topic is created before starting tests to avoid timeouts in
+    // consumer connect that might make tests fail. Note this is only relevant when tests are running right after
+    // starting the kafka container (in CI for instance).
+    // eslint-disable-next-line jest/no-hooks
+    beforeAll(async () => {
+        await arranger.arrange();
+        await eventBusConsumer.start();
+        await eventBusConsumer.disconnect();
+    }, 15 * 1000);
+
     // eslint-disable-next-line jest/no-hooks
     beforeEach(async () => {
         await arranger.arrange();
