@@ -1,9 +1,10 @@
 // eslint-disable-next-line import/no-unresolved
 import { APIGatewayProxyResult } from 'aws-lambda';
 import { Nullable } from '@context/shared/domain/nullable';
-import ConsoleLogger from '@context/shared/infrastructure/consoleLogger';
+import { Logger } from '@context/shared/domain/logger';
+import container from '@src/config/dependency-injection';
 
-const logger = new ConsoleLogger();
+const logger: Logger = container.get('Shared.Logger');
 
 export type ErrorMapping = { clazz: Function; errorCode: number };
 

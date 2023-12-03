@@ -6,7 +6,7 @@ import KafkaConfig from '@src/infrastructure/eventBus/kafka/kafkaConfig';
 export default class KafkaClientFactory {
     private static clients: Record<string, Kafka> = {};
 
-    static createClient(contextName: string, config: KafkaConfig, logger?: Logger): Kafka {
+    static createClient(contextName: string, config: KafkaConfig, logger: Logger): Kafka {
         let client = KafkaClientFactory.getClient(contextName);
 
         if (!client) {
@@ -22,33 +22,20 @@ export default class KafkaClientFactory {
         return KafkaClientFactory.clients[contextName] || null;
     }
 
-    private static create(config: KafkaConfig, logger?: Logger): Kafka {
+    private static create(config: KafkaConfig, logger: Logger): Kafka {
         return new Kafka({ ...config, logCreator: KafkaClientFactory.createKafkaLogger(logger) });
     }
 
-    private static createKafkaLogger(logger?: Logger): logCreator | undefined {
-        if (!logger) {
-            return undefined;
-        }
-
+    private static createKafkaLogger(logger: Logger): logCreator {
         return () => ({ level, log }) => {
-            let method: LogLevel;
-
-            switch (level) {
-            case logLevel.ERROR:
-            case logLevel.NOTHING:
-                method = 'error';
-                break;
-            case logLevel.WARN:
-                method = 'warn';
-                break;
-            case logLevel.DEBUG:
-                method = 'debug';
-                break;
-            default:
-                method = 'info';
-                break;
-            }
+            const mapping: { [key: string]: LogLevel } = {
+                [logLevel.INFO]: 'info',
+                [logLevel.DEBUG]: 'debug',
+                [logLevel.WARN]: 'warn',
+                [logLevel.ERROR]: 'error',
+                [logLevel.NOTHING]: 'error'
+            },
+                method: LogLevel = mapping[level] ?? 'info';
 
             logger[method](log.message);
         };

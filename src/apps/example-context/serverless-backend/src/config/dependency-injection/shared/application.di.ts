@@ -2,7 +2,7 @@ import {
     ContainerBuilder, Definition, Reference, TagReference
 } from 'node-dependency-injection';
 import CurrentTimeClock from '@context/shared/infrastructure/currentTimeClock';
-import ConsoleLogger from '@context/shared/infrastructure/consoleLogger';
+import ConsoleLogger from '@context/shared/infrastructure/logger/consoleLogger';
 import DynamodbClientFactory from '@context/shared/infrastructure/persistence/dynamodb/dynamodbClientFactory';
 import DdbOneTableClientFactory from '@context/shared/infrastructure/persistence/ddbOneTable/ddbOneTableClientFactory';
 import EventBridgeClientFactory from '@context/shared/infrastructure/eventBus/eventBridge/eventBridgeClientFactory';
@@ -19,7 +19,11 @@ const serviceName = config.get('serviceName'),
         container.register('Shared.Logger', ConsoleLogger);
 
         let definition = new Definition();
-        definition.args = [serviceName, new Reference('Apps.<YourBoundedContext>.Serverless.DynamodbConfig')];
+        definition.args = [
+            serviceName,
+            new Reference('Apps.<YourBoundedContext>.Serverless.DynamodbConfig'),
+            new Reference('Shared.Logger')
+        ];
         definition.setFactory(DynamodbClientFactory, 'createClient');
         container.setDefinition('Shared.DynamodbClient', definition);
 
@@ -27,13 +31,18 @@ const serviceName = config.get('serviceName'),
         definition.args = [
             serviceName,
             new Reference('Shared.DynamodbClient'),
-            new Reference('Apps.<YourBoundedContext>.Serverless.DdbOneTableConfig')
+            new Reference('Apps.<YourBoundedContext>.Serverless.DdbOneTableConfig'),
+            new Reference('Shared.Logger')
         ];
         definition.setFactory(DdbOneTableClientFactory, 'createClient');
         container.setDefinition('Shared.DynamodbTable', definition);
 
         definition = new Definition();
-        definition.args = [serviceName, new Reference('Apps.<YourBoundedContext>.Serverless.EventBridgeConfig')];
+        definition.args = [
+            serviceName,
+            new Reference('Apps.<YourBoundedContext>.Serverless.EventBridgeConfig'),
+            new Reference('Shared.Logger')
+        ];
         definition.setFactory(EventBridgeClientFactory, 'createClient');
         container.setDefinition('Shared.EventBridgeClient', definition);
 

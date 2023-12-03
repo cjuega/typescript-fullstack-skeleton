@@ -12,6 +12,7 @@ import KafkaEnvironmentArranger from '@src/infrastructure/eventBus/kafka/kafkaEn
 import KafkaEventBus from '@src/infrastructure/eventBus/kafka/kafkaEventBus';
 import KafkaEventBusConsumer from '@src/infrastructure/eventBus/kafka/kafkaEventBusConsumer';
 import { KafkaTopicMapper } from '@src/infrastructure/eventBus/kafka/kafkaTopicMapper';
+import NoopLogger from '@src/infrastructure/logger/noopLogger';
 
 class DummyEvent extends DomainEvent {
     static eventName = 'dummy:event';
@@ -69,7 +70,8 @@ const config: KafkaConfig = {
     groupId: 'integration-tests-consumer',
     topicsToListen: [{ topic: 'dummy-event' }]
 },
-    client = KafkaClientFactory.createClient('integration-tests', config),
+    noLogger = new NoopLogger(),
+    client = KafkaClientFactory.createClient('integration-tests', config, noLogger),
     mappers = [new DummyEventKafkaMapper()],
     eventsMapper = new KafkaDomainEventsMapper(mappers),
     subscribers = [new DomainEventSubscriberDummy()],

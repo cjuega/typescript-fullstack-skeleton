@@ -2,15 +2,16 @@ import { EventBridgeClient, EventBridgeClientConfig } from '@aws-sdk/client-even
 import { captureAWSv3Client } from 'aws-xray-sdk';
 import { Nullable } from '@src/domain/nullable';
 import EventBridgeConfig from '@src/infrastructure/eventBus/eventBridge/eventBridgeConfig';
+import { Logger } from '@src/domain/logger';
 
 export default class EventBridgeClientFactory {
     private static clients: Record<string, EventBridgeClient> = {};
 
-    static createClient(contextName: string, config: EventBridgeConfig): EventBridgeClient {
+    static createClient(contextName: string, config: EventBridgeConfig, logger: Logger): EventBridgeClient {
         let client = EventBridgeClientFactory.getClient(contextName);
 
         if (!client) {
-            client = EventBridgeClientFactory.create(config);
+            client = EventBridgeClientFactory.create(config, logger);
 
             EventBridgeClientFactory.registerClient(client, contextName);
         }
@@ -22,8 +23,8 @@ export default class EventBridgeClientFactory {
         return EventBridgeClientFactory.clients[contextName] || null;
     }
 
-    private static create(config: EventBridgeConfig): EventBridgeClient {
-        const awsConfig = this.extractClientConfig(config),
+    private static create(config: EventBridgeConfig, logger: Logger): EventBridgeClient {
+        const awsConfig = this.extractClientConfig(config, logger),
             client = new EventBridgeClient(awsConfig);
 
         if (config.enableTracing) {
@@ -33,9 +34,11 @@ export default class EventBridgeClientFactory {
         return client;
     }
 
-    private static extractClientConfig(config: EventBridgeConfig): EventBridgeClientConfig {
+    private static extractClientConfig(config: EventBridgeConfig, logger: Logger): EventBridgeClientConfig {
         const { region, endpoint } = config,
-            clientConfig = {};
+            clientConfig = {
+                logger
+            };
 
         if (region) {
             Object.assign(clientConfig, { region });

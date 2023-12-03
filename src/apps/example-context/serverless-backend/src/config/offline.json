@@ -20,7 +20,6 @@
                 "hash": "gsi1pk",
                 "sort": "gsi1sk"
             }
-        },
-        "logger": true
+        }
     }
 }

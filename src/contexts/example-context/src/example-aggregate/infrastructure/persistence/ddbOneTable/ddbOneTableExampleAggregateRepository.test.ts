@@ -1,23 +1,29 @@
 import DynamodbClientFactory from '@context/shared/infrastructure/persistence/dynamodb/dynamodbClientFactory';
 import DdbOneTableClientFactory from '@context/shared/infrastructure/persistence/ddbOneTable/ddbOneTableClientFactory';
 import DdbOneTableEnvironmentArranger from '@context/shared/infrastructure/persistence/ddbOneTable/ddbOneTableEnvironmentArranger';
+import NoopLogger from '@context/shared/infrastructure/logger/noopLogger';
 // eslint-disable-next-line max-len
 import DdbOneTableExampleAggregateRepository from '@src/example-aggregate/infrastructure/persistence/ddbOneTable/ddbOneTableExampleAggregateRepository';
 import ExampleAggregateMother from '@src/example-aggregate/domain/exampleAggregate.mother';
 import ExampleAggregateIdMother from '@src/example-aggregate/domain/exampleAggregateId.mother';
 
-const table = DdbOneTableClientFactory.createClient(
+const noLogger = new NoopLogger(),
+    table = DdbOneTableClientFactory.createClient(
         'integration-tests',
-        DynamodbClientFactory.createClient('integration-tests', {
-            region: 'localhost',
-            endpoint: 'http://localhost:8000',
-            sslEnabled: false
-        }),
+        DynamodbClientFactory.createClient(
+            'integration-tests',
+            {
+                region: 'localhost',
+                endpoint: 'http://localhost:8000',
+                sslEnabled: false
+            },
+            noLogger
+        ),
         {
             tableName: 'db-integration-tests',
-            indexes: { primary: { hash: 'pk', sort: 'sk' } },
-            logger: true
-        }
+            indexes: { primary: { hash: 'pk', sort: 'sk' } }
+        },
+        noLogger
     ),
     environmentArranger = new DdbOneTableEnvironmentArranger(table),
     repository = new DdbOneTableExampleAggregateRepository(table);

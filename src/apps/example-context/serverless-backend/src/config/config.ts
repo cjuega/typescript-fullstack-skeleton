@@ -128,12 +128,6 @@ const files = [`${__dirname}/default.json`],
                     format: String
                 }
             },
-            logger: {
-                doc: "Optional flag that enables/disables DynamoDB One Table's logger.",
-                format: Boolean,
-                default: false,
-                nullable: true
-            },
             isoDates: {
                 doc: 'Set to true to store dates as Javascript ISO strings vs epoch numerics.',
                 format: Boolean,

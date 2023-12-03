@@ -2,15 +2,16 @@ import { IoTClient, IoTClientConfig } from '@aws-sdk/client-iot';
 import { captureAWSv3Client } from 'aws-xray-sdk';
 import { Nullable } from '@src/domain/nullable';
 import IotCoreConfig from '@src/infrastructure/eventBus/iotCore/iotCoreConfig';
+import { Logger } from '@src/domain/logger';
 
 export default class IotClientFactory {
     private static clients: Record<string, IoTClient> = {};
 
-    static createClient(contextName: string, config: IotCoreConfig): IoTClient {
+    static createClient(contextName: string, config: IotCoreConfig, logger: Logger): IoTClient {
         let client = IotClientFactory.getClient(contextName);
 
         if (!client) {
-            client = IotClientFactory.create(config);
+            client = IotClientFactory.create(config, logger);
 
             IotClientFactory.registerClient(client, contextName);
         }
@@ -22,8 +23,8 @@ export default class IotClientFactory {
         return IotClientFactory.clients[contextName] || null;
     }
 
-    private static create(config: IotCoreConfig): IoTClient {
-        const awsConfig = this.extractClientConfig(config),
+    private static create(config: IotCoreConfig, logger: Logger): IoTClient {
+        const awsConfig = this.extractClientConfig(config, logger),
             client = new IoTClient(awsConfig);
 
         if (config.enableTracing) {
@@ -33,9 +34,11 @@ export default class IotClientFactory {
         return client;
     }
 
-    private static extractClientConfig(config: IotCoreConfig): IoTClientConfig {
+    private static extractClientConfig(config: IotCoreConfig, logger: Logger): IoTClientConfig {
         const { region, endpoint } = config,
-            clientConfig = {};
+            clientConfig = {
+                logger
+            };
 
         if (region) {
             Object.assign(clientConfig, { region });
