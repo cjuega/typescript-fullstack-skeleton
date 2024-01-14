@@ -41,6 +41,7 @@
     "kafkajs": "^2.2.4",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
+    "mongodb": "^6.3.0",
     "mysql2": "^3.6.5",
     "protobufjs": "^7.2.5",
     "typeorm": "^0.3.17",
@@ -50,6 +51,7 @@
   "devDependencies": {
     "@types/jest": "^29.5.7",
     "@types/jest-when": "^3.5.0",
+    "@types/mongodb": "^4.0.7",
     "@types/node": "^20.8.10",
     "@types/uuid": "^9.0.6",
     "@types/uuid-validate": "^0.0.2",
