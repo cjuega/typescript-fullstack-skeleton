@@ -6,7 +6,7 @@ import { Primitives } from '@context/shared/domain/primitives';
 
 export default class ExampleAggregateMother {
     static create(primitives: Primitives<ExampleAggregate>): ExampleAggregate {
-        return new ExampleAggregate(primitives);
+        return ExampleAggregate.fromPrimitives(primitives);
     }
 
     static random(overwrites?: RecursivePartial<Primitives<ExampleAggregate>>): ExampleAggregate {

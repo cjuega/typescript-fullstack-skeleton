@@ -65,7 +65,7 @@ describe('ddbOneTableExampleAggregateRepository', () => {
 
             await repository.save(expected);
 
-            expect(await repository.search(ExampleAggregateIdMother.create(expected.id))).toStrictEqual(expected);
+            expect(await repository.search(expected.id)).toStrictEqual(expected);
         });
     });
 });

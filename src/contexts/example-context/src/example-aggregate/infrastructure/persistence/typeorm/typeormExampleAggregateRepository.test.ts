@@ -1,21 +1,28 @@
-// eslint-disable-next-line max-len
+import TypeormClientFactory from '@context/shared/infrastructure/persistence/typeorm/typeormClientFactory';
+import TypeormEnvironmentArranger from '@context/shared/infrastructure/persistence/typeorm/typeormEnvironmentArranger';
+import NoopLogger from '@context/shared/infrastructure/logger/noopLogger';
 import ExampleAggregateMother from '@src/example-aggregate/domain/exampleAggregate.mother';
 import ExampleAggregateIdMother from '@src/example-aggregate/domain/exampleAggregateId.mother';
-import RedisExampleAggregateRepository from '@src/example-aggregate/infrastructure/persistence/redis/redisExampleAggregateRepository';
-import RedisClientFactory from '@context/shared/infrastructure/persistence/redis/redisClientFactory';
-import RedisEnvironmentArranger from '@context/shared/infrastructure/persistence/redis/redisEnvironmentArranger';
+import TypeormExampleAggregateRepository from '@src/example-aggregate/infrastructure/persistence/typeorm/typeormExampleAggregateRepository';
+import { resolve } from 'path';
 
-const client = RedisClientFactory.createClient(
+const noLogger = new NoopLogger(),
+    table = TypeormClientFactory.createClient(
         'integration-tests',
         {
-            endpoints: ['redis://localhost:6379'],
-            clusterModeEnabled: false
-        }
+            host: 'localhost',
+            port: 3307,
+            username: 'root',
+            password: 'integration-test',
+            database: 'database',
+            migrations: [resolve(__dirname, '../../../../../', 'db/migrations/mysql/*')]
+        },
+        noLogger
     ),
-    environmentArranger = new RedisEnvironmentArranger(client),
-    repository = new RedisExampleAggregateRepository(client);
+    environmentArranger = new TypeormEnvironmentArranger(table),
+    repository = new TypeormExampleAggregateRepository(table);
 
-describe('redisExampleAggregateRepository', () => {
+describe('typeormExampleAggregateRepository', () => {
     // eslint-disable-next-line jest/no-hooks
     beforeEach(async () => {
         await environmentArranger.arrange();

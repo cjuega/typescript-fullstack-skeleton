@@ -13,13 +13,13 @@ export default class RedisExampleAggregateRepository implements ExampleAggregate
     }
 
     async save(aggregate: ExampleAggregate): Promise<void> {
-        await this.client.hset(aggregate.id, aggregate.toPrimitives());
+        await this.client.hset(aggregate.id.value, aggregate.toPrimitives());
     }
 
     async search(id: ExampleAggregateId): Promise<Nullable<ExampleAggregate>> {
         const primitives = await this.client.hgetall(id.value) as Primitives<ExampleAggregate>,
             noResults = !primitives || Object.keys(primitives).length === 0;
 
-        return noResults ? null : new ExampleAggregate(primitives);
+        return noResults ? null : ExampleAggregate.fromPrimitives(primitives);
     }
 }

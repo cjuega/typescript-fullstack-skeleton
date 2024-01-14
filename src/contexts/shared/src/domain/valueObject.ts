@@ -1,6 +1,6 @@
 import InvalidArgument from '@src/domain/invalidArgument';
 
-type Primitives = string | number | boolean | Date;
+export type Primitives = string | number | boolean | Date;
 
 export default abstract class ValueObject<T extends Primitives> {
     readonly value: T;

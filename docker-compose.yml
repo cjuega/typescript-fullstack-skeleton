@@ -25,6 +25,16 @@ services:
         volumes:
             - ./.data/redisinsight:/db
 
+    mysql:
+        image: mysql:latest
+        ports:
+            - 3307:3306
+        volumes:
+            - ./.data/mysql:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: integration-test
+            MYSQL_DATABASE: database
+
     kafka:
         image: confluentinc/cp-kafka:latest
         hostname: broker

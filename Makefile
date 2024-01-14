@@ -22,7 +22,7 @@ start_infra:
 # Start databases containers in background
 .PHONY = start_database
 start_database:
-	docker-compose up -d dynamodb
+	docker-compose up -d dynamodb redis mysql
 
 # Start messaging containers in background
 .PHONY = start_messaging

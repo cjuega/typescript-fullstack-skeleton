@@ -88,9 +88,10 @@
             }
         },
         {
-            "files": ["**/domain/*DomainEvent.ts"],
+            "files": ["db/migrations/mysql/*.ts"],
             "rules": {
-                "import/no-cycle": "off"
+                "import/prefer-default-export": "off",
+                "class-methods-use-this": "off"
             }
         }
     ],

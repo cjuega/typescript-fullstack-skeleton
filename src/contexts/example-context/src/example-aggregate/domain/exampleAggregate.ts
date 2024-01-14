@@ -6,37 +6,33 @@ import Datetime from '@context/shared/domain/datetime';
 import ExampleAggregateCreatedDomainEvent from '@src/example-aggregate/domain/exampleAggregateCreatedDomainEvent';
 
 export default class ExampleAggregate extends AggregateRoot {
-    private readonly _id: ExampleAggregateId;
+    readonly id: ExampleAggregateId;
 
-    private readonly _createdAt: Datetime;
+    readonly createdAt: Datetime;
 
-    get id(): string {
-        return this._id.value;
-    }
-
-    get createdAt(): string {
-        return this._createdAt.value;
-    }
-
-    constructor({ id, createdAt }: Primitives<ExampleAggregate>) {
+    private constructor(id: ExampleAggregateId, createdAt: Datetime) {
         super();
 
-        this._id = new ExampleAggregateId(id);
-        this._createdAt = new Datetime(createdAt);
+        this.id = id;
+        this.createdAt = createdAt;
     }
 
     static create(id: string, createdAt: Datetime): ExampleAggregate {
-        const aggregate = new ExampleAggregate({ id, createdAt: createdAt.value });
+        const aggregate = new ExampleAggregate(new ExampleAggregateId(id), createdAt);
 
         aggregate.record(new ExampleAggregateCreatedDomainEvent(aggregate.toPrimitives()));
 
         return aggregate;
     }
 
+    static fromPrimitives({ id, createdAt }: Primitives<ExampleAggregate>): ExampleAggregate {
+        return new ExampleAggregate(new ExampleAggregateId(id), new Datetime(createdAt));
+    }
+
     toPrimitives(): Primitives<ExampleAggregate> {
         return {
-            id: this._id.value,
-            createdAt: this._createdAt.value
+            id: this.id.value,
+            createdAt: this.createdAt.value
         };
     }
 }

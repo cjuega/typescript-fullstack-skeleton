@@ -6,7 +6,10 @@
         "@src/(.*)$": "<rootDir>/src/$1"
     },
     "coverageDirectory": "./reports/coverage",
-    "coverageReporters": ["lcov", "text-summary"],
+    "coverageReporters": [
+        "lcov",
+        "text-summary"
+    ],
     "collectCoverageFrom": [
         "**/*.{ts}",
         "!**/node_modules/**",
@@ -22,5 +25,8 @@
             "statements": 95
         }
     },
-    "testMatch": ["<rootDir>/src/**/*.test.ts", "<rootDir>/test/**/*.test.ts"]
+    "testMatch": [
+        "<rootDir>/src/**/*.test.ts",
+        "<rootDir>/test/**/*.test.ts"
+    ]
 }

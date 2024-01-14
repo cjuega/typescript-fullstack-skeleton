@@ -27,6 +27,6 @@ export default class DdbOneTableExampleAggregateRepository
         const model = await this.getModel(),
             primitives = await model.get({ id: id.value }) as Primitives<ExampleAggregate>;
 
-        return primitives ? new ExampleAggregate(primitives) : null;
+        return primitives ? ExampleAggregate.fromPrimitives(primitives) : null;
     }
 }
