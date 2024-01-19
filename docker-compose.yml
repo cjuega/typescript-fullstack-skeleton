@@ -45,6 +45,117 @@ services:
             MONGO_INITDB_ROOT_USERNAME: root
             MONGO_INITDB_ROOT_PASSWORD: integration-test
 
+    elasticsearch-setup:
+        image: elasticsearch:8.11.3
+        volumes:
+            - ./.data/elastic-certs:/usr/share/elasticsearch/config/certs
+        user: '0'
+        command: >
+            bash -c '
+                if [ ! -f config/certs/ca.zip ]; then
+                    echo "Creating CA";
+                    bin/elasticsearch-certutil ca --silent --pem -out config/certs/ca.zip;
+                    unzip config/certs/ca.zip -d config/certs;
+                fi;
+                if [ ! -f config/certs/certs.zip ]; then
+                    echo "Creating certs";
+                    echo -ne \
+                    "instances:\n"\
+                    "  - name: elasticsearch\n"\
+                    "    dns:\n"\
+                    "      - elasticsearch\n"\
+                    "      - localhost\n"\
+                    "    ip:\n"\
+                    "      - 127.0.0.1\n"\
+                    "  - name: kibana\n"\
+                    "    dns:\n"\
+                    "      - kibana\n"\
+                    "      - localhost\n"\
+                    "    ip:\n"\
+                    "      - 127.0.0.1\n"\
+                    > config/certs/instances.yml;
+                    bin/elasticsearch-certutil cert --silent --pem -out config/certs/certs.zip --in config/certs/instances.yml --ca-cert config/certs/ca/ca.crt --ca-key config/certs/ca/ca.key;
+                    unzip config/certs/certs.zip -d config/certs;
+                fi;
+                echo "Setting file permissions"
+                chown -R root:root config/certs;
+                find . -type d -exec chmod 750 \{\} \;;
+                find . -type f -exec chmod 640 \{\} \;;
+                echo "Waiting for Elasticsearch availability";
+                until curl -s --cacert config/certs/ca/ca.crt https://elasticsearch:9200 | grep -q "missing authentication credentials"; do sleep 30; done;
+                echo "Setting kibana_system password";
+                until curl -s -X POST --cacert config/certs/ca/ca.crt -u "elastic:integration-test" -H "Content-Type: application/json" https://elasticsearch:9200/_security/user/kibana_system/_password -d "{\"password\":\"integration-test\"}" | grep -q "^{}"; do sleep 10; done;
+                echo "All done!";
+                '
+        healthcheck:
+            test: ['CMD-SHELL', '[ -f config/certs/elasticsearch/elasticsearch.crt ]']
+            interval: 1s
+            timeout: 5s
+            retries: 120
+
+    elasticsearch:
+        image: elasticsearch:8.11.3
+        depends_on:
+            elasticsearch-setup:
+                condition: service_healthy
+        environment:
+            - node.name=elasticsearch
+            - discovery.type=single-node
+            - bootstrap.memory_lock=true
+            - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
+            - ELASTIC_PASSWORD=integration-test
+            - xpack.security.enabled=true
+            - xpack.security.http.ssl.enabled=true
+            - xpack.security.http.ssl.key=certs/elasticsearch/elasticsearch.key
+            - xpack.security.http.ssl.certificate=certs/elasticsearch/elasticsearch.crt
+            - xpack.security.http.ssl.certificate_authorities=certs/ca/ca.crt
+            - xpack.security.transport.ssl.enabled=true
+            - xpack.security.transport.ssl.key=certs/elasticsearch/elasticsearch.key
+            - xpack.security.transport.ssl.certificate=certs/elasticsearch/elasticsearch.crt
+            - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
+            - xpack.security.transport.ssl.verification_mode=certificate
+            - xpack.license.self_generated.type=basic
+        mem_limit: 1g
+        volumes:
+            - ./.data/elastic-certs:/usr/share/elasticsearch/config/certs
+            - ./.data/elastic:/usr/share/elasticsearch/data
+        ports:
+            - 9200:9200
+        healthcheck:
+            test:
+                [
+                    'CMD-SHELL',
+                    'curl --cacert config/certs/ca/ca.crt -s -f -u elastic:integration-test https://localhost:9200/_cluster/health >/dev/null || exit 1',
+                ]
+            interval: 10s
+            timeout: 10s
+            retries: 120
+
+    kibana:
+        image: kibana:8.11.3
+        depends_on:
+            elasticsearch:
+                condition: service_healthy
+        environment:
+            SERVERNAME: kibana
+            ELASTICSEARCH_HOSTS: https://elasticsearch:9200
+            ELASTICSEARCH_USERNAME: kibana_system
+            ELASTICSEARCH_PASSWORD: integration-test
+            ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES: config/certs/ca/ca.crt
+            XPACK_SECURITY_ENCRYPTIONKEY: c34d38b3a14956121ff2170e5030b471551370178f43e5626eec58b04a30fae2
+            XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY: c34d38b3a14956121ff2170e5030b471551370178f43e5626eec58b04a30fae2
+            XPACK_REPORTING_ENCRYPTIONKEY: c34d38b3a14956121ff2170e5030b471551370178f43e5626eec58b04a30fae2
+        volumes:
+            - ./.data/elastic-certs:/usr/share/kibana/config/certs
+            - ./.data/kibana:/usr/share/kibana/data
+        ports:
+            - 5601:5601
+        healthcheck:
+            test: ['CMD-SHELL', "curl -s -I http://localhost:5601 | grep -q 'HTTP/1.1 302 Found'"]
+            interval: 10s
+            timeout: 10s
+            retries: 120
+
     kafka:
         image: confluentinc/cp-kafka:latest
         hostname: broker

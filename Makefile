@@ -17,17 +17,17 @@ endif
 # Start infrastructure containers in background
 .PHONY = start_infra
 start_infra:
-	docker-compose up -d
+	docker-compose up -d --wait
 
 # Start databases containers in background
 .PHONY = start_database
 start_database:
-	docker-compose up -d dynamodb redis mysql
+	docker-compose up -d --wait dynamodb redis mysql mongo elasticsearch
 
 # Start messaging containers in background
 .PHONY = start_messaging
 start_messaging:
-	docker-compose up -d kafka kafka-ui
+	docker-compose up -d --wait kafka kafka-ui
 
 # Run tests
 .PHONY = test
