@@ -22,7 +22,7 @@ start_infra:
 # Start databases containers in background
 .PHONY = start_database
 start_database:
-	docker-compose up -d --wait dynamodb redis mysql mongo elasticsearch
+	docker-compose up -d --wait dynamodb redis mysql mongo elasticsearch opensearch-node1 opensearch-node2
 
 # Start messaging containers in background
 .PHONY = start_messaging
