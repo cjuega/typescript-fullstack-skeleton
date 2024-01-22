@@ -36,6 +36,7 @@
     "@elastic/elasticsearch": "^8.11.0",
     "@faker-js/faker": "^8.2.0",
     "@opensearch-project/opensearch": "^2.5.0",
+    "amqplib": "^0.10.3",
     "avsc": "^5.7.7",
     "aws-xray-sdk": "^3.3.4",
     "dynamodb-onetable": "^2.3.2",
@@ -52,6 +53,7 @@
     "winston": "^3.11.0"
   },
   "devDependencies": {
+    "@types/amqplib": "^0.10.4",
     "@types/jest": "^29.5.7",
     "@types/jest-when": "^3.5.0",
     "@types/mongodb": "^4.0.7",

@@ -27,7 +27,7 @@ start_database:
 # Start messaging containers in background
 .PHONY = start_messaging
 start_messaging:
-	docker-compose up -d --wait kafka kafka-ui
+	docker-compose up -d --wait kafka kafka-ui rabbitmq
 
 # Run tests
 .PHONY = test
