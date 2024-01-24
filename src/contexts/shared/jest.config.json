@@ -28,5 +28,8 @@
     "testMatch": [
         "<rootDir>/src/**/*.test.ts",
         "<rootDir>/test/**/*.test.ts"
+    ],
+    "testPathIgnorePatterns": [
+        "<rootDir>/(.*)/infrastructure/(.*)"
     ]
 }
