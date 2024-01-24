@@ -4,6 +4,8 @@ type TypeormConfig = {
     username: string;
     password: string;
     database: string;
+    entities?: string[];
+    subscribers?: string[];
     migrations?: string[];
 };
 

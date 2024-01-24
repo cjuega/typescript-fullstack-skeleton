@@ -2,7 +2,6 @@ import { Logger } from '@src/domain/logger';
 import { Nullable } from '@src/domain/nullable';
 import TypeormConfig from '@src/infrastructure/persistence/typeorm/typeormConfig';
 import TypeormLogger from '@src/infrastructure/persistence/typeorm/typeormLogger';
-import { resolve } from 'path';
 import { DataSource } from 'typeorm';
 
 export default class TypeormClientFactory {
@@ -25,18 +24,16 @@ export default class TypeormClientFactory {
     }
 
     private static async create(name: string, config: TypeormConfig, logger: Logger): Promise<DataSource> {
-        const entitiesGlob = resolve(__dirname, '../../../../../', '**/infrastructure/persistence/typeorm/*.entity.ts'),
-            subscribersGlob = resolve(__dirname, '../../../../../', '**/infrastructure/persistence/typeorm/*.dbSuscriber.ts'),
-            dataSource = new DataSource({
-                name,
-                type: 'mysql',
-                ...config,
-                entities: [entitiesGlob],
-                subscribers: [subscribersGlob],
-                migrations: config.migrations,
-                synchronize: false,
-                logger: new TypeormLogger(logger)
-            });
+        const dataSource = new DataSource({
+            name,
+            type: 'mysql',
+            ...config,
+            entities: config.entities,
+            subscribers: config.subscribers,
+            migrations: config.migrations,
+            synchronize: false,
+            logger: new TypeormLogger(logger)
+        });
 
         await dataSource.initialize();
 

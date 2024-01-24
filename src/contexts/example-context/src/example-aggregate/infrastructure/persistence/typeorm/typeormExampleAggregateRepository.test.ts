@@ -15,6 +15,7 @@ const noLogger = new NoopLogger(),
             username: 'root',
             password: 'integration-test',
             database: 'database',
+            entities: [resolve(__dirname, '../../../../', '**/typeorm/*.entity.ts')],
             migrations: [resolve(__dirname, '../../../../../', 'db/migrations/mysql/*')]
         },
         noLogger
