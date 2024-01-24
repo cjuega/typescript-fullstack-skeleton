@@ -9,6 +9,18 @@ export default class EventBusMock implements EventBus {
         await this.mockPublish(events);
     }
 
+    whenPublishThrowFor(events: DomainEvent[]): void {
+        const failingEventIds = events.map((e) => e.eventId);
+
+        this.mockPublish.mockImplementation((evts) => {
+            if (evts.some((e) => failingEventIds.includes(e.eventId))) {
+                throw new Error('Publish failed');
+            }
+
+            return Promise.resolve();
+        });
+    }
+
     // eslint-disable-next-line class-methods-use-this,@typescript-eslint/no-unused-vars
     addSubscribers(_subscribers: DomainEventSubscriber<DomainEvent>[]): void {
         //
