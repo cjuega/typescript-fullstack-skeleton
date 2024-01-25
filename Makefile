@@ -12,12 +12,25 @@ ifndef DOCKER_COMPOSE
 	@echo "docker-compose is not available. Please install docker-compose"
 	@exit 1
 endif
+ifndef GITHUB_ACTIONS
 	yarn install --force
+else
+	yarn install --force >/dev/null 2>&1
+endif
 
 # Start infrastructure containers in background
 .PHONY = start_infra
 start_infra:
 	docker-compose up -d --wait
+
+# Start infrastructure containers in background for CI
+.PHONY = start_infra_ci
+start_infra_ci:
+ifndef GITHUB_ACTIONS
+	docker-compose up -d --wait dynamodb redis mysql mongo elasticsearch opensearch-node1 opensearch-node2 kafka rabbitmq
+else
+	docker compose up -d --wait dynamodb redis mysql mongo elasticsearch opensearch-node1 opensearch-node2 kafka rabbitmq >/dev/null 2>&1
+endif
 
 # Start databases containers in background
 .PHONY = start_database
@@ -31,7 +44,7 @@ start_messaging:
 
 # Run tests
 .PHONY = test
-test: deps start_infra
+test: deps start_infra_ci
 	yarn test
 	yarn lint
 
