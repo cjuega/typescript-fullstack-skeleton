@@ -5,7 +5,7 @@ import ExampleAggregate from '@src/example-aggregate/domain/exampleAggregate';
 type CreateExampleAggregateDomainEventBody = Readonly<Omit<Primitives<ExampleAggregate>, 'id'>>;
 
 export default class ExampleAggregateCreatedDomainEvent extends DomainEvent {
-    static readonly eventName = 'company.service.1.event.exampleAggregate.created';
+    static readonly eventName = 'company.service.event.exampleAggregate.created.1';
 
     readonly body: CreateExampleAggregateDomainEventBody;
 
