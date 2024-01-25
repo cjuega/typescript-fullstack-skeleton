@@ -1,5 +1,6 @@
 import DomainEvent from '@context/shared/domain/eventBus/domainEvent';
 import { Primitives } from '@context/shared/domain/primitives';
+// eslint-disable-next-line import/no-cycle
 import ExampleAggregate from '@src/example-aggregate/domain/exampleAggregate';
 
 type CreateExampleAggregateDomainEventBody = Readonly<Omit<Primitives<ExampleAggregate>, 'id'>>;
