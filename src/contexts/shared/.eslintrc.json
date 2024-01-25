@@ -74,6 +74,13 @@
             "rules": {
                 "jest/no-standalone-expect": "off"
             }
+        },
+        {
+            "files": ["db/migrations/mysql/*.ts"],
+            "rules": {
+                "import/prefer-default-export": "off",
+                "class-methods-use-this": "off"
+            }
         }
     ],
     "settings": {

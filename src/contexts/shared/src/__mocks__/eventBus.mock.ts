@@ -1,6 +1,5 @@
 import { EventBus } from '@src/domain/eventBus/eventBus';
 import DomainEvent from '@src/domain/eventBus/domainEvent';
-import { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
 
 export default class EventBusMock implements EventBus {
     private mockPublish = jest.fn<Promise<void>, DomainEvent[][], EventBusMock>();
@@ -19,11 +18,6 @@ export default class EventBusMock implements EventBus {
 
             return Promise.resolve();
         });
-    }
-
-    // eslint-disable-next-line class-methods-use-this,@typescript-eslint/no-unused-vars
-    addSubscribers(_subscribers: DomainEventSubscriber<DomainEvent>[]): void {
-        //
     }
 
     assertLastPublishedEventIs(expectedEvent: DomainEvent): void {
@@ -75,6 +69,16 @@ export default class EventBusMock implements EventBus {
         const publishSpyCalls = this.mockPublish.mock.calls;
 
         expect(publishSpyCalls).toHaveLength(0);
+    }
+
+    customAssertion(nCalls: number, assertion: (callsArgs: DomainEvent[][]) => void): void {
+        const publishSpyCalls = this.mockPublish.mock.calls;
+
+        assertion(publishSpyCalls.slice(-nCalls).map((c) => c[0]));
+    }
+
+    assertPublishHasBeenCalledTimes(n: number): void {
+        expect(this.mockPublish).toHaveBeenCalledTimes(n);
     }
 
     // eslint-disable-next-line class-methods-use-this
