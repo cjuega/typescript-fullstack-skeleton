@@ -29,7 +29,7 @@ start_infra_ci:
 ifndef GITHUB_ACTIONS
 	docker-compose up -d --wait dynamodb redis mysql mongo elasticsearch opensearch-node1 opensearch-node2 kafka rabbitmq
 else
-	docker compose up -d --wait dynamodb redis mysql mongo elasticsearch opensearch-node1 opensearch-node2 kafka rabbitmq >/dev/null 2>&1
+	docker compose up -d --wait dynamodb >/dev/null 2>&1
 endif
 
 # Start databases containers in background
@@ -46,6 +46,13 @@ start_messaging:
 .PHONY = test
 test: deps start_infra_ci
 	yarn test
+	yarn lint
+
+# Integration tests with all the containers are reaching the free tier limits in Github Actions.
+# So we are not running them in Github Actions.
+.PHONY = test_gh
+test_gh: deps start_infra_ci
+	yarn build && yarn test:unit && yarn test:features
 	yarn lint
 
 # Deploy code to an environment in AWS (cicd by default)
