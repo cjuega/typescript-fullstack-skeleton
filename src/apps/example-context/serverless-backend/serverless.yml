@@ -60,4 +60,6 @@ functions:
   # example-aggregate
   - ${file(src/controllers/example-aggregate/create/function.yml)}
   # subscribers
-  - ${file(src/subscribers/function.yml)}
+  - ${file(src/subscribers/domainEvents/function.yml)}
+  # dynamodb streams processors
+  - ${file(src/subscribers/dynamodbStreams/function.yml)}

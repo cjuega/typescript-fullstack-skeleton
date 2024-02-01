@@ -5,7 +5,7 @@ import { Logger } from '@context/shared/domain/logger';
 import { Clock } from '@context/shared/domain/clock';
 import { EventBus } from '@context/shared/domain/eventBus/eventBus';
 import container from '@src/config/dependency-injection';
-import registerSubscribers from '@src/subscribers/registerSubscribers';
+import registerSubscribers from '@src/subscribers/domainEvents/registerSubscribers';
 import { DomainEventUnmarshaller } from '@context/shared/domain/eventBus/domainEventUnmarshaller';
 
 const logger: Logger = container.get('Shared.Logger'),

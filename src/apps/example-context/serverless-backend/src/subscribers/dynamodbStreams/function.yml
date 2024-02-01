@@ -1,0 +1,17 @@
+subscribers:
+  handler: src/subscribers/dynamodbStreams/processors.on
+  iamRoleStatementsInherit: true
+  iamRoleStatements:
+    -
+      Effect: Allow
+      Action:
+        - events:PutEvents
+      Resource: !GetAtt DomainEventBus.Arn
+  events:
+    - stream:
+        type: dynamodb
+        arn: !GetAtt Database.StreamArn
+        enabled: true
+  tags:
+    ServiceName: ${env:SERVICE_NAME}
+    Env: ${self:provider.stage}

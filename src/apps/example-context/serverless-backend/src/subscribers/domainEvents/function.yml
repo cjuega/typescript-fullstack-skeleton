@@ -1,11 +1,11 @@
 subscribers:
-  handler: src/subscribers/subscribers.on
+  handler: src/subscribers/domainEvents/subscribers.on
   events:
     - eventBridge:
         eventBus: !GetAtt DomainEventBus.Name
         pattern:
           detail-type:
-            - company.service.1.event.exampleAggregate.created
+            - company.service.event.exampleAggregate.created.1
   tags:
     ServiceName: ${env:SERVICE_NAME}
     Env: ${self:provider.stage}
