@@ -5,14 +5,19 @@ import CurrentTimeClock from '@context/shared/infrastructure/currentTimeClock';
 import ConsoleLogger from '@context/shared/infrastructure/logger/consoleLogger';
 import DynamodbClientFactory from '@context/shared/infrastructure/persistence/dynamodb/dynamodbClientFactory';
 import DdbOneTableClientFactory from '@context/shared/infrastructure/persistence/ddbOneTable/ddbOneTableClientFactory';
+import DynamodbStreamsOutboxConsumer from '@context/shared/infrastructure/persistence/dynamodb/dynamodbStreamsOutboxConsumer';
 import EventBridgeClientFactory from '@context/shared/infrastructure/eventBus/eventBridge/eventBridgeClientFactory';
 import DomainEventMapping from '@context/shared/domain/eventBus/domainEventMapping';
 import DomainEventJsonMarshaller from '@context/shared/infrastructure/eventBus/marshallers/json/domainEventJsonMarshaller';
 import EventBridgeEventBus from '@context/shared/infrastructure/eventBus/eventBridge/eventBridgeEventBus';
 import InMemorySyncEventBus from '@context/shared/infrastructure/eventBus/inMemorySyncEventBus';
 import config from '@src/config/config';
+import DdbOneTableDomainEventRepository from '@context/shared/infrastructure/persistence/ddbOneTable/ddbOneTableDomainEventRepository';
 
 const serviceName = config.get('serviceName'),
+    failoverOrOutboxConfig = {
+        partitionPrefix: 'outboxEvents'
+    },
     register = (container: ContainerBuilder): void => {
         container.register('Shared.Clock', CurrentTimeClock);
 
@@ -53,12 +58,35 @@ const serviceName = config.get('serviceName'),
             .addArgument(new Reference('Shared.EventBus.DomainEventMapping'));
 
         container
+            // TODO: Uncomment this to use the failover pattern instead of outbox pattern (and comment the line below)
+            //     .register('Shared.EventBus.NoFailover', EventBridgeEventBus)
             .register('Shared.EventBus', EventBridgeEventBus)
             .addArgument(new Reference('Shared.EventBridgeClient'))
             .addArgument(new Reference('Shared.EventBus.EventMarshaller'))
             .addArgument(new Reference('Apps.<YourBoundedContext>.Serverless.EventBridgeConfig'));
 
         container.register('Shared.InMemoryEventBus', InMemorySyncEventBus);
+
+        container
+            .register('Shared.DomainEventRepository', DdbOneTableDomainEventRepository)
+            .addArgument(new Reference('Shared.DynamodbTable'))
+            .addArgument(new Reference('Shared.EventBus.EventMarshaller'))
+            .addArgument(failoverOrOutboxConfig);
+
+        // TODO: Uncomment this to use the failover pattern instead of outbox pattern
+        // container
+        //     .register('Shared.EventBus', WithFailover)
+        //     .addArgument(new Reference('Shared.EventBus.NoFailover'))
+        //     .addArgument(new Reference('Shared.DomainEventRepository'));
+
+        container
+            .register('Shared.DynamodbOutboxConsumer', DynamodbStreamsOutboxConsumer)
+            .addArgument(new Reference('Shared.EventBus.EventMarshaller'))
+            .addArgument(new Reference('Shared.EventBus'))
+            // TODO: Uncomment this to use the failover pattern instead of outbox pattern (and comment the line above)
+            // .addArgument(new Reference('Shared.EventBus.NoFailover'))
+            .addArgument(failoverOrOutboxConfig)
+            .addTag('dynamodbStreamProcessor');
     };
 
 export default register;

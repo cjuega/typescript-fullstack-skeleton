@@ -6,7 +6,8 @@ import CreateExampleAggregateCommandHandler from '@context/example/example-aggre
 const register = (container: ContainerBuilder): void => {
     container
         .register('<YourBoundedContext>.entities.ExampleAggregateRepository', DdbOneTableExampleAggregateRepository)
-        .addArgument(new Reference('Shared.DynamodbTable'));
+        .addArgument(new Reference('Shared.DynamodbTable'))
+        .addArgument(new Reference('Shared.DomainEventRepository'));
 
     container
         .register('<YourBoundedContext>.exampleAggregate.ExampleAggregateCreator', ExampleAggregateCreator)
