@@ -1,5 +1,6 @@
 import DomainEvent from '@src/domain/eventBus/domainEvent';
 import DomainEventMapping from '@src/domain/eventBus/domainEventMapping';
+import Repeater from '@src/domain/repeater.mother';
 import UuidMother from '@src/domain/uuid.mother';
 import DomainEventJsonMarshaller from '@src/infrastructure/eventBus/marshallers/json/domainEventJsonMarshaller';
 import NoopLogger from '@src/infrastructure/logger/noopLogger';
@@ -46,7 +47,7 @@ const noLogger = new NoopLogger(),
     ),
     environmentArranger = new DdbOneTableEnvironmentArranger(table),
     marshaller = new DomainEventJsonMarshaller(new DomainEventMapping([])),
-    repository = new DdbOneTableDomainEventRepository(table, marshaller);
+    repository = new DdbOneTableDomainEventRepository(table, marshaller, { partitionPrefix: 'failedEvents' });
 
 describe('ddbOneTableDomainEventRepository', () => {
     // eslint-disable-next-line jest/no-hooks
@@ -66,6 +67,31 @@ describe('ddbOneTableDomainEventRepository', () => {
             const event = new DummyEvent({ id: UuidMother.random() });
 
             await repository.save(event);
+
+            expect(true).toBe(true);
+        });
+    });
+
+    describe('transactSave', () => {
+        it('should save a DomainEvent', async () => {
+            expect.hasAssertions();
+
+            const event = new DummyEvent({ id: UuidMother.random() }),
+                transaction = {};
+
+            await repository.transactSave(event, transaction);
+
+            expect(true).toBe(true);
+        });
+
+        it('should save a list of DomainEvents transactionally', async () => {
+            expect.hasAssertions();
+
+            const nEvents = 10,
+                events: DomainEvent[] = Repeater.random(() => new DummyEvent({ id: UuidMother.random() }), nEvents),
+                transaction = {};
+
+            await repository.transactSave(events, transaction);
 
             expect(true).toBe(true);
         });

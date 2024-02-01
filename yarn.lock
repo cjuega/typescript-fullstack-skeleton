@@ -1568,6 +1568,13 @@
   dependencies:
     tslib "^2.5.0"
 
+"@aws-sdk/util-dynamodb@^3.501.0":
+  version "3.501.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.501.0.tgz#45efae355b43a1b2cca8707fcffa127ed68a2c7c"
+  integrity sha512-ywBTyScgHqtKJgpPjWW/63lNpRQ53rMkqLGLzcY2NQ6t2JJ2AREk+mZSMEGhUSddqO+zRk+k0uV4BSnLyHY0kQ==
+  dependencies:
+    tslib "^2.5.0"
+
 "@aws-sdk/util-endpoints@3.438.0":
   version "3.438.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/util-endpoints/-/util-endpoints-3.438.0.tgz#fe79a0ad87fc201c8ecb422f6f040bd300c98df9"
@@ -5396,6 +5403,11 @@
   version "5.0.3"
   resolved "https://registry.yarnpkg.com/@types/aria-query/-/aria-query-5.0.3.tgz#07570ebd25f9b516c910a91f7244052c9b58eabc"
   integrity sha512-0Z6Tr7wjKJIk4OUEjVUQMtyunLDy339vcMaj38Kpj6jM2OE1p3S4kXExKZ7a3uXQAPCoy3sbrP1wibDKaf39oA==
+
+"@types/aws-lambda@^8.10.132":
+  version "8.10.132"
+  resolved "https://registry.yarnpkg.com/@types/aws-lambda/-/aws-lambda-8.10.132.tgz#13a72a5486168edab1199c24282e612282507565"
+  integrity sha512-fXP6xK+f0Ir9dt4Tp2NjMmu/nOcQb8e0c8b7z7ql1xo/r4h/uJjGe+1aeH11yhbWU2wakJ5i4gtQAviu6h8OOg==
 
 "@types/aws-lambda@^8.10.92":
   version "8.10.125"

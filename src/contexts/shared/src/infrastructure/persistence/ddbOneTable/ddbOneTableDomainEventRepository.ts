@@ -14,9 +14,12 @@ export default class DdbOneTableDomainEventRepository implements DomainEventRepo
 
     private readonly marshaller: DomainEventMarshaller;
 
-    constructor(table: Promise<Table>, marshaller: DomainEventMarshaller) {
+    private readonly partitionPrefix: string;
+
+    constructor(table: Promise<Table>, marshaller: DomainEventMarshaller, config: { partitionPrefix: string }) {
         this.table = table;
         this.marshaller = marshaller;
+        this.partitionPrefix = config.partitionPrefix;
     }
 
     protected async setupModel(): Promise<void> {
@@ -31,17 +34,21 @@ export default class DdbOneTableDomainEventRepository implements DomainEventRepo
     }
 
     async save(events: DomainEvent | DomainEvent[]): Promise<void> {
+        const transaction = {};
+
+        await this.transactSave(events, transaction);
+    }
+
+    async transactSave(events: DomainEvent | DomainEvent[], transaction: object): Promise<void> {
         await this.setupModel();
 
-        const table = await this.table,
-            transaction = {};
+        const table = await this.table;
 
         if (!Array.isArray(events)) {
-            await table.create('DomainEvent', this.map(events));
-            return;
+            await table.create('DomainEvent', this.map(events), { transaction });
+        } else {
+            await Promise.all(events.map((e) => table.create('DomainEvent', this.map(e), { transaction })));
         }
-
-        await Promise.all(events.map((e) => table.create('DomainEvent', this.map(e), { transaction })));
 
         await table.transact('write', transaction);
     }
@@ -55,7 +62,7 @@ export default class DdbOneTableDomainEventRepository implements DomainEventRepo
         }
 
         return {
-            pk: `failedEvents:${event.occurredOn.toISOString().split('T')[0]}:${Math.floor(Math.random() * N_SHARDS)}`,
+            pk: `${this.partitionPrefix}:${event.occurredOn.toISOString().split('T')[0]}:${Math.floor(Math.random() * N_SHARDS)}`,
             sk: `${event.occurredOn.getTime().toString()}:${event.aggregateId}:${event.eventId}`,
             payload
         };

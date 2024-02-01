@@ -1,11 +1,19 @@
 import AggregateRoot from '@src/domain/aggregateRoot';
+import DdbOneTableDomainEventRepository from '@src/infrastructure/persistence/ddbOneTable/ddbOneTableDomainEventRepository';
 import { Table, Model, OneModel } from 'dynamodb-onetable';
 
 export default abstract class DdbOneTableRepository<T extends AggregateRoot> {
     private readonly table: Promise<Table>;
 
-    constructor(table: Promise<Table>) {
+    private readonly outboxRepository?: DdbOneTableDomainEventRepository;
+
+    private get isOutboxEnabled(): boolean {
+        return !!this.outboxRepository;
+    }
+
+    constructor(table: Promise<Table>, outboxRepository?: DdbOneTableDomainEventRepository) {
         this.table = table;
+        this.outboxRepository = outboxRepository;
     }
 
     protected abstract modelName(): string;
@@ -33,9 +41,26 @@ export default abstract class DdbOneTableRepository<T extends AggregateRoot> {
     }
 
     protected async persist(aggregateRoot: T): Promise<void> {
+        if (this.isOutboxEnabled) {
+            await this.persistAggregateRootAndDomainEvents(aggregateRoot);
+        } else {
+            await this.persistAggregateRoot(aggregateRoot);
+        }
+    }
+
+    private async persistAggregateRootAndDomainEvents(aggregateRoot: T): Promise<void> {
+        const transaction = {};
+
+        await this.persistAggregateRoot(aggregateRoot, transaction);
+        await this.outboxRepository?.transactSave(aggregateRoot.pullDomainEvents(), { transaction });
+
+        await (await this.table).transact('write', transaction);
+    }
+
+    private async persistAggregateRoot(aggregateRoot: T, transaction?: object): Promise<void> {
         const model = await this.getModel();
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        await model.create(aggregateRoot.toPrimitives() as any);
+        await model.create(aggregateRoot.toPrimitives() as any, { transaction });
     }
 }
