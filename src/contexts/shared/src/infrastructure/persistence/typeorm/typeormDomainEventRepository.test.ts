@@ -1,5 +1,6 @@
 import DomainEvent from '@src/domain/eventBus/domainEvent';
 import DomainEventMapping from '@src/domain/eventBus/domainEventMapping';
+import Repeater from '@src/domain/repeater.mother';
 import UuidMother from '@src/domain/uuid.mother';
 import DomainEventJsonMarshaller from '@src/infrastructure/eventBus/marshallers/json/domainEventJsonMarshaller';
 import NoopLogger from '@src/infrastructure/logger/noopLogger';
@@ -55,12 +56,66 @@ describe('typeormDomainEventRepository', () => {
     });
 
     describe('save', () => {
+        it('should do nothing when empty list is provided', async () => {
+            expect.hasAssertions();
+
+            await repository.save([]);
+
+            expect(true).toBe(true);
+        });
+
         it('should save a DomainEvent', async () => {
             expect.hasAssertions();
 
             const event = new DummyEvent({ id: UuidMother.random() });
 
             await repository.save(event);
+
+            expect(true).toBe(true);
+        });
+
+        it('should save a list of DomainEvents', async () => {
+            expect.hasAssertions();
+
+            const nEvents = 10,
+                events: DomainEvent[] = Repeater.random(() => new DummyEvent({ id: UuidMother.random() }), nEvents);
+
+            await repository.save(events);
+
+            expect(true).toBe(true);
+        });
+    });
+
+    describe('transactSave', () => {
+        it('should do nothing when empty list is provided', async () => {
+            expect.hasAssertions();
+
+            const ds = await client;
+
+            await ds.transaction((manager) => repository.transactSave([], manager));
+
+            expect(true).toBe(true);
+        });
+
+        it('should save a DomainEvent', async () => {
+            expect.hasAssertions();
+
+            const event = new DummyEvent({ id: UuidMother.random() }),
+                ds = await client;
+
+            await ds.transaction((manager) => repository.transactSave(event, manager));
+
+            expect(true).toBe(true);
+        });
+
+        it('should save a list of DomainEvents transactionally', async () => {
+            expect.hasAssertions();
+
+            const nEvents = 10,
+                events: DomainEvent[] = Repeater.random(() => new DummyEvent({ id: UuidMother.random() }), nEvents),
+                ds = await client;
+
+            await ds.transaction((manager) => repository.transactSave(events, manager));
 
             expect(true).toBe(true);
         });

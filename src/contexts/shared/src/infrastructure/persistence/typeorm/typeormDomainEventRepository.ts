@@ -2,7 +2,7 @@
 import DomainEvent from '@src/domain/eventBus/domainEvent';
 import { DomainEventMarshaller } from '@src/domain/eventBus/domainEventMarshaller';
 import { DomainEventRepository } from '@src/domain/eventBus/domainEventRepository';
-import { DataSource } from 'typeorm';
+import { DataSource, EntityManager } from 'typeorm';
 
 export default class TypeormDomainEventRepository implements DomainEventRepository {
     private readonly _dataSource: Promise<DataSource>;
@@ -22,13 +22,22 @@ export default class TypeormDomainEventRepository implements DomainEventReposito
     }
 
     async save(events: DomainEvent | DomainEvent[]): Promise<void> {
-        const ds = await this.dataSource,
-            rows = (Array.isArray(events) ? events : [events]).map((e) => ({
-                occurred_on: e.occurredOn,
-                payload: (this.marshaller.marshall(e) as string | Buffer).toString()
-            }));
+        const ds = await this.dataSource;
 
-        await ds.transaction(async (manager) => manager.createQueryBuilder().insert().into(this.tableName).values(rows)
-            .execute());
+        await ds.transaction((manager) => this.transactSave(events, manager));
+    }
+
+    async transactSave(events: DomainEvent | DomainEvent[], manager: EntityManager): Promise<void> {
+        const rows = (Array.isArray(events) ? events : [events]).map((e) => ({
+            occurred_on: e.occurredOn,
+            payload: (this.marshaller.marshall(e) as string | Buffer).toString()
+        }));
+
+        if (!rows.length) {
+            return;
+        }
+
+        await manager.createQueryBuilder().insert().into(this.tableName, ['occurred_on', 'payload']).values(rows)
+            .execute();
     }
 }

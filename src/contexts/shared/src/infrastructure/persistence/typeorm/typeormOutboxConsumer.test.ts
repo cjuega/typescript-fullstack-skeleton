@@ -98,7 +98,7 @@ describe('typeormOutboxConsumer', () => {
                 ),
                 expected = events.sort((a, b) => a.occurredOn.getTime() - b.occurredOn.getTime());
 
-            await Promise.all(events.map((e) => repository.save(e)));
+            await repository.save(events);
 
             await consumer.consume(10);
 
@@ -114,7 +114,7 @@ describe('typeormOutboxConsumer', () => {
             const nEvents = 100,
                 events: DomainEvent[] = Repeater.random(() => new DummyEvent({ id: UuidMother.random() }), nEvents);
 
-            await Promise.all(events.map((e) => repository.save(e)));
+            await repository.save(events);
 
             await Promise.all([consumer.consume(10), consumer.consume(10), consumer.consume(10)]);
 
@@ -131,7 +131,7 @@ describe('typeormOutboxConsumer', () => {
             const nEvents = 10,
                 events: DomainEvent[] = Repeater.random(() => new DummyEvent({ id: UuidMother.random() }), nEvents);
 
-            await Promise.all(events.map((e) => repository.save(e)));
+            await repository.save(events);
 
             await consumer.consume(nEvents);
             await consumer.consume(nEvents);
@@ -148,7 +148,7 @@ describe('typeormOutboxConsumer', () => {
 
             eventBus.whenPublishThrowFor(events);
 
-            await Promise.all(events.map((e) => repository.save(e)));
+            await repository.save(events);
 
             await consumer.consume(nEvents);
             await consumer.consume(nEvents);
