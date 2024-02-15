@@ -3,7 +3,7 @@ import DomainEvent from '@src/domain/eventBus/domainEvent';
 import DomainEventMapping from '@src/domain/eventBus/domainEventMapping';
 import { DomainEventName } from '@src/domain/eventBus/domainEventName';
 import { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
-import UuidMother from '@src/domain/uuid.mother';
+import ObjectMother from '@src/domain/objectMother.mother';
 import DomainEventAvroMapping, { DomainEventAvroPathPair } from '@src/infrastructure/eventBus/marshallers/avro/domainEventAvroMapping';
 import DomainEventAvroMarshaller from '@src/infrastructure/eventBus/marshallers/avro/domainEventAvroMarshaller';
 import { resolve } from 'path';
@@ -77,7 +77,7 @@ describe('domainEventAvroMarshaller', () => {
         it('should return an AVRO buffer when there is an AVRO schema for the event', () => {
             expect.hasAssertions();
 
-            const event = new DummyEvent({ id: UuidMother.random() });
+            const event = new DummyEvent({ id: ObjectMother.uuid() });
 
             marshaller.marshall(event);
 
@@ -87,7 +87,7 @@ describe('domainEventAvroMarshaller', () => {
         it("should throw an error when there isn't an AVRO schema for the event", () => {
             expect.hasAssertions();
 
-            const event = new DummyUnknownEvent({ id: UuidMother.random() });
+            const event = new DummyUnknownEvent({ id: ObjectMother.uuid() });
 
             expect(() => marshaller.marshall(event)).toThrow(`No AVRO schema associated to event <${DummyUnknownEvent.eventName}>`);
         });
@@ -97,7 +97,7 @@ describe('domainEventAvroMarshaller', () => {
         it('should decode an AVRO buffer when there is an AVRO schema for the event', () => {
             expect.hasAssertions();
 
-            const event = new DummyEvent({ id: UuidMother.random() }),
+            const event = new DummyEvent({ id: ObjectMother.uuid() }),
                 buffer = marshaller.marshall(event),
                 actual = marshaller.unmarshall(buffer);
 

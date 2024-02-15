@@ -1,7 +1,7 @@
 import DomainEvent from '@src/domain/eventBus/domainEvent';
 import DomainEventMapping from '@src/domain/eventBus/domainEventMapping';
 import Repeater from '@src/domain/repeater.mother';
-import UuidMother from '@src/domain/uuid.mother';
+import ObjectMother from '@src/domain/objectMother.mother';
 import DomainEventJsonMarshaller from '@src/infrastructure/eventBus/marshallers/json/domainEventJsonMarshaller';
 import NoopLogger from '@src/infrastructure/logger/noopLogger';
 import TypeormClientFactory from '@src/infrastructure/persistence/typeorm/typeormClientFactory';
@@ -67,7 +67,7 @@ describe('typeormDomainEventRepository', () => {
         it('should save a DomainEvent', async () => {
             expect.hasAssertions();
 
-            const event = new DummyEvent({ id: UuidMother.random() });
+            const event = new DummyEvent({ id: ObjectMother.uuid() });
 
             await repository.save(event);
 
@@ -78,7 +78,7 @@ describe('typeormDomainEventRepository', () => {
             expect.hasAssertions();
 
             const nEvents = 10,
-                events: DomainEvent[] = Repeater.random(() => new DummyEvent({ id: UuidMother.random() }), nEvents);
+                events: DomainEvent[] = Repeater.random(() => new DummyEvent({ id: ObjectMother.uuid() }), nEvents);
 
             await repository.save(events);
 
@@ -100,7 +100,7 @@ describe('typeormDomainEventRepository', () => {
         it('should save a DomainEvent', async () => {
             expect.hasAssertions();
 
-            const event = new DummyEvent({ id: UuidMother.random() }),
+            const event = new DummyEvent({ id: ObjectMother.uuid() }),
                 ds = await client;
 
             await ds.transaction((manager) => repository.transactSave(event, manager));
@@ -112,7 +112,7 @@ describe('typeormDomainEventRepository', () => {
             expect.hasAssertions();
 
             const nEvents = 10,
-                events: DomainEvent[] = Repeater.random(() => new DummyEvent({ id: UuidMother.random() }), nEvents),
+                events: DomainEvent[] = Repeater.random(() => new DummyEvent({ id: ObjectMother.uuid() }), nEvents),
                 ds = await client;
 
             await ds.transaction((manager) => repository.transactSave(events, manager));

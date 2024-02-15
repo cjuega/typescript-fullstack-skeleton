@@ -1,4 +1,4 @@
-import UuidMother from '@context/shared/domain/uuid.mother';
+import ObjectMother from '@context/shared/domain/objectMother.mother';
 import ExampleAggregateId from '@src/example-aggregate/domain/exampleAggregateId';
 
 export default class ExampleAggregateIdMother {
@@ -7,6 +7,6 @@ export default class ExampleAggregateIdMother {
     }
 
     static random(): ExampleAggregateId {
-        return ExampleAggregateIdMother.create(UuidMother.random());
+        return ExampleAggregateIdMother.create(ObjectMother.uuid());
     }
 }

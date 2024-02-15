@@ -2,7 +2,7 @@
 import DomainEvent from '@src/domain/eventBus/domainEvent';
 import { DomainEventName } from '@src/domain/eventBus/domainEventName';
 import { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
-import UuidMother from '@src/domain/uuid.mother';
+import ObjectMother from '@src/domain/objectMother.mother';
 import InMemorySyncEventBus from '@src/infrastructure/eventBus/inMemorySyncEventBus';
 
 class DummyEvent extends DomainEvent {
@@ -47,7 +47,7 @@ describe('inMemorySyncEventBus', () => {
     it('the subscriber should be called when the event it is subscribed to is published', async () => {
         expect.assertions(1);
 
-        const event = new DummyEvent({ id: UuidMother.random() }),
+        const event = new DummyEvent({ id: ObjectMother.uuid() }),
             subscriber = new DomainEventSubscriberDummy(),
             eventBus = new InMemorySyncEventBus([subscriber]);
 

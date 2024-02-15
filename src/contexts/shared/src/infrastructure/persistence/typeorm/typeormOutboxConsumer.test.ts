@@ -6,7 +6,6 @@ import { DomainEventName } from '@src/domain/eventBus/domainEventName';
 import { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
 import ObjectMother from '@src/domain/objectMother.mother';
 import Repeater from '@src/domain/repeater.mother';
-import UuidMother from '@src/domain/uuid.mother';
 import DomainEventJsonMarshaller from '@src/infrastructure/eventBus/marshallers/json/domainEventJsonMarshaller';
 import NoopLogger from '@src/infrastructure/logger/noopLogger';
 import TypeormClientFactory from '@src/infrastructure/persistence/typeorm/typeormClientFactory';
@@ -93,7 +92,7 @@ describe('typeormOutboxConsumer', () => {
 
             const nEvents = 10,
                 events: DomainEvent[] = Repeater.random(
-                    () => new DummyEvent({ id: UuidMother.random(), occurredOn: ObjectMother.recentDate() }),
+                    () => new DummyEvent({ id: ObjectMother.uuid(), occurredOn: ObjectMother.recentDate() }),
                     nEvents
                 ),
                 expected = events.sort((a, b) => a.occurredOn.getTime() - b.occurredOn.getTime());
@@ -112,7 +111,7 @@ describe('typeormOutboxConsumer', () => {
             expect.hasAssertions();
 
             const nEvents = 100,
-                events: DomainEvent[] = Repeater.random(() => new DummyEvent({ id: UuidMother.random() }), nEvents);
+                events: DomainEvent[] = Repeater.random(() => new DummyEvent({ id: ObjectMother.uuid() }), nEvents);
 
             await repository.save(events);
 
@@ -129,7 +128,7 @@ describe('typeormOutboxConsumer', () => {
             expect.hasAssertions();
 
             const nEvents = 10,
-                events: DomainEvent[] = Repeater.random(() => new DummyEvent({ id: UuidMother.random() }), nEvents);
+                events: DomainEvent[] = Repeater.random(() => new DummyEvent({ id: ObjectMother.uuid() }), nEvents);
 
             await repository.save(events);
 
@@ -143,7 +142,7 @@ describe('typeormOutboxConsumer', () => {
             expect.hasAssertions();
 
             const nEvents = 10,
-                events: DomainEvent[] = Repeater.random(() => new DummyEvent({ id: UuidMother.random() }), nEvents),
+                events: DomainEvent[] = Repeater.random(() => new DummyEvent({ id: ObjectMother.uuid() }), nEvents),
                 expected = events;
 
             eventBus.whenPublishThrowFor(events);

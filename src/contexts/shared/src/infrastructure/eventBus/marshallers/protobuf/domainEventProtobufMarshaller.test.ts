@@ -3,7 +3,7 @@ import DomainEvent from '@src/domain/eventBus/domainEvent';
 import DomainEventMapping from '@src/domain/eventBus/domainEventMapping';
 import { DomainEventName } from '@src/domain/eventBus/domainEventName';
 import { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
-import UuidMother from '@src/domain/uuid.mother';
+import ObjectMother from '@src/domain/objectMother.mother';
 // eslint-disable-next-line max-len
 import DomainEventProtobufMapping, {
     DomainEventProtobufPathPair
@@ -94,7 +94,7 @@ describe('domainEventProtobufMarshaller', () => {
         it('should return an Protobuf when there is a Protobuf schema for the event', () => {
             expect.hasAssertions();
 
-            const event = new DummyEvent({ id: UuidMother.random() });
+            const event = new DummyEvent({ id: ObjectMother.uuid() });
 
             marshaller.marshall(event);
 
@@ -104,7 +104,7 @@ describe('domainEventProtobufMarshaller', () => {
         it("should throw an error when there isn't an Protobuf schema for the event", () => {
             expect.hasAssertions();
 
-            const event = new DummyUnknownEvent({ id: UuidMother.random() });
+            const event = new DummyUnknownEvent({ id: ObjectMother.uuid() });
 
             expect(() => marshaller.marshall(event)).toThrow(`No Protobuf schema associated to event <${DummyUnknownEvent.eventName}>`);
         });
@@ -114,7 +114,7 @@ describe('domainEventProtobufMarshaller', () => {
         it('should decode a Protobuf buffer when there is a Protobuf schema for the event', () => {
             expect.hasAssertions();
 
-            const event = new DummyEvent({ id: UuidMother.random() }),
+            const event = new DummyEvent({ id: ObjectMother.uuid() }),
                 buffer = marshaller.marshall(event),
                 actual = marshaller.unmarshall(buffer);
 

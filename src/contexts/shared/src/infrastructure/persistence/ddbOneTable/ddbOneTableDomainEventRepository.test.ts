@@ -1,7 +1,7 @@
 import DomainEvent from '@src/domain/eventBus/domainEvent';
 import DomainEventMapping from '@src/domain/eventBus/domainEventMapping';
 import Repeater from '@src/domain/repeater.mother';
-import UuidMother from '@src/domain/uuid.mother';
+import ObjectMother from '@src/domain/objectMother.mother';
 import DomainEventJsonMarshaller from '@src/infrastructure/eventBus/marshallers/json/domainEventJsonMarshaller';
 import NoopLogger from '@src/infrastructure/logger/noopLogger';
 import DdbOneTableClientFactory from '@src/infrastructure/persistence/ddbOneTable/ddbOneTableClientFactory';
@@ -72,7 +72,7 @@ describe('ddbOneTableDomainEventRepository', () => {
         it('should save a DomainEvent', async () => {
             expect.hasAssertions();
 
-            const event = new DummyEvent({ id: UuidMother.random() });
+            const event = new DummyEvent({ id: ObjectMother.uuid() });
 
             await repository.save(event);
 
@@ -83,7 +83,7 @@ describe('ddbOneTableDomainEventRepository', () => {
             expect.hasAssertions();
 
             const nEvents = 10,
-                events: DomainEvent[] = Repeater.random(() => new DummyEvent({ id: UuidMother.random() }), nEvents);
+                events: DomainEvent[] = Repeater.random(() => new DummyEvent({ id: ObjectMother.uuid() }), nEvents);
 
             await repository.save(events);
 
@@ -105,7 +105,7 @@ describe('ddbOneTableDomainEventRepository', () => {
         it('should save a DomainEvent', async () => {
             expect.hasAssertions();
 
-            const event = new DummyEvent({ id: UuidMother.random() }),
+            const event = new DummyEvent({ id: ObjectMother.uuid() }),
                 transaction = {};
 
             await repository.transactSave(event, transaction);
@@ -117,7 +117,7 @@ describe('ddbOneTableDomainEventRepository', () => {
             expect.hasAssertions();
 
             const nEvents = 10,
-                events: DomainEvent[] = Repeater.random(() => new DummyEvent({ id: UuidMother.random() }), nEvents),
+                events: DomainEvent[] = Repeater.random(() => new DummyEvent({ id: ObjectMother.uuid() }), nEvents),
                 transaction = {};
 
             await repository.transactSave(events, transaction);
