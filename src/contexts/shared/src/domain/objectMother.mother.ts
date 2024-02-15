@@ -13,7 +13,7 @@ export default class ObjectMother {
         return faker.lorem.words();
     }
 
-    static boolean(): boolean {
+    static coin(): boolean {
         return faker.datatype.boolean();
     }
 
@@ -30,7 +30,7 @@ export default class ObjectMother {
     }
 
     static spanishPhoneNumber(): string {
-        const format = ObjectMother.boolean() ? '91#######' : '6########';
+        const format = ObjectMother.coin() ? '91#######' : '6########';
 
         return faker.phone.number(format);
     }

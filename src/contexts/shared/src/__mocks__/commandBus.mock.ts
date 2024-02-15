@@ -15,7 +15,7 @@ export default class CommandBusMock implements CommandBus {
 
     whenDispatchThenThrowRandomly(error: Error): void {
         this.mockDispatch.mockImplementation(() => {
-            const shouldFail = ObjectMother.boolean();
+            const shouldFail = ObjectMother.coin();
 
             if (shouldFail) {
                 return Promise.reject(error);
