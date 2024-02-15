@@ -61,6 +61,14 @@ describe('ddbOneTableDomainEventRepository', () => {
     });
 
     describe('save', () => {
+        it('should do nothing when empty list is provided', async () => {
+            expect.hasAssertions();
+
+            await repository.save([]);
+
+            expect(true).toBe(true);
+        });
+
         it('should save a DomainEvent', async () => {
             expect.hasAssertions();
 
@@ -70,9 +78,30 @@ describe('ddbOneTableDomainEventRepository', () => {
 
             expect(true).toBe(true);
         });
+
+        it('should save a list of DomainEvents', async () => {
+            expect.hasAssertions();
+
+            const nEvents = 10,
+                events: DomainEvent[] = Repeater.random(() => new DummyEvent({ id: UuidMother.random() }), nEvents);
+
+            await repository.save(events);
+
+            expect(true).toBe(true);
+        });
     });
 
     describe('transactSave', () => {
+        it('should do nothing when empty list is provided', async () => {
+            expect.hasAssertions();
+
+            const transaction = {};
+
+            await repository.transactSave([], transaction);
+
+            expect(true).toBe(true);
+        });
+
         it('should save a DomainEvent', async () => {
             expect.hasAssertions();
 

@@ -47,6 +47,10 @@ export default class DdbOneTableDomainEventRepository implements DomainEventRepo
         if (!Array.isArray(events)) {
             await table.create('DomainEvent', this.map(events), { transaction });
         } else {
+            if (!events.length) {
+                return;
+            }
+
             await Promise.all(events.map((e) => table.create('DomainEvent', this.map(e), { transaction })));
         }
 
