@@ -1,6 +1,5 @@
 import DomainEvent from '@src/domain/eventBus/domainEvent';
 import DomainEventMapping from '@src/domain/eventBus/domainEventMapping';
-import Repeater from '@src/domain/repeater.mother';
 import ObjectMother from '@src/domain/objectMother.mother';
 import DomainEventJsonMarshaller from '@src/infrastructure/eventBus/marshallers/json/domainEventJsonMarshaller';
 import NoopLogger from '@src/infrastructure/logger/noopLogger';
@@ -83,7 +82,7 @@ describe('ddbOneTableDomainEventRepository', () => {
             expect.hasAssertions();
 
             const nEvents = 10,
-                events: DomainEvent[] = Repeater.random(() => new DummyEvent({ id: ObjectMother.uuid() }), nEvents);
+                events = ObjectMother.repeat(() => new DummyEvent({ id: ObjectMother.uuid() }), nEvents);
 
             await repository.save(events);
 
@@ -117,7 +116,7 @@ describe('ddbOneTableDomainEventRepository', () => {
             expect.hasAssertions();
 
             const nEvents = 10,
-                events: DomainEvent[] = Repeater.random(() => new DummyEvent({ id: ObjectMother.uuid() }), nEvents),
+                events = ObjectMother.repeat(() => new DummyEvent({ id: ObjectMother.uuid() }), nEvents),
                 transaction = {};
 
             await repository.transactSave(events, transaction);

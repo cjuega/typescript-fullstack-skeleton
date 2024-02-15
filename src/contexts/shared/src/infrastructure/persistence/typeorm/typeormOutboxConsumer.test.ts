@@ -5,7 +5,6 @@ import DomainEventMapping from '@src/domain/eventBus/domainEventMapping';
 import { DomainEventName } from '@src/domain/eventBus/domainEventName';
 import { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
 import ObjectMother from '@src/domain/objectMother.mother';
-import Repeater from '@src/domain/repeater.mother';
 import DomainEventJsonMarshaller from '@src/infrastructure/eventBus/marshallers/json/domainEventJsonMarshaller';
 import NoopLogger from '@src/infrastructure/logger/noopLogger';
 import TypeormClientFactory from '@src/infrastructure/persistence/typeorm/typeormClientFactory';
@@ -91,7 +90,7 @@ describe('typeormOutboxConsumer', () => {
             expect.hasAssertions();
 
             const nEvents = 10,
-                events: DomainEvent[] = Repeater.random(
+                events = ObjectMother.repeat(
                     () => new DummyEvent({ id: ObjectMother.uuid(), occurredOn: ObjectMother.recentDate() }),
                     nEvents
                 ),
@@ -111,7 +110,7 @@ describe('typeormOutboxConsumer', () => {
             expect.hasAssertions();
 
             const nEvents = 100,
-                events: DomainEvent[] = Repeater.random(() => new DummyEvent({ id: ObjectMother.uuid() }), nEvents);
+                events = ObjectMother.repeat(() => new DummyEvent({ id: ObjectMother.uuid() }), nEvents);
 
             await repository.save(events);
 
@@ -128,7 +127,7 @@ describe('typeormOutboxConsumer', () => {
             expect.hasAssertions();
 
             const nEvents = 10,
-                events: DomainEvent[] = Repeater.random(() => new DummyEvent({ id: ObjectMother.uuid() }), nEvents);
+                events = ObjectMother.repeat(() => new DummyEvent({ id: ObjectMother.uuid() }), nEvents);
 
             await repository.save(events);
 
@@ -142,7 +141,7 @@ describe('typeormOutboxConsumer', () => {
             expect.hasAssertions();
 
             const nEvents = 10,
-                events: DomainEvent[] = Repeater.random(() => new DummyEvent({ id: ObjectMother.uuid() }), nEvents),
+                events = ObjectMother.repeat(() => new DummyEvent({ id: ObjectMother.uuid() }), nEvents),
                 expected = events;
 
             eventBus.whenPublishThrowFor(events);
