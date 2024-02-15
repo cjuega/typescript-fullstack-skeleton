@@ -1,5 +1,5 @@
 import Datetime from '@src/domain/datetime';
-import MotherCreator from '@src/domain/motherCreator.mother';
+import ObjectMother from '@src/domain/objectMother.mother';
 
 export default class DatetimeMother {
     static create(datetime?: string): Datetime {
@@ -7,7 +7,7 @@ export default class DatetimeMother {
     }
 
     static random(): Datetime {
-        const date = MotherCreator.recentDate();
+        const date = ObjectMother.recentDate();
 
         return DatetimeMother.create(date.toISOString());
     }

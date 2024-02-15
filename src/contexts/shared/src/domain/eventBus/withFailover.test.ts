@@ -2,7 +2,7 @@ import DomainEventRepositoryMock from '@src/__mocks__/domainEventRepository.mock
 import EventBusMock from '@src/__mocks__/eventBus.mock';
 import DomainEvent from '@src/domain/eventBus/domainEvent';
 import WithFailover from '@src/domain/eventBus/withFailover';
-import MotherCreator from '@src/domain/motherCreator.mother';
+import ObjectMother from '@src/domain/objectMother.mother';
 import Repeater from '@src/domain/repeater.mother';
 
 class DummyEvent extends DomainEvent {
@@ -30,7 +30,7 @@ describe('withFailover', () => {
         const decoratedEventBus = new EventBusMock(),
             repository = new DomainEventRepositoryMock(),
             eventBus = new WithFailover(decoratedEventBus, repository),
-            events = Repeater.random<DummyEvent>(() => new DummyEvent({ id: MotherCreator.uuid() }), MotherCreator.positiveNumber(20));
+            events = Repeater.random<DummyEvent>(() => new DummyEvent({ id: ObjectMother.uuid() }), ObjectMother.positiveNumber(20));
 
         await eventBus.publish(events);
 
@@ -44,7 +44,7 @@ describe('withFailover', () => {
         const decoratedEventBus = new EventBusMock(),
             repository = new DomainEventRepositoryMock(),
             eventBus = new WithFailover(decoratedEventBus, repository),
-            events = Repeater.random<DummyEvent>(() => new DummyEvent({ id: MotherCreator.uuid() }), MotherCreator.positiveNumber(20)),
+            events = Repeater.random<DummyEvent>(() => new DummyEvent({ id: ObjectMother.uuid() }), ObjectMother.positiveNumber(20)),
             failingEvents = events.filter((_, i) => i % 2 === 0);
 
         decoratedEventBus.whenPublishThrowFor(failingEvents);

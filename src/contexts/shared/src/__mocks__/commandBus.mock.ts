@@ -1,4 +1,4 @@
-import MotherCreator from '@src/domain/motherCreator.mother';
+import ObjectMother from '@src/domain/objectMother.mother';
 import Command from '@src/domain/commandBus/command';
 import { CommandBus } from '@src/domain/commandBus/commandBus';
 
@@ -15,7 +15,7 @@ export default class CommandBusMock implements CommandBus {
 
     whenDispatchThenThrowRandomly(error: Error): void {
         this.mockDispatch.mockImplementation(() => {
-            const shouldFail = MotherCreator.boolean();
+            const shouldFail = ObjectMother.boolean();
 
             if (shouldFail) {
                 return Promise.reject(error);

@@ -1,7 +1,7 @@
-import MotherCreator from '@src/domain/motherCreator.mother';
+import ObjectMother from '@src/domain/objectMother.mother';
 
 export default class UuidMother {
     static random(): string {
-        return MotherCreator.uuid();
+        return ObjectMother.uuid();
     }
 }

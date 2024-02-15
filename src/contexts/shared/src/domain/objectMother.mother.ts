@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-export default class MotherCreator {
+export default class ObjectMother {
     static uuid(): string {
         return faker.string.uuid();
     }
@@ -30,7 +30,7 @@ export default class MotherCreator {
     }
 
     static spanishPhoneNumber(): string {
-        const format = MotherCreator.boolean() ? '91#######' : '6########';
+        const format = ObjectMother.boolean() ? '91#######' : '6########';
 
         return faker.phone.number(format);
     }

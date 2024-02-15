@@ -4,7 +4,7 @@ import DomainEvent from '@src/domain/eventBus/domainEvent';
 import DomainEventMapping from '@src/domain/eventBus/domainEventMapping';
 import { DomainEventName } from '@src/domain/eventBus/domainEventName';
 import { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
-import MotherCreator from '@src/domain/motherCreator.mother';
+import ObjectMother from '@src/domain/objectMother.mother';
 import Repeater from '@src/domain/repeater.mother';
 import UuidMother from '@src/domain/uuid.mother';
 import DomainEventJsonMarshaller from '@src/infrastructure/eventBus/marshallers/json/domainEventJsonMarshaller';
@@ -93,7 +93,7 @@ describe('typeormOutboxConsumer', () => {
 
             const nEvents = 10,
                 events: DomainEvent[] = Repeater.random(
-                    () => new DummyEvent({ id: UuidMother.random(), occurredOn: MotherCreator.recentDate() }),
+                    () => new DummyEvent({ id: UuidMother.random(), occurredOn: ObjectMother.recentDate() }),
                     nEvents
                 ),
                 expected = events.sort((a, b) => a.occurredOn.getTime() - b.occurredOn.getTime());
