@@ -14,8 +14,7 @@ export default class TypeormExampleAggregateRepository extends TypeormRepository
     }
 
     async save(aggregate: ExampleAggregate): Promise<void> {
-        const repository = await this.repository();
-        await repository.save(aggregate);
+        await this.persist(aggregate);
     }
 
     async search(id: ExampleAggregateId): Promise<Nullable<ExampleAggregate>> {
