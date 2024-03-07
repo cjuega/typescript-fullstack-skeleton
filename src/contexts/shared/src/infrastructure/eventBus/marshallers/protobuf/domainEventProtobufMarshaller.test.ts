@@ -66,6 +66,11 @@ class DummyUnknownEvent extends DomainEvent {
 
 class DomainEventSubscriberDummy implements DomainEventSubscriber<DummyEvent | DummyUnknownEvent> {
     // eslint-disable-next-line class-methods-use-this
+    name(): string {
+        throw new Error('Method not implemented.');
+    }
+
+    // eslint-disable-next-line class-methods-use-this
     subscribedTo(): DomainEventName<DummyEvent>[] {
         return [DummyEvent, DummyUnknownEvent];
     }

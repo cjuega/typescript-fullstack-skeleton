@@ -32,6 +32,11 @@ class DomainEventSubscriberDummy implements DomainEventSubscriber<DummyEvent> {
     private expectation: ((actual: DummyEvent) => void) | undefined = undefined;
 
     // eslint-disable-next-line class-methods-use-this
+    name(): string {
+        return 'execute-action-on-dummy-event';
+    }
+
+    // eslint-disable-next-line class-methods-use-this
     subscribedTo(): DomainEventName<DummyEvent>[] {
         return [DummyEvent];
     }
