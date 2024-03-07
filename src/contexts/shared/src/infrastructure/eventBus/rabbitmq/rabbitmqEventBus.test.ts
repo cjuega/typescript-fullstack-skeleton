@@ -7,8 +7,10 @@ import ObjectMother from '@src/domain/objectMother.mother';
 import DomainEventJsonMarshaller from '@src/infrastructure/eventBus/marshallers/json/domainEventJsonMarshaller';
 import RabbitmqClientFactory from '@src/infrastructure/eventBus/rabbitmq/rabbitmqClientFactory';
 import RabbitmqConfig from '@src/infrastructure/eventBus/rabbitmq/rabbitmqConfig';
+import RabbitmqConfigurer from '@src/infrastructure/eventBus/rabbitmq/rabbitmqConfigurer';
 import RabbitmqEnvironmentArranger from '@src/infrastructure/eventBus/rabbitmq/rabbitmqEnvironmentArranger';
 import RabbitmqEventBus from '@src/infrastructure/eventBus/rabbitmq/rabbitmqEventBus';
+import RabbitmqEventBusConsumer from '@src/infrastructure/eventBus/rabbitmq/rabbitmqEventBusConsumer';
 
 class DummyEvent extends DomainEvent {
     static eventName = 'dummy:event';
@@ -58,19 +60,25 @@ const config: RabbitmqConfig = {
     port: 5672,
     username: 'root',
     password: 'integration-test',
-    exchange: ''
+    exchange: 'domain-events',
+    maxRetries: 3
 },
     connection = RabbitmqClientFactory.createClient('integration-tests', config),
     subscribers = [new DomainEventSubscriberDummy()],
     marshaller = new DomainEventJsonMarshaller(new DomainEventMapping(subscribers)),
     eventBus = new RabbitmqEventBus(connection, marshaller, config),
-    arranger = new RabbitmqEnvironmentArranger(connection);
+    eventBusConsumer = new RabbitmqEventBusConsumer(connection, subscribers, marshaller),
+    configurer = new RabbitmqConfigurer(connection, subscribers, config, { retryDelay: 1000 }),
+    arranger = new RabbitmqEnvironmentArranger(connection, configurer);
 
 describe('rabbitmqEventBus', () => {
     // eslint-disable-next-line jest/no-hooks
     beforeEach(async () => {
         await arranger.arrange();
         subscribers[0].setExpectation(undefined);
+        // We must start the consumer before each test because the rabbitMQ connection is shared
+        // and the configurer closes it after configuring exchanges and queues
+        await eventBusConsumer.start();
     });
 
     // eslint-disable-next-line jest/no-hooks
@@ -87,5 +95,24 @@ describe('rabbitmqEventBus', () => {
         await eventBus.publish([event]);
 
         expect(true).toBe(true);
+    });
+
+    // eslint-disable-next-line jest/no-done-callback
+    it('the subscriber should be called when the event it is subscribed to is published', (done) => {
+        expect.hasAssertions();
+
+        const event = new DummyEvent({ id: ObjectMother.uuid() });
+
+        subscribers[0].setExpectation((actual: DummyEvent) => {
+            expect(actual).toStrictEqual(event);
+        });
+
+        eventBus.publish([event])
+            .then(done)
+            .catch(() => {
+                // eslint-disable-next-line jest/no-conditional-expect
+                expect(false).toBe(true);
+                done();
+            });
     });
 });

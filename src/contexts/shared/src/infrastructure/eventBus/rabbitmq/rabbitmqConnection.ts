@@ -74,8 +74,13 @@ export default class RabbitmqConnection {
     }
 
     async connect(): Promise<void> {
-        this._connection = await this.createConnection();
-        this._channel = await this.createChannel();
+        if (!this._connection) {
+            this._connection = await this.createConnection();
+        }
+
+        if (!this._channel) {
+            this._channel = await this.createChannel();
+        }
     }
 
     private async createConnection(): Promise<Connection> {
@@ -104,7 +109,10 @@ export default class RabbitmqConnection {
 
     async close(): Promise<void> {
         await this.channel.close();
+        this._channel = undefined;
+
         await this.connection.close();
+        this._connection = undefined;
     }
 
     async publish(
@@ -113,12 +121,80 @@ export default class RabbitmqConnection {
         message: Buffer,
         options: { messageId: string; contentType: string; contentEncoding: string; priority?: number; headers?: unknown }
     ): Promise<void> {
-        if (!this._channel) {
-            await this.connect();
-        }
+        await this.connect();
 
         return new Promise((resolve, reject) => {
             this.channel.publish(exchange, routingKey, message, options, (err: Error) => (err ? reject(err) : resolve()));
         });
+    }
+
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    async consume(queueName: string, subscriber: (message: ConsumeMessage) => {}): Promise<void> {
+        await this.channel.consume(queueName, (msg: ConsumeMessage | null) => {
+            if (msg) {
+                subscriber(msg);
+            }
+        });
+    }
+
+    async handleError(message: ConsumeMessage, queueName: string): Promise<void> {
+        if (this.hasMaxRetriesReached(message)) {
+            await this.publishToDeadletter(message, queueName);
+        } else {
+            await this.publishToRetry(message, queueName);
+        }
+    }
+
+    private hasMaxRetriesReached(message: ConsumeMessage): boolean {
+        if (this.config.maxRetries === undefined) {
+            return false;
+        }
+
+        const count = message.properties.headers['redelivery-count'] as number;
+
+        return count >= this.config.maxRetries;
+    }
+
+    private async publishToRetry(message: ConsumeMessage, queueName: string): Promise<void> {
+        const options = RabbitmqConnection.generateMessageOptionsFromRedeliveredMessage(message);
+
+        await this.publish(RabbitmqConnection.retryName(this.config.exchange), queueName, message.content, options);
+    }
+
+    private async publishToDeadletter(message: ConsumeMessage, queueName: string): Promise<void> {
+        const options = RabbitmqConnection.generateMessageOptionsFromRedeliveredMessage(message);
+
+        await this.publish(RabbitmqConnection.deadLetterName(this.config.exchange), queueName, message.content, options);
+    }
+
+    private static generateMessageOptionsFromRedeliveredMessage(message: ConsumeMessage): {
+        messageId: string;
+        contentType: string;
+        contentEncoding: string;
+        priority?: number;
+        headers?: unknown;
+    } {
+        return {
+            messageId: message.properties.messageId as string,
+            headers: { ...message.properties.headers, ...RabbitmqConnection.incrementRedeliveryCount(message.properties.headers) },
+            contentType: message.properties.contentType as string,
+            contentEncoding: message.properties.contentEncoding as string,
+            priority: message.properties.priority as number
+        };
+    }
+
+    private static incrementRedeliveryCount(headers: MessagePropertyHeaders): Record<string, unknown> {
+        const count = headers['redelivery-count'] as number;
+
+        if (count) {
+            return { 'redelivery-count': count + 1 };
+        }
+
+        return { 'redelivery-count': 1 };
+    }
+
+    // eslint-disable-next-line @typescript-eslint/require-await
+    async ack(message: ConsumeMessage): Promise<void> {
+        this.channel.ack(message);
     }
 }

@@ -5,6 +5,7 @@ type RabbitmqConfig = {
     password: string;
     exchange: string;
     vhost?: string;
+    maxRetries?: number;
 };
 
 export default RabbitmqConfig;
