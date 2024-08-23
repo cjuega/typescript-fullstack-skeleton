@@ -1,0 +1,48 @@
+{
+  "name": "@app/react-fe",
+  "version": "1.0.0",
+  "description": "React UI of the example-context bounded context",
+  "author": "Carlos Juega",
+  "license": "MIT",
+  "scripts": {
+    "start": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "test": "vitest",
+    "preview": "vite preview"
+  },
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@context/shared": "^1.0.1",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.4.8",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.2.0",
+    "@typescript-eslint/parser": "^8.2.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "eslint": "^9.9.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jest-dom": "^5.4.0",
+    "eslint-plugin-react": "^7.35.0",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-refresh": "^0.4.9",
+    "eslint-plugin-testing-library": "^6.3.0",
+    "jsdom": "^24.1.1",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.2.0",
+    "vite": "^5.4.1",
+    "vite-tsconfig-paths": "^5.0.1",
+    "vitest": "^2.0.5",
+    "vitest-mock-extended": "^2.0.0"
+  }
+}

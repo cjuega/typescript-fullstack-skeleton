@@ -15,6 +15,10 @@ export default class ObjectMother {
         return faker.number.int({ min: 0, max });
     }
 
+    static word(): string {
+        return faker.lorem.word();
+    }
+
     static words(): string {
         return faker.lorem.words();
     }
