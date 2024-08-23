@@ -11,7 +11,6 @@ export default abstract class ValueObject<T extends Primitives> {
         this.ensureValueIsDefined(value);
     }
 
-    // eslint-disable-next-line class-methods-use-this
     private ensureValueIsDefined(value: T): void {
         if (value === null || value === undefined) {
             throw new InvalidArgument('Value must be defined');

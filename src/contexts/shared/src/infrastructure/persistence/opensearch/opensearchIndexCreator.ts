@@ -26,7 +26,6 @@ export default class OpensearchIndexCreator {
         const indices = await OpensearchIndexCreator.loadIndices(this.config.indices);
 
         for (const index of indices) {
-            // eslint-disable-next-line no-await-in-loop
             await this.createIndexIfNotExist(index);
         }
     }

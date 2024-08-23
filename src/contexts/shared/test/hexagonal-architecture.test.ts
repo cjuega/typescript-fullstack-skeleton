@@ -6,7 +6,6 @@ const TEST_TIMEOUT_IN_MILLISECONDS = 60 * 1000;
 describe('hexagonal architecture', () => {
     let files: FileConditionBuilder;
 
-    // eslint-disable-next-line jest/no-hooks
     beforeAll(() => {
         files = filesOfProject(`${__dirname}/../tsconfig.json`);
     });

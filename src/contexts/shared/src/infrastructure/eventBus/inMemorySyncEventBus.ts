@@ -3,7 +3,6 @@ import { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscribe
 import { EventBus } from '@src/domain/eventBus/eventBus';
 
 export default class InMemorySyncEventBus implements EventBus {
-    // eslint-disable-next-line @typescript-eslint/ban-types
     private readonly subscriptions: Map<string, Function[]> = new Map();
 
     constructor(subscribers: DomainEventSubscriber<DomainEvent>[]) {
@@ -17,7 +16,6 @@ export default class InMemorySyncEventBus implements EventBus {
             const subscribers = this.subscriptions.get(event.eventName);
 
             if (subscribers) {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                 subscribers.map((subscriber) => executions.push(subscriber(event)));
             }
         });

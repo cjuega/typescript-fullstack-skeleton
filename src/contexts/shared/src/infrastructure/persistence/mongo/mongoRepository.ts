@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import AggregateRoot from '@src/domain/aggregateRoot';
 import { Nullable } from '@src/domain/nullable';
 import { Primitives } from '@src/domain/primitives';

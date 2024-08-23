@@ -20,7 +20,6 @@ class DummyEvent extends DomainEvent {
         super(DummyEvent.eventName, args.id, args.eventId, args.occurredOn);
     }
 
-    // eslint-disable-next-line class-methods-use-this
     toPrimitives(): Record<string, unknown> {
         return {};
     }
@@ -44,12 +43,10 @@ const noLogger = new NoopLogger(),
     repository = new TypeormDomainEventRepository(client, marshaller, { tableName: 'failed_domain_events' });
 
 describe('typeormDomainEventRepository', () => {
-    // eslint-disable-next-line jest/no-hooks
     beforeEach(async () => {
         await environmentArranger.arrange();
     });
 
-    // eslint-disable-next-line jest/no-hooks
     afterAll(async () => {
         await environmentArranger.close();
     });

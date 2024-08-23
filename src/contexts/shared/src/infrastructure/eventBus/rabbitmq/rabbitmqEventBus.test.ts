@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 import DomainEvent from '@src/domain/eventBus/domainEvent';
 import DomainEventMapping from '@src/domain/eventBus/domainEventMapping';
 import { DomainEventName } from '@src/domain/eventBus/domainEventName';
@@ -24,7 +23,6 @@ class DummyEvent extends DomainEvent {
         super(DummyEvent.eventName, args.id, args.eventId, args.occurredOn);
     }
 
-    // eslint-disable-next-line class-methods-use-this
     toPrimitives(): Record<string, unknown> {
         return {};
     }
@@ -33,12 +31,10 @@ class DummyEvent extends DomainEvent {
 class DomainEventSubscriberDummy implements DomainEventSubscriber<DummyEvent> {
     private expectation: ((actual: DummyEvent) => void) | undefined = undefined;
 
-    // eslint-disable-next-line class-methods-use-this
     name(): string {
         return 'execute-action-on-dummy-event';
     }
 
-    // eslint-disable-next-line class-methods-use-this
     subscribedTo(): DomainEventName<DummyEvent>[] {
         return [DummyEvent];
     }
@@ -72,7 +68,6 @@ const config: RabbitmqConfig = {
     arranger = new RabbitmqEnvironmentArranger(connection, configurer);
 
 describe('rabbitmqEventBus', () => {
-    // eslint-disable-next-line jest/no-hooks
     beforeEach(async () => {
         await arranger.arrange();
         subscribers[0].setExpectation(undefined);
@@ -81,7 +76,6 @@ describe('rabbitmqEventBus', () => {
         await eventBusConsumer.start();
     });
 
-    // eslint-disable-next-line jest/no-hooks
     afterAll(async () => {
         await arranger.arrange();
         await arranger.close();
@@ -97,7 +91,6 @@ describe('rabbitmqEventBus', () => {
         expect(true).toBe(true);
     });
 
-    // eslint-disable-next-line jest/no-done-callback
     it('the subscriber should be called when the event it is subscribed to is published', (done) => {
         expect.hasAssertions();
 
@@ -110,7 +103,6 @@ describe('rabbitmqEventBus', () => {
         eventBus.publish([event])
             .then(done)
             .catch(() => {
-                // eslint-disable-next-line jest/no-conditional-expect
                 expect(false).toBe(true);
                 done();
             });

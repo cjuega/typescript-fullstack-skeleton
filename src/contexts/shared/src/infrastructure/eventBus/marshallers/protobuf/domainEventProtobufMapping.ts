@@ -45,7 +45,6 @@ export default class DomainEventProtobufMapping {
     }
 
     fromBuffer(buf: Buffer): unknown {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         for (const [_, schema] of this.schemas) {
             try {
                 const obj = schema.decode(buf);

@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 import DomainEvent from '@src/domain/eventBus/domainEvent';
 import DomainEventMapping from '@src/domain/eventBus/domainEventMapping';
 import { DomainEventName } from '@src/domain/eventBus/domainEventName';
@@ -26,7 +25,6 @@ class DummyEvent extends DomainEvent {
         super(DummyEvent.eventName, args.id, args.eventId, args.occurredOn);
     }
 
-    // eslint-disable-next-line class-methods-use-this
     toPrimitives(): Record<string, unknown> {
         return {};
     }
@@ -35,12 +33,10 @@ class DummyEvent extends DomainEvent {
 class DomainEventSubscriberDummy implements DomainEventSubscriber<DummyEvent> {
     private expectation: ((actual: DummyEvent) => void) | undefined = undefined;
 
-    // eslint-disable-next-line class-methods-use-this
     name(): string {
         throw new Error('Method not implemented.');
     }
 
-    // eslint-disable-next-line class-methods-use-this
     subscribedTo(): DomainEventName<DummyEvent>[] {
         return [DummyEvent];
     }
@@ -58,12 +54,10 @@ class DomainEventSubscriberDummy implements DomainEventSubscriber<DummyEvent> {
 }
 
 class DummyEventKafkaMapper implements KafkaTopicMapper<DummyEvent> {
-    // eslint-disable-next-line class-methods-use-this
     kafkaTopicFor(): DomainEventName<DummyEvent>[] {
         return [DummyEvent];
     }
 
-    // eslint-disable-next-line class-methods-use-this
     composeKafkaTopic(): string {
         return 'dummy-event';
     }
@@ -89,27 +83,23 @@ describe('kafkaEventBus', () => {
     // Hacky trick to make sure __consumer_offsets topic is created before starting tests to avoid timeouts in
     // consumer connect that might make tests fail. Note this is only relevant when tests are running right after
     // starting the kafka container (in CI for instance).
-    // eslint-disable-next-line jest/no-hooks
     beforeAll(async () => {
         await arranger.arrange();
         await eventBusConsumer.start();
         await eventBusConsumer.disconnect();
     }, 15 * 1000);
 
-    // eslint-disable-next-line jest/no-hooks
     beforeEach(async () => {
         await arranger.arrange();
         subscribers[0].setExpectation(undefined);
         await eventBusConsumer.start();
     });
 
-    // eslint-disable-next-line jest/no-hooks
     afterEach(async () => {
         await eventBusConsumer.disconnect();
         await eventBus.disconnect();
     });
 
-    // eslint-disable-next-line jest/no-hooks
     afterAll(async () => {
         await arranger.arrange();
         await arranger.close();
@@ -125,7 +115,6 @@ describe('kafkaEventBus', () => {
         expect(true).toBe(true);
     });
 
-    // eslint-disable-next-line jest/no-done-callback
     it('the subscriber should be called when the event it is subscribed to is published', (done) => {
         expect.hasAssertions();
 
@@ -137,7 +126,6 @@ describe('kafkaEventBus', () => {
         });
 
         eventBus.publish([event]).catch(() => {
-            // eslint-disable-next-line jest/no-conditional-expect
             expect(false).toBe(true);
             done();
         });

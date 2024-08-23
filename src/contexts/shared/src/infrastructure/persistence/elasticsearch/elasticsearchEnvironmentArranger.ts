@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import { Client } from '@elastic/elasticsearch';
 import EnvironmentArranger from '@src/infrastructure/arranger/environmentArranger';
 import ElasticsearchIndexCreator from '@src/infrastructure/persistence/elasticsearch/elasticsearchIndexCreator';
@@ -40,6 +39,5 @@ export default class ElasticsearchEnvironmentArranger extends EnvironmentArrange
         await this.indexCreator.createIndices();
     }
 
-    // eslint-disable-next-line class-methods-use-this,@typescript-eslint/no-empty-function
     async close(): Promise<void> {}
 }

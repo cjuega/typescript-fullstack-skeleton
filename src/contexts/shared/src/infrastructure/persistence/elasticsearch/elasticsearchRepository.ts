@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import { Client as ElasticsearchClient } from '@elastic/elasticsearch';
 import AggregateRoot from '@src/domain/aggregateRoot';
 import { Nullable } from '@src/domain/nullable';

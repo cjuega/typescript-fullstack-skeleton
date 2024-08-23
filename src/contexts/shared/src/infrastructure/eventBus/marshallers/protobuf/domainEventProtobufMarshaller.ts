@@ -24,7 +24,6 @@ export default class DomainEventProtobufMarshaller implements DomainEventMarshal
         this.protobufMapping = protobufMapping;
     }
 
-    // eslint-disable-next-line class-methods-use-this
     marshall(e: DomainEvent): Buffer {
         const jsonApi: JsonApi = {
             data: {
@@ -58,7 +57,6 @@ export default class DomainEventProtobufMarshaller implements DomainEventMarshal
             throw new Error(`The event ${eventName} doesn't exist or has no subscribers`);
         }
 
-        // eslint-disable-next-line new-cap
         return new eventCtor({
             ...eventData.attributes,
             eventId: eventData.id,

@@ -1,4 +1,3 @@
-// eslint-disable-next-line max-len
 import ExampleAggregateMother from '@src/example-aggregate/domain/exampleAggregate.mother';
 import ExampleAggregateIdMother from '@src/example-aggregate/domain/exampleAggregateId.mother';
 import RedisExampleAggregateRepository from '@src/example-aggregate/infrastructure/persistence/redis/redisExampleAggregateRepository';
@@ -16,12 +15,10 @@ const client = RedisClientFactory.createClient(
     repository = new RedisExampleAggregateRepository(client);
 
 describe('redisExampleAggregateRepository', () => {
-    // eslint-disable-next-line jest/no-hooks
     beforeEach(async () => {
         await environmentArranger.arrange();
     });
 
-    // eslint-disable-next-line jest/no-hooks
     afterAll(async () => {
         await environmentArranger.close();
     });

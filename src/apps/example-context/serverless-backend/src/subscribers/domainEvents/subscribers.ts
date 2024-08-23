@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 import { EventBridgeHandler } from 'aws-lambda';
 import 'source-map-support/register';
 import { Logger } from '@context/shared/domain/logger';
@@ -13,7 +12,6 @@ const logger: Logger = container.get('Shared.Logger'),
     unmarshaller: DomainEventUnmarshaller = container.get('Shared.EventBus.EventMarshaller'),
     eventBus: EventBus = registerSubscribers(container);
 
-// eslint-disable-next-line one-var,import/prefer-default-export
 export const on: EventBridgeHandler<string, Record<string, unknown>, void> = async (event) => {
     const domainEvents = [unmarshaller.unmarshall(JSON.stringify(event.detail))];
 

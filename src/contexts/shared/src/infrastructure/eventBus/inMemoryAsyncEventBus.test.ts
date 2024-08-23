@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 import DomainEvent from '@src/domain/eventBus/domainEvent';
 import { DomainEventName } from '@src/domain/eventBus/domainEventName';
 import { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
@@ -17,7 +16,6 @@ class DummyEvent extends DomainEvent {
         super(DummyEvent.eventName, args.id, args.eventId, args.occurredOn);
     }
 
-    // eslint-disable-next-line class-methods-use-this
     toPrimitives(): Record<string, unknown> {
         return {};
     }
@@ -26,12 +24,10 @@ class DummyEvent extends DomainEvent {
 class DomainEventSubscriberDummy implements DomainEventSubscriber<DummyEvent> {
     private expectation: ((actual: DummyEvent) => void) | undefined = undefined;
 
-    // eslint-disable-next-line class-methods-use-this
     name(): string {
         throw new Error('Method not implemented.');
     }
 
-    // eslint-disable-next-line class-methods-use-this
     subscribedTo(): DomainEventName<DummyEvent>[] {
         return [DummyEvent];
     }

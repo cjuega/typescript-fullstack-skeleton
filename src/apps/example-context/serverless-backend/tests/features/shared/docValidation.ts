@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { readFile } from 'fs';
 import { join, resolve } from 'path';
 import { load } from 'js-yaml';
@@ -25,7 +24,6 @@ async function readSchema(filepath: string): Promise<any> {
 }
 
 function getValidator(): Ajv {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const ajv = new Ajv({ allErrors: true, verbose: true });
 
@@ -82,7 +80,6 @@ function paramsToAjvSchema(params: Array<{ name: string; required?: boolean; sch
 
 function areRequestHeadersValid(headersSchema: any, headers: any): void {
     // Add Content-Type header to schema
-    // eslint-disable-next-line no-param-reassign
     headersSchema.properties['content-type'] = { type: 'string' };
 
     const lowercaseHeaders = Object.entries(headers).reduce((h: any, [k, v]) => {
@@ -113,7 +110,6 @@ function isRequestBodyValid(bodySchema: any, body: any): void {
     isValidAgainstSchema(bodySchema, body);
 }
 
-// eslint-disable-next-line one-var
 export const isRequestOpenAPIValid = async (
         filepath: string,
         pathToRoute: string,

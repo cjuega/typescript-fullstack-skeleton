@@ -10,7 +10,6 @@ export default class CreateExampleAggregateCommandHandler implements CommandHand
         this.creator = creator;
     }
 
-    // eslint-disable-next-line class-methods-use-this
     subscribedTo(): Command {
         return CreateExampleAggregateCommand;
     }

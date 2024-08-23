@@ -47,7 +47,6 @@ export default class EventBusMock implements EventBus {
 
     assertPublishedEventsAre(events: DomainEvent[]): void {
         const { mock } = this.mockPublish,
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             callsArgument = mock.calls.map((c) => this.getDataFromDomainEvent(c[0][0]));
 
         expect(mock.calls).toHaveLength(events.length);
@@ -81,9 +80,7 @@ export default class EventBusMock implements EventBus {
         expect(this.mockPublish).toHaveBeenCalledTimes(n);
     }
 
-    // eslint-disable-next-line class-methods-use-this
     private getDataFromDomainEvent(event: DomainEvent): any {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { eventId, occurredOn, ...attributes } = event;
 
         return attributes;

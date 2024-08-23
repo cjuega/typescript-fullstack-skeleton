@@ -2,7 +2,6 @@ import DynamodbClientFactory from '@context/shared/infrastructure/persistence/dy
 import DdbOneTableClientFactory from '@context/shared/infrastructure/persistence/ddbOneTable/ddbOneTableClientFactory';
 import DdbOneTableEnvironmentArranger from '@context/shared/infrastructure/persistence/ddbOneTable/ddbOneTableEnvironmentArranger';
 import NoopLogger from '@context/shared/infrastructure/logger/noopLogger';
-// eslint-disable-next-line max-len
 import DdbOneTableExampleAggregateRepository from '@src/example-aggregate/infrastructure/persistence/ddbOneTable/ddbOneTableExampleAggregateRepository';
 import ExampleAggregateMother from '@src/example-aggregate/domain/exampleAggregate.mother';
 import ExampleAggregateIdMother from '@src/example-aggregate/domain/exampleAggregateId.mother';
@@ -29,12 +28,10 @@ const noLogger = new NoopLogger(),
     repository = new DdbOneTableExampleAggregateRepository(table);
 
 describe('ddbOneTableExampleAggregateRepository', () => {
-    // eslint-disable-next-line jest/no-hooks
     beforeEach(async () => {
         await environmentArranger.arrange();
     });
 
-    // eslint-disable-next-line jest/no-hooks
     afterAll(async () => {
         await environmentArranger.close();
     });

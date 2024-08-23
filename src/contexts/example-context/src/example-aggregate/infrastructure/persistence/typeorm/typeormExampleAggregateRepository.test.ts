@@ -24,12 +24,10 @@ const noLogger = new NoopLogger(),
     repository = new TypeormExampleAggregateRepository(table);
 
 describe('typeormExampleAggregateRepository', () => {
-    // eslint-disable-next-line jest/no-hooks
     beforeEach(async () => {
         await environmentArranger.arrange();
     });
 
-    // eslint-disable-next-line jest/no-hooks
     afterAll(async () => {
         await environmentArranger.close();
     });

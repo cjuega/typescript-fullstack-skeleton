@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 import { DynamoDBRecord } from 'aws-lambda';
 
 export default abstract class DynamodbStreamProcessor {

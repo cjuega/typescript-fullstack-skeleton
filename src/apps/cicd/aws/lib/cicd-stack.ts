@@ -418,7 +418,6 @@ export default class CICDStack extends Stack {
                 targets: [topic]
             });
 
-        // eslint-disable-next-line one-var
         const workspaceId = this.node.tryGetContext('slackWorkspaceId'),
             channelId = this.node.tryGetContext('slackChannelId'),
             channelName = this.node.tryGetContext('slackChannelName');

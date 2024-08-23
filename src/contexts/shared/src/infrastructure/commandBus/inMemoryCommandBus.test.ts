@@ -1,5 +1,3 @@
-/* eslint-disable class-methods-use-this */
-/* eslint-disable max-classes-per-file */
 import Command from '@src/domain/commandBus/command';
 import { CommandHandler } from '@src/domain/commandBus/commandHandler';
 import CommandNotRegisteredError from '@src/domain/commandBus/commandNotRegisteredError';
@@ -19,7 +17,6 @@ class MyCommandHandler implements CommandHandler<HandledCommand> {
         return HandledCommand;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars
     async handle(_command: HandledCommand): Promise<void> {}
 }
 
@@ -34,7 +31,6 @@ describe('inMemoryCommandBus', () => {
         await expect(commandBus.dispatch(unhandledCommand)).rejects.toThrow(CommandNotRegisteredError);
     });
 
-    // eslint-disable-next-line jest/prefer-expect-assertions,jest/expect-expect
     it('accepts a command with handler', async () => {
         const handledCommand = new HandledCommand(),
             myCommandHandler = new MyCommandHandler(),

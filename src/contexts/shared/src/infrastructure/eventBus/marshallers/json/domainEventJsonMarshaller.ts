@@ -20,7 +20,6 @@ export default class DomainEventJsonMarshaller implements DomainEventMarshaller,
         this.mapping = mapping;
     }
 
-    // eslint-disable-next-line class-methods-use-this
     marshall(e: DomainEvent): string {
         const jsonApi: JsonApi = {
             data: {
@@ -48,7 +47,6 @@ export default class DomainEventJsonMarshaller implements DomainEventMarshaller,
             throw new Error(`The event ${eventName} doesn't exist or has no subscribers`);
         }
 
-        // eslint-disable-next-line new-cap
         return new eventCtor({
             ...eventData.attributes,
             eventId: eventData.id,

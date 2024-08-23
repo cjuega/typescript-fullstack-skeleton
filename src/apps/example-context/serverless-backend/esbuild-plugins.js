@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const { copy } = require('esbuild-plugin-copy');
 
 module.exports = (serverless) => {

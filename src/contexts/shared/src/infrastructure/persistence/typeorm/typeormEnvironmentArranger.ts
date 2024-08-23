@@ -25,7 +25,6 @@ export default class TypeormEnvironmentArranger implements EnvironmentArranger {
                 .map((table: { Tables_in_database: string }) => table.Tables_in_database);
 
         for (const table of tables) {
-            // eslint-disable-next-line no-await-in-loop
             await queryRunner.query(`TRUNCATE TABLE ${table}`);
         }
     }

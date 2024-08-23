@@ -4,7 +4,6 @@ import ElasticsearchEnvironmentArranger from '@context/shared/infrastructure/per
 import ElasticsearchIndexCreator from '@context/shared/infrastructure/persistence/elasticsearch/elasticsearchIndexCreator';
 import ExampleAggregateMother from '@src/example-aggregate/domain/exampleAggregate.mother';
 import ExampleAggregateIdMother from '@src/example-aggregate/domain/exampleAggregateId.mother';
-// eslint-disable-next-line max-len
 import ElasticsearchExampleAggregateRepository from '@src/example-aggregate/infrastructure/persistence/elasticsearch/elasticsearchExampleAggregateRepository';
 import { resolve } from 'path';
 
@@ -22,12 +21,10 @@ const noLogger = new NoopLogger(),
     repository = new ElasticsearchExampleAggregateRepository(client);
 
 describe('elasticsearchExampleAggregateRepository', () => {
-    // eslint-disable-next-line jest/no-hooks
     beforeEach(async () => {
         await environmentArranger.arrange();
     });
 
-    // eslint-disable-next-line jest/no-hooks
     afterAll(async () => {
         await environmentArranger.close();
     });

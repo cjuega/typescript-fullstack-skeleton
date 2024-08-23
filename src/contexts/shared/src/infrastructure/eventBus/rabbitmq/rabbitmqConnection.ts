@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import RabbitmqConfig from '@src/infrastructure/eventBus/rabbitmq/rabbitmqConfig';
 import {
     ConfirmChannel, Connection, ConsumeMessage, MessagePropertyHeaders, connect as rabbitConnect
@@ -128,7 +127,6 @@ export default class RabbitmqConnection {
         });
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-types
     async consume(queueName: string, subscriber: (message: ConsumeMessage) => {}): Promise<void> {
         await this.channel.consume(queueName, (msg: ConsumeMessage | null) => {
             if (msg) {
@@ -193,7 +191,6 @@ export default class RabbitmqConnection {
         return { 'redelivery-count': 1 };
     }
 
-    // eslint-disable-next-line @typescript-eslint/require-await
     async ack(message: ConsumeMessage): Promise<void> {
         this.channel.ack(message);
     }

@@ -32,7 +32,6 @@ function extractPathParams(url: string, docPath: string): { [key: string]: strin
     return pathParamNames.reduce((params: { [key: string]: string }, name, i) => {
         const nameWithoutBrackets = name.substring(1, name.length - 1);
 
-        // eslint-disable-next-line no-param-reassign
         params[nameWithoutBrackets] = pathParamsValues![i];
 
         return params;
@@ -82,17 +81,13 @@ export const whenISendAGetRequest = (when: DefineStepFunction): void => {
                 pathToOpenAPIFile,
                 pathToRoute,
                 req.method,
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 req.header['Content-Type'],
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 req.header,
                 extractPathParams(req.url, pathToRoute),
                 extractQueryParams(req.url),
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
-                // eslint-disable-next-line no-underscore-dangle
                 req._data
             );
         });

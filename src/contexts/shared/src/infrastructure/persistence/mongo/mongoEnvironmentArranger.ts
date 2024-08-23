@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import { MongoClient } from 'mongodb';
 import EnvironmentArranger from '@src/infrastructure/arranger/environmentArranger';
 
@@ -19,7 +18,6 @@ export default class MongoEnvironmentArranger extends EnvironmentArranger {
         const collections = await this.collections();
 
         for (const collection of collections) {
-            // eslint-disable-next-line no-await-in-loop
             await (await this.client()).db().dropCollection(collection);
         }
     }

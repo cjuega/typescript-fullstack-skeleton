@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import { Client } from '@opensearch-project/opensearch';
 import EnvironmentArranger from '@src/infrastructure/arranger/environmentArranger';
 import OpensearchIndexCreator from '@src/infrastructure/persistence/opensearch/opensearchIndexCreator';
@@ -43,6 +42,5 @@ export default class OpensearchEnvironmentArranger extends EnvironmentArranger {
         await this.indexCreator.createIndices();
     }
 
-    // eslint-disable-next-line class-methods-use-this,@typescript-eslint/no-empty-function
     async close(): Promise<void> {}
 }

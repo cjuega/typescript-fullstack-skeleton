@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { EntitySchema } from 'typeorm';
 import ExampleAggregate from '@src/example-aggregate/domain/exampleAggregate';
 import ExampleAggregateId from '@src/example-aggregate/domain/exampleAggregateId';

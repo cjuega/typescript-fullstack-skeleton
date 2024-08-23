@@ -1,5 +1,3 @@
-/* eslint-disable class-methods-use-this */
-/* eslint-disable no-console */
 import { Logger } from '@src/domain/logger';
 
 class ConsoleLogger implements Logger {

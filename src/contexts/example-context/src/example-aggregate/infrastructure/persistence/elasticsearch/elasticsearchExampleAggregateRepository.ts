@@ -7,7 +7,6 @@ import { Nullable } from '@context/shared/domain/nullable';
 export default class ElasticsearchExampleAggregateRepository
     extends ElasticsearchRepository<ExampleAggregate>
     implements ExampleAggregateRepository {
-    // eslint-disable-next-line class-methods-use-this
     protected moduleName() {
         return 'example-aggregates';
     }

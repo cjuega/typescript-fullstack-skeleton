@@ -5,7 +5,6 @@ import ExampleAggregateId from '@src/example-aggregate/domain/exampleAggregateId
 import { Nullable } from '@context/shared/domain/nullable';
 
 export default class MongoExampleAggregateRepository extends MongoRepository<ExampleAggregate> implements ExampleAggregateRepository {
-    // eslint-disable-next-line class-methods-use-this
     protected moduleName() {
         return 'example-aggregates';
     }

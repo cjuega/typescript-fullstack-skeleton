@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class CreateExampleAggregateTable1701718801334 implements MigrationInterface {

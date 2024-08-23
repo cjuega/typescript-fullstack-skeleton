@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import 'source-map-support/register';
 import middy from '@middy/core';

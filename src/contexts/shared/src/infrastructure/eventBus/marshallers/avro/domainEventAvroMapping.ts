@@ -46,7 +46,6 @@ export default class DomainEventAvroMapping {
     }
 
     fromBuffer(buf: Buffer): unknown {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         for (const [_, type] of this.schemas) {
             try {
                 const obj = type.fromBuffer(buf) as unknown;

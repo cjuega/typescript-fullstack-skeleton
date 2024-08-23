@@ -41,12 +41,10 @@ export default class KafkaEventBusConsumer implements EventBusConsumer {
             };
 
         errorTypes.forEach((type) => {
-            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             process.on(type, disconnect);
         });
 
         signalTraps.forEach((type) => {
-            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             process.once(type, disconnect);
         });
     }

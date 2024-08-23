@@ -32,10 +32,8 @@ export default class DdbOneTableEnvironmentArranger extends EnvironmentArranger 
         let next;
 
         do {
-            // eslint-disable-next-line no-await-in-loop
             const response = await (await this.table).scanItems(undefined, { parse: true, hidden: true });
 
-            // eslint-disable-next-line no-await-in-loop
             await this.deleteItems(response);
 
             next = response.next;
@@ -48,7 +46,6 @@ export default class DdbOneTableEnvironmentArranger extends EnvironmentArranger 
                 const batch = {};
 
                 for (const item of list) {
-                    // eslint-disable-next-line no-await-in-loop
                     await (await this.table).deleteItem(item, { batch });
                 }
 
@@ -57,6 +54,5 @@ export default class DdbOneTableEnvironmentArranger extends EnvironmentArranger 
         );
     }
 
-    // eslint-disable-next-line class-methods-use-this,@typescript-eslint/no-empty-function
     async close(): Promise<void> {}
 }

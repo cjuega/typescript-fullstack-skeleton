@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 import { APIGatewayProxyResult } from 'aws-lambda';
 import { Nullable } from '@context/shared/domain/nullable';
 import { Logger } from '@context/shared/domain/logger';

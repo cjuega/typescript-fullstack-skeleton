@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 
 import { Client as OpensearchClient } from '@opensearch-project/opensearch';
 import AggregateRoot from '@src/domain/aggregateRoot';

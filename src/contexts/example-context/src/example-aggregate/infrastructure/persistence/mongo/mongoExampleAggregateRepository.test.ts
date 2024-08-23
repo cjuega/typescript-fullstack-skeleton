@@ -19,12 +19,10 @@ const noLogger = new NoopLogger(),
     repository = new MongoExampleAggregateRepository(client);
 
 describe('mongoExampleAggregateRepository', () => {
-    // eslint-disable-next-line jest/no-hooks
     beforeEach(async () => {
         await environmentArranger.arrange();
     });
 
-    // eslint-disable-next-line jest/no-hooks
     afterAll(async () => {
         await environmentArranger.close();
     });

@@ -4,7 +4,6 @@ import OpensearchEnvironmentArranger from '@context/shared/infrastructure/persis
 import OpensearchIndexCreator from '@context/shared/infrastructure/persistence/opensearch/opensearchIndexCreator';
 import ExampleAggregateMother from '@src/example-aggregate/domain/exampleAggregate.mother';
 import ExampleAggregateIdMother from '@src/example-aggregate/domain/exampleAggregateId.mother';
-// eslint-disable-next-line max-len
 import OpensearchExampleAggregateRepository from '@src/example-aggregate/infrastructure/persistence/opensearch/opensearchExampleAggregateRepository';
 
 const noLogger = new NoopLogger(),
@@ -18,12 +17,10 @@ const noLogger = new NoopLogger(),
     repository = new OpensearchExampleAggregateRepository(client);
 
 describe('opensearchExampleAggregateRepository', () => {
-    // eslint-disable-next-line jest/no-hooks
     beforeEach(async () => {
         await environmentArranger.arrange();
     });
 
-    // eslint-disable-next-line jest/no-hooks
     afterAll(async () => {
         await environmentArranger.close();
     });

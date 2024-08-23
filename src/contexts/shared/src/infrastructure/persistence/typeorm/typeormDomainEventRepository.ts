@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import DomainEvent from '@src/domain/eventBus/domainEvent';
 import { DomainEventMarshaller } from '@src/domain/eventBus/domainEventMarshaller';
 import { DomainEventRepository } from '@src/domain/eventBus/domainEventRepository';

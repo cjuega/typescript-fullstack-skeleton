@@ -60,7 +60,6 @@ export default abstract class DdbOneTableRepository<T extends AggregateRoot> {
     private async persistAggregateRoot(aggregateRoot: T, transaction?: object): Promise<void> {
         const model = await this.getModel();
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         await model.create(aggregateRoot.toPrimitives() as any, { transaction });
     }
 }

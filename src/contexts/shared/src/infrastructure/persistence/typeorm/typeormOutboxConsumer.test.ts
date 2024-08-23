@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 import EventBusMock from '@src/__mocks__/eventBus.mock';
 import DomainEvent from '@src/domain/eventBus/domainEvent';
 import DomainEventMapping from '@src/domain/eventBus/domainEventMapping';
@@ -26,24 +25,20 @@ class DummyEvent extends DomainEvent {
         super(DummyEvent.eventName, args.id, args.eventId, args.occurredOn);
     }
 
-    // eslint-disable-next-line class-methods-use-this
     toPrimitives(): Record<string, unknown> {
         return {};
     }
 }
 
 class DomainEventSubscriberDummy implements DomainEventSubscriber<DummyEvent> {
-    // eslint-disable-next-line class-methods-use-this
     name(): string {
         throw new Error('Method not implemented.');
     }
 
-    // eslint-disable-next-line class-methods-use-this
     subscribedTo(): DomainEventName<DummyEvent>[] {
         return [DummyEvent];
     }
 
-    // eslint-disable-next-line class-methods-use-this, @typescript-eslint/no-unused-vars
     async on(_event: DummyEvent): Promise<void> {}
 }
 
@@ -69,7 +64,6 @@ describe('typeormOutboxConsumer', () => {
     let eventBus: EventBusMock;
     let consumer: TypeormOutboxConsumer;
 
-    // eslint-disable-next-line jest/no-hooks
     beforeEach(async () => {
         eventBus = new EventBusMock();
         consumer = new TypeormOutboxConsumer(client, unmarshaller, eventBus, { tableName: 'failed_domain_events' });
@@ -77,7 +71,6 @@ describe('typeormOutboxConsumer', () => {
         await environmentArranger.arrange();
     });
 
-    // eslint-disable-next-line jest/no-hooks
     afterAll(async () => {
         await environmentArranger.close();
     });

@@ -2,7 +2,6 @@ import { Primitives } from '@context/shared/domain/primitives';
 import AggregateRoot from '@context/shared/domain/aggregateRoot';
 import ExampleAggregateId from '@src/example-aggregate/domain/exampleAggregateId';
 import Datetime from '@context/shared/domain/datetime';
-// eslint-disable-next-line import/no-cycle
 import ExampleAggregateCreatedDomainEvent from '@src/example-aggregate/domain/exampleAggregateCreatedDomainEvent';
 
 export default class ExampleAggregate extends AggregateRoot {

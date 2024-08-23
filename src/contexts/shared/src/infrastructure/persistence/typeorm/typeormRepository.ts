@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import AggregateRoot from '@src/domain/aggregateRoot';
 import TypeormDomainEventRepository from '@src/infrastructure/persistence/typeorm/typeormDomainEventRepository';
 import {

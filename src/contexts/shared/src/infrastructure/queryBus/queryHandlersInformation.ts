@@ -10,7 +10,6 @@ export default class QueryHandlersInformation {
         this.queryHandlersMap = this.formatHandlers(queryHandlers);
     }
 
-    // eslint-disable-next-line class-methods-use-this
     private formatHandlers(queryHandlers: Array<QueryHandler<Query, Response>>): Map<Query, QueryHandler<Query, Response>> {
         const handlersMap = new Map<Query, QueryHandler<Query, Response>>();
 

@@ -1,5 +1,3 @@
-/* eslint-disable class-methods-use-this */
-/* eslint-disable max-classes-per-file */
 import Query from '@src/domain/queryBus/query';
 import QueryHandlersInformation from '@src/infrastructure/queryBus/queryHandlersInformation';
 import QueryNotRegisteredError from '@src/domain/queryBus/queryNotRegisteredError';
@@ -20,7 +18,6 @@ class MyQueryHandler implements QueryHandler<Query, Response> {
         return HandledQuery;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     handle(_query: HandledQuery): Promise<Response> {
         return Promise.resolve({});
     }
@@ -37,7 +34,6 @@ describe('inMemoryQueryBus', () => {
         await expect(queryBus.ask(unhandledQuery)).rejects.toThrow(QueryNotRegisteredError);
     });
 
-    // eslint-disable-next-line jest/prefer-expect-assertions,jest/expect-expect
     it('accepts a query with handler', async () => {
         const handledQuery = new HandledQuery(),
             myQueryHandler = new MyQueryHandler(),

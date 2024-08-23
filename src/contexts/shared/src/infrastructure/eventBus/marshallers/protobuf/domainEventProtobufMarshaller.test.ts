@@ -1,10 +1,8 @@
-/* eslint-disable max-classes-per-file */
 import DomainEvent from '@src/domain/eventBus/domainEvent';
 import DomainEventMapping from '@src/domain/eventBus/domainEventMapping';
 import { DomainEventName } from '@src/domain/eventBus/domainEventName';
 import { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
 import ObjectMother from '@src/domain/objectMother.mother';
-// eslint-disable-next-line max-len
 import DomainEventProtobufMapping, {
     DomainEventProtobufPathPair
 } from '@src/infrastructure/eventBus/marshallers/protobuf/domainEventProtobufMapping';
@@ -23,24 +21,20 @@ class DummyEvent extends DomainEvent {
         super(DummyEvent.eventName, args.id, args.eventId, args.occurredOn);
     }
 
-    // eslint-disable-next-line class-methods-use-this
     toPrimitives(): Record<string, unknown> {
         return {};
     }
 }
 
 class DummyEventProtobufPath implements DomainEventProtobufPathPair<DummyEvent> {
-    // eslint-disable-next-line class-methods-use-this
     schemaFor(): DomainEventName<DummyEvent> {
         return DummyEvent;
     }
 
-    // eslint-disable-next-line class-methods-use-this
     protoFilepath(): string {
         return resolve(__dirname, '../../../../../', 'test/files/protobuf/dummyEvent.proto');
     }
 
-    // eslint-disable-next-line class-methods-use-this
     messagePath(): string {
         return 'packageName.DummyEvent';
     }
@@ -58,24 +52,20 @@ class DummyUnknownEvent extends DomainEvent {
         super(DummyUnknownEvent.eventName, args.id, args.eventId, args.occurredOn);
     }
 
-    // eslint-disable-next-line class-methods-use-this
     toPrimitives(): Record<string, unknown> {
         return {};
     }
 }
 
 class DomainEventSubscriberDummy implements DomainEventSubscriber<DummyEvent | DummyUnknownEvent> {
-    // eslint-disable-next-line class-methods-use-this
     name(): string {
         throw new Error('Method not implemented.');
     }
 
-    // eslint-disable-next-line class-methods-use-this
     subscribedTo(): DomainEventName<DummyEvent>[] {
         return [DummyEvent, DummyUnknownEvent];
     }
 
-    // eslint-disable-next-line class-methods-use-this, @typescript-eslint/no-unused-vars
     async on(_: DummyEvent): Promise<void> {}
 }
 
@@ -87,7 +77,6 @@ const subscribers = [new DomainEventSubscriberDummy()],
     );
 
 describe('domainEventProtobufMarshaller', () => {
-    // eslint-disable-next-line jest/no-hooks
     beforeAll(async () => {
         const wait = (ms: number): Promise<void> => new Promise((r) => { setTimeout(r, ms); });
 

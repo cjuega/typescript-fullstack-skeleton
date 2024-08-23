@@ -1,6 +1,5 @@
 import { DomainEventUnmarshaller } from '@src/domain/eventBus/domainEventUnmarshaller';
 import { EventBus } from '@src/domain/eventBus/eventBus';
-// eslint-disable-next-line import/no-unresolved
 import { DynamoDBRecord } from 'aws-lambda';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
 import { AttributeValue } from '@aws-sdk/client-dynamodb';
@@ -21,7 +20,6 @@ export default class DynamodbStreamsOutboxConsumer extends DynamodbStreamProcess
         this.partitionPrefix = config.partitionPrefix;
     }
 
-    // eslint-disable-next-line class-methods-use-this
     protected filter(records: DynamoDBRecord[]): DynamoDBRecord[] {
         return records.filter(
             ({ eventName, dynamodb }) => eventName === 'INSERT' && dynamodb?.NewImage?.pk?.S?.startsWith(this.partitionPrefix)

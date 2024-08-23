@@ -142,7 +142,6 @@ try {
 
     accessSync(`${__dirname}/${env}.json`, F_OK);
     files.push(`${__dirname}/${env}.json`);
-    // eslint-disable-next-line no-empty
 } catch {}
 
 config.loadFile(files);

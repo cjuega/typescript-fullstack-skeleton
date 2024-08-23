@@ -9,12 +9,10 @@ import ExampleAggregateModel from '@src/example-aggregate/infrastructure/persist
 export default class DdbOneTableExampleAggregateRepository
     extends DdbOneTableRepository<ExampleAggregate>
     implements ExampleAggregateRepository {
-    // eslint-disable-next-line class-methods-use-this
     protected modelName(): string {
         return 'ExampleAggregate';
     }
 
-    // eslint-disable-next-line class-methods-use-this
     protected loadModel(): typeof ExampleAggregateModel {
         return ExampleAggregateModel;
     }
