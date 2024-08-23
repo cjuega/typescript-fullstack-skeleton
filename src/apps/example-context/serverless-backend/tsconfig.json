@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "lib": ["es2020"],
-    "target": "es2020",
+    "lib": ["es2023"],
+    "target": "es2022",
     "moduleResolution": "node",
     "removeComments": true,
     "noUnusedLocals": true,
@@ -20,12 +20,5 @@
     }
   },
   "include": ["./**/*.ts"],
-  "exclude": [
-    "../../../../node_modules/**/*",
-    "node_modules/**/*",
-    ".serverless/**/*",
-    ".webpack/**/*",
-    "_warmup/**/*",
-    ".vscode/**/*"
-  ]
+  "exclude": ["../../../../node_modules/**/*", "node_modules/**/*", ".serverless/**/*", ".webpack/**/*", "_warmup/**/*", ".vscode/**/*"]
 }
