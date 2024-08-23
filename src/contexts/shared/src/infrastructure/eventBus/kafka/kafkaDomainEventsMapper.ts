@@ -1,5 +1,5 @@
-import DomainEvent from '@src/domain/eventBus/domainEvent';
-import { KafkaTopicMapper } from '@src/infrastructure/eventBus/kafka/kafkaTopicMapper';
+import type DomainEvent from '@src/domain/eventBus/domainEvent';
+import type { KafkaTopicMapper } from '@src/infrastructure/eventBus/kafka/kafkaTopicMapper';
 
 type Mapping = Map<string, KafkaTopicMapper<DomainEvent>>;
 
@@ -11,15 +11,11 @@ export default class KafkaDomainEventsMapper {
     }
 
     private static formatMappers(kafkaTopicMappers: KafkaTopicMapper<DomainEvent>[]): Mapping {
-        const mappersMap = new Map<string, KafkaTopicMapper<DomainEvent>>();
-
-        kafkaTopicMappers.forEach((kafkaTopicMapper) => {
-            kafkaTopicMapper.kafkaTopicFor().forEach((eventClass) => {
-                mappersMap.set(eventClass.eventName, kafkaTopicMapper);
-            });
-        });
-
-        return mappersMap;
+        return kafkaTopicMappers.reduce(
+            (map, kafkaTopicMapper) =>
+                kafkaTopicMapper.kafkaTopicFor().reduce((acc, eventClass) => acc.set(eventClass.eventName, kafkaTopicMapper), map),
+            new Map<string, KafkaTopicMapper<DomainEvent>>()
+        );
     }
 
     composeKafkaTopic(event: DomainEvent): string | undefined {

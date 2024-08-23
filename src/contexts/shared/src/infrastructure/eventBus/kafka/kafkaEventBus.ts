@@ -1,16 +1,13 @@
-import DomainEvent from '@src/domain/eventBus/domainEvent';
-import { DomainEventMarshaller } from '@src/domain/eventBus/domainEventMarshaller';
-import { EventBus } from '@src/domain/eventBus/eventBus';
-// import KafkaConfig from '@src/infrastructure/eventBus/kafka/kafkaConfig';
-import KafkaDomainEventsMapper from '@src/infrastructure/eventBus/kafka/kafkaDomainEventsMapper';
-import {
-    Kafka, Message, Producer, TopicMessages
-} from 'kafkajs';
+import type DomainEvent from '@src/domain/eventBus/domainEvent';
+import type { DomainEventMarshaller } from '@src/domain/eventBus/domainEventMarshaller';
+import type { EventBus } from '@src/domain/eventBus/eventBus';
+import type KafkaDomainEventsMapper from '@src/infrastructure/eventBus/kafka/kafkaDomainEventsMapper';
+import type { Kafka, Message, Producer, TopicMessages } from 'kafkajs';
 
 export default class KafkaEventBus implements EventBus {
     private readonly producer: Producer;
 
-    private isConnected: boolean = false;
+    private isConnected = false;
 
     private readonly removeDisconnectListener: () => void;
 
@@ -38,13 +35,13 @@ export default class KafkaEventBus implements EventBus {
                 }
             };
 
-        errorTypes.forEach((type) => {
+        for (const type of errorTypes) {
             process.on(type, disconnect);
-        });
+        }
 
-        signalTraps.forEach((type) => {
+        for (const type of signalTraps) {
             process.once(type, disconnect);
-        });
+        }
     }
 
     async publish(events: DomainEvent[]): Promise<void> {
@@ -66,23 +63,26 @@ export default class KafkaEventBus implements EventBus {
     }
 
     private composeKafkaMessages(events: DomainEvent[]): TopicMessages[] {
-        const eventsPerTopic = events.reduce((map, event) => {
-            const topic = this.getTopicFor(event);
+        const eventsPerTopic = events.reduce(
+            (map, event) => {
+                const topic = this.getTopicFor(event);
 
-            if (!topic) {
+                if (!topic) {
+                    return map;
+                }
+
+                if (!map[topic]) {
+                    map[topic] = [];
+                }
+
+                map[topic].push({
+                    value: this.marshaller.marshall(event) as string | Buffer
+                });
+
                 return map;
-            }
-
-            if (!map[topic]) {
-                map[topic] = [];
-            }
-
-            map[topic].push({
-                value: this.marshaller.marshall(event) as string | Buffer
-            });
-
-            return map;
-        }, {} as Record<string, Message[]>);
+            },
+            {} as Record<string, Message[]>
+        );
 
         return Object.entries(eventsPerTopic).map(([topic, messages]) => ({ topic, messages }));
     }

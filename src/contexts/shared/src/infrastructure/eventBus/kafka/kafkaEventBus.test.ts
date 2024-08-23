@@ -1,16 +1,16 @@
 import DomainEvent from '@src/domain/eventBus/domainEvent';
 import DomainEventMapping from '@src/domain/eventBus/domainEventMapping';
-import { DomainEventName } from '@src/domain/eventBus/domainEventName';
-import { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
+import type { DomainEventName } from '@src/domain/eventBus/domainEventName';
+import type { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
 import ObjectMother from '@src/domain/objectMother.mother';
-import DomainEventJsonMarshaller from '@src/infrastructure/eventBus/marshallers/json/domainEventJsonMarshaller';
 import KafkaClientFactory from '@src/infrastructure/eventBus/kafka/kafkaClientFactory';
-import KafkaConfig from '@src/infrastructure/eventBus/kafka/kafkaConfig';
+import type KafkaConfig from '@src/infrastructure/eventBus/kafka/kafkaConfig';
 import KafkaDomainEventsMapper from '@src/infrastructure/eventBus/kafka/kafkaDomainEventsMapper';
 import KafkaEnvironmentArranger from '@src/infrastructure/eventBus/kafka/kafkaEnvironmentArranger';
 import KafkaEventBus from '@src/infrastructure/eventBus/kafka/kafkaEventBus';
 import KafkaEventBusConsumer from '@src/infrastructure/eventBus/kafka/kafkaEventBusConsumer';
-import { KafkaTopicMapper } from '@src/infrastructure/eventBus/kafka/kafkaTopicMapper';
+import type { KafkaTopicMapper } from '@src/infrastructure/eventBus/kafka/kafkaTopicMapper';
+import DomainEventJsonMarshaller from '@src/infrastructure/eventBus/marshallers/json/domainEventJsonMarshaller';
 import NoopLogger from '@src/infrastructure/logger/noopLogger';
 
 class DummyEvent extends DomainEvent {
@@ -64,18 +64,18 @@ class DummyEventKafkaMapper implements KafkaTopicMapper<DummyEvent> {
 }
 
 const config: KafkaConfig = {
-    clientId: 'integration-tests-producer',
-    brokers: ['localhost:9092'],
-    groupId: 'integration-tests-consumer',
-    topicsToListen: [{ topic: 'dummy-event' }]
-},
+        clientId: 'integration-tests-producer',
+        brokers: ['localhost:9092'],
+        groupId: 'integration-tests-consumer',
+        topicsToListen: [{ topic: 'dummy-event' }]
+    },
     noLogger = new NoopLogger(),
     client = KafkaClientFactory.createClient('integration-tests', config, noLogger),
     mappers = [new DummyEventKafkaMapper()],
     eventsMapper = new KafkaDomainEventsMapper(mappers),
     subscribers = [new DomainEventSubscriberDummy()],
     marshaller = new DomainEventJsonMarshaller(new DomainEventMapping(subscribers)),
-    eventBus = new KafkaEventBus(client, eventsMapper, marshaller/* , config */),
+    eventBus = new KafkaEventBus(client, eventsMapper, marshaller /* , config */),
     eventBusConsumer = new KafkaEventBusConsumer(client, subscribers, marshaller, config),
     arranger = new KafkaEnvironmentArranger(client, config);
 
@@ -115,6 +115,7 @@ describe('kafkaEventBus', () => {
         expect(true).toBe(true);
     });
 
+    // biome-ignore lint/nursery/noDoneCallback: <explanation>
     it('the subscriber should be called when the event it is subscribed to is published', (done) => {
         expect.hasAssertions();
 

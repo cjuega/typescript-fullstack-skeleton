@@ -1,7 +1,7 @@
-import DomainEvent from '@src/domain/eventBus/domainEvent';
-import { DomainEventMarshaller } from '@src/domain/eventBus/domainEventMarshaller';
-import { DomainEventRepository } from '@src/domain/eventBus/domainEventRepository';
-import { OneProperties, Table } from 'dynamodb-onetable';
+import type DomainEvent from '@src/domain/eventBus/domainEvent';
+import type { DomainEventMarshaller } from '@src/domain/eventBus/domainEventMarshaller';
+import type { DomainEventRepository } from '@src/domain/eventBus/domainEventRepository';
+import type { OneProperties, Table } from 'dynamodb-onetable';
 
 const model = {
     pk: { type: String, required: true },
@@ -44,14 +44,14 @@ export default class DdbOneTableDomainEventRepository implements DomainEventRepo
 
         const table = await this.table;
 
-        if (!Array.isArray(events)) {
-            await table.create('DomainEvent', this.map(events), { transaction });
-        } else {
+        if (Array.isArray(events)) {
             if (!events.length) {
                 return;
             }
 
             await Promise.all(events.map((e) => table.create('DomainEvent', this.map(e), { transaction })));
+        } else {
+            await table.create('DomainEvent', this.map(events), { transaction });
         }
 
         await table.transact('write', transaction);

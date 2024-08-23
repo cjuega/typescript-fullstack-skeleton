@@ -1,5 +1,5 @@
-import { EventBus } from '@src/domain/eventBus/eventBus';
-import DomainEvent from '@src/domain/eventBus/domainEvent';
+import type DomainEvent from '@src/domain/eventBus/domainEvent';
+import type { EventBus } from '@src/domain/eventBus/eventBus';
 
 export default class EventBusMock implements EventBus {
     private mockPublish = jest.fn<Promise<void>, DomainEvent[][], EventBusMock>();
@@ -51,9 +51,9 @@ export default class EventBusMock implements EventBus {
 
         expect(mock.calls).toHaveLength(events.length);
 
-        events.forEach((e) => {
+        for (const e of events) {
             expect(callsArgument).toContainEqual(this.getDataFromDomainEvent(e));
-        });
+        }
     }
 
     assertEmptyPublished(): void {
@@ -80,6 +80,7 @@ export default class EventBusMock implements EventBus {
         expect(this.mockPublish).toHaveBeenCalledTimes(n);
     }
 
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     private getDataFromDomainEvent(event: DomainEvent): any {
         const { eventId, occurredOn, ...attributes } = event;
 

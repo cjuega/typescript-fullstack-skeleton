@@ -1,6 +1,6 @@
-import DomainEvent from '@src/domain/eventBus/domainEvent';
-import { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
-import RabbitmqConfig from '@src/infrastructure/eventBus/rabbitmq/rabbitmqConfig';
+import type DomainEvent from '@src/domain/eventBus/domainEvent';
+import type { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
+import type RabbitmqConfig from '@src/infrastructure/eventBus/rabbitmq/rabbitmqConfig';
 import RabbitmqConnection from '@src/infrastructure/eventBus/rabbitmq/rabbitmqConnection';
 
 interface QueueBindingKeys {
@@ -15,7 +15,7 @@ export interface RabbitmqConfigurerOptions {
 export default class RabbitmqConfigurer {
     private readonly connection: RabbitmqConnection;
 
-    private readonly queues: Array<QueueBindingKeys>;
+    private readonly queues: QueueBindingKeys[];
 
     private readonly config: RabbitmqConfig;
 

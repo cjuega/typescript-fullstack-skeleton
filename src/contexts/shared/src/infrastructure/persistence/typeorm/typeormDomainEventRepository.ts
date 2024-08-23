@@ -1,7 +1,7 @@
-import DomainEvent from '@src/domain/eventBus/domainEvent';
-import { DomainEventMarshaller } from '@src/domain/eventBus/domainEventMarshaller';
-import { DomainEventRepository } from '@src/domain/eventBus/domainEventRepository';
-import { DataSource, EntityManager } from 'typeorm';
+import type DomainEvent from '@src/domain/eventBus/domainEvent';
+import type { DomainEventMarshaller } from '@src/domain/eventBus/domainEventMarshaller';
+import type { DomainEventRepository } from '@src/domain/eventBus/domainEventRepository';
+import type { DataSource, EntityManager } from 'typeorm';
 
 export default class TypeormDomainEventRepository implements DomainEventRepository {
     private readonly _dataSource: Promise<DataSource>;
@@ -36,7 +36,6 @@ export default class TypeormDomainEventRepository implements DomainEventReposito
             return;
         }
 
-        await manager.createQueryBuilder().insert().into(this.tableName, ['occurred_on', 'payload']).values(rows)
-            .execute();
+        await manager.createQueryBuilder().insert().into(this.tableName, ['occurred_on', 'payload']).values(rows).execute();
     }
 }

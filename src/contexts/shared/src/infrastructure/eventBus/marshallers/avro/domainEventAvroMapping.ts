@@ -1,7 +1,7 @@
-import DomainEvent from '@src/domain/eventBus/domainEvent';
-import { DomainEventName } from '@src/domain/eventBus/domainEventName';
-import { Schema, Type } from 'avsc';
-import { readFileSync } from 'fs';
+import { readFileSync } from 'node:fs';
+import type DomainEvent from '@src/domain/eventBus/domainEvent';
+import type { DomainEventName } from '@src/domain/eventBus/domainEventName';
+import { type Schema, Type } from 'avsc';
 
 type Mapping = Map<string, Type>;
 
@@ -18,15 +18,10 @@ export default class DomainEventAvroMapping {
     }
 
     private static formatPairs(pairs: DomainEventAvroPathPair<DomainEvent>[]): Mapping {
-        const mappersMap = new Map<string, Type>();
-
-        pairs.forEach((pair) => {
-            const eventClass = pair.schemaFor();
-
-            mappersMap.set(eventClass.eventName, DomainEventAvroMapping.loadSchema(pair.avroPath()));
-        });
-
-        return mappersMap;
+        return pairs.reduce(
+            (map, pair) => map.set(pair.schemaFor().eventName, DomainEventAvroMapping.loadSchema(pair.avroPath())),
+            new Map<string, Type>()
+        );
     }
 
     private static loadSchema(path: string): Type {
@@ -50,7 +45,9 @@ export default class DomainEventAvroMapping {
             try {
                 const obj = type.fromBuffer(buf) as unknown;
                 return obj;
-            } catch (e) { /* empty */ }
+            } catch {
+                /* empty */
+            }
         }
 
         throw new Error('No AVRO schema found for the given buffer');

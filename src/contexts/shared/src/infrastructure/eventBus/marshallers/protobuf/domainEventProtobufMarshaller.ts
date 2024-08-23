@@ -1,8 +1,8 @@
-import DomainEvent from '@src/domain/eventBus/domainEvent';
-import { DomainEventMarshaller } from '@src/domain/eventBus/domainEventMarshaller';
-import { DomainEventUnmarshaller } from '@src/domain/eventBus/domainEventUnmarshaller';
-import DomainEventMapping from '@src/domain/eventBus/domainEventMapping';
-import DomainEventProtobufMapping from '@src/infrastructure/eventBus/marshallers/protobuf/domainEventProtobufMapping';
+import type DomainEvent from '@src/domain/eventBus/domainEvent';
+import type DomainEventMapping from '@src/domain/eventBus/domainEventMapping';
+import type { DomainEventMarshaller } from '@src/domain/eventBus/domainEventMarshaller';
+import type { DomainEventUnmarshaller } from '@src/domain/eventBus/domainEventUnmarshaller';
+import type DomainEventProtobufMapping from '@src/infrastructure/eventBus/marshallers/protobuf/domainEventProtobufMapping';
 
 type JsonApi = {
     data: {
@@ -26,17 +26,17 @@ export default class DomainEventProtobufMarshaller implements DomainEventMarshal
 
     marshall(e: DomainEvent): Buffer {
         const jsonApi: JsonApi = {
-            data: {
-                id: e.eventId,
-                type: e.eventName,
-                occurredOn: e.occurredOn.toISOString(),
-                attributes: {
-                    id: e.aggregateId,
-                    ...(e.toPrimitives() as Record<string, unknown>)
-                },
-                meta: {}
-            }
-        },
+                data: {
+                    id: e.eventId,
+                    type: e.eventName,
+                    occurredOn: e.occurredOn.toISOString(),
+                    attributes: {
+                        id: e.aggregateId,
+                        ...(e.toPrimitives() as Record<string, unknown>)
+                    },
+                    meta: {}
+                }
+            },
             type = this.protobufMapping.for(e.eventName),
             errMsg = type.verify(jsonApi);
 

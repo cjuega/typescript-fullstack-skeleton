@@ -1,4 +1,4 @@
-import Datetime from '@src/domain/datetime';
+import type Datetime from '@src/domain/datetime';
 
 export interface Clock {
     now(): Datetime;

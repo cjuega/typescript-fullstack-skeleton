@@ -1,9 +1,9 @@
-import { DomainEventUnmarshaller } from '@src/domain/eventBus/domainEventUnmarshaller';
-import { EventBus } from '@src/domain/eventBus/eventBus';
-import { DynamoDBRecord } from 'aws-lambda';
+import type { AttributeValue } from '@aws-sdk/client-dynamodb';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
-import { AttributeValue } from '@aws-sdk/client-dynamodb';
+import type { DomainEventUnmarshaller } from '@src/domain/eventBus/domainEventUnmarshaller';
+import type { EventBus } from '@src/domain/eventBus/eventBus';
 import DynamodbStreamProcessor from '@src/infrastructure/persistence/dynamodb/dynamodbStreamProcessor';
+import type { DynamoDBRecord } from 'aws-lambda';
 
 export default class DynamodbStreamsOutboxConsumer extends DynamodbStreamProcessor {
     private readonly unmarshaller: DomainEventUnmarshaller;

@@ -1,8 +1,8 @@
-import { Client, ClientOptions, events } from '@elastic/elasticsearch';
-import { Logger } from '@src/domain/logger';
-import { Nullable } from '@src/domain/nullable';
-import ElasticsearchConfig from '@src/infrastructure/persistence/elasticsearch/elasticsearchConfig';
-import { readFileSync } from 'fs';
+import { readFileSync } from 'node:fs';
+import { events, Client, type ClientOptions } from '@elastic/elasticsearch';
+import type { Logger } from '@src/domain/logger';
+import type { Nullable } from '@src/domain/nullable';
+import type ElasticsearchConfig from '@src/infrastructure/persistence/elasticsearch/elasticsearchConfig';
 
 export default class ElasticsearchClientFactory {
     private static clients: Record<string, Client> = {};
@@ -25,13 +25,13 @@ export default class ElasticsearchClientFactory {
 
     private static createAndConnectClient(config: ElasticsearchConfig, logger: Logger): Client {
         const options: ClientOptions = {
-            node: config.url,
-            auth: {
-                username: config.username,
-                password: config.password
+                node: config.url,
+                auth: {
+                    username: config.username,
+                    password: config.password
+                },
+                ...(config.caCertificate ? { tls: { ca: readFileSync(config.caCertificate) } } : undefined)
             },
-            ...(config.caCertificate ? { tls: { ca: readFileSync(config.caCertificate) } } : undefined)
-        },
             client = new Client(options);
 
         ElasticsearchClientFactory.setUpLogger(client, logger);

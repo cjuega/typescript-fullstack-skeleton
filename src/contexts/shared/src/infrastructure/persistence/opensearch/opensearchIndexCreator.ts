@@ -1,9 +1,9 @@
-import { Client } from '@opensearch-project/opensearch';
+import { readFile } from 'node:fs';
+import { basename, extname } from 'node:path';
+import { promisify } from 'node:util';
+import type { Client } from '@opensearch-project/opensearch';
+import type OpensearchConfig from '@src/infrastructure/persistence/opensearch/opensearchConfig';
 import fglob from 'fast-glob';
-import OpensearchConfig from '@src/infrastructure/persistence/opensearch/opensearchConfig';
-import { readFile } from 'fs';
-import { promisify } from 'util';
-import { basename, extname } from 'path';
 
 type OpensearchIndexSetup = {
     name: string;

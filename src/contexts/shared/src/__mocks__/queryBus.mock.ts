@@ -1,12 +1,12 @@
-import Query from '@src/domain/queryBus/query';
-import { QueryBus } from '@src/domain/queryBus/queryBus';
-import { Response } from '@src/domain/queryBus/response';
+import type Query from '@src/domain/queryBus/query';
+import type { QueryBus } from '@src/domain/queryBus/queryBus';
+import type { Response } from '@src/domain/queryBus/response';
 import { when } from 'jest-when';
 
 export default class QueryBusMock implements QueryBus {
     private mockAsk = jest.fn<Promise<Response>, Query[], QueryBusMock>();
 
-    async ask<R extends Response>(query: Query): Promise<R> {
+    ask<R extends Response>(query: Query): Promise<R> {
         return this.mockAsk(query) as Promise<R>;
     }
 

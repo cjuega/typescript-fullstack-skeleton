@@ -1,25 +1,21 @@
-import DomainEvent from '@src/domain/eventBus/domainEvent';
-import { IotTopicMapper } from '@src/infrastructure/eventBus/iotCore/iotTopicMapper';
+import type DomainEvent from '@src/domain/eventBus/domainEvent';
+import type { IotTopicMapper } from '@src/infrastructure/eventBus/iotCore/iotTopicMapper';
 
 type Mapping = Map<string, IotTopicMapper<DomainEvent>>;
 
 export default class IotCoreDomainEventsMapper {
     private domainEventsMap: Mapping;
 
-    constructor(iotTopicMappers: Array<IotTopicMapper<DomainEvent>>) {
+    constructor(iotTopicMappers: IotTopicMapper<DomainEvent>[]) {
         this.domainEventsMap = IotCoreDomainEventsMapper.formatMappers(iotTopicMappers);
     }
 
-    private static formatMappers(iotTopicMappers: Array<IotTopicMapper<DomainEvent>>): Mapping {
-        const mappersMap = new Map<string, IotTopicMapper<DomainEvent>>();
-
-        iotTopicMappers.forEach((iotTopicMapper) => {
-            iotTopicMapper.iotTopicFor().forEach((eventClass) => {
-                mappersMap.set(eventClass.eventName, iotTopicMapper);
-            });
-        });
-
-        return mappersMap;
+    private static formatMappers(iotTopicMappers: IotTopicMapper<DomainEvent>[]): Mapping {
+        return iotTopicMappers.reduce(
+            (map, iotTopicMapper) =>
+                iotTopicMapper.iotTopicFor().reduce((acc, eventClass) => acc.set(eventClass.eventName, iotTopicMapper), map),
+            new Map<string, IotTopicMapper<DomainEvent>>()
+        );
     }
 
     composeIotTopic(event: DomainEvent): string | undefined {

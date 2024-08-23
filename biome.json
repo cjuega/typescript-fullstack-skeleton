@@ -95,7 +95,7 @@
     }
   },
   "overrides": [
-    { "include": ["*.mother.ts"], "linter": { "rules": { "complexity": { "noStaticOnlyClass": "off" } } } },
+    { "include": ["*.mother.ts", "*Factory.ts"], "linter": { "rules": { "complexity": { "noStaticOnlyClass": "off" } } } },
     {
       "include": ["*.mock.ts"],
       "linter": { "rules": { "nursery": { "noMisplacedAssertion": "off" }, "suspicious": { "noConfusingVoidType": "off" } } }

@@ -1,13 +1,15 @@
 import Command from '@src/domain/commandBus/command';
-import { CommandHandler } from '@src/domain/commandBus/commandHandler';
+import type { CommandHandler } from '@src/domain/commandBus/commandHandler';
 import CommandNotRegisteredError from '@src/domain/commandBus/commandNotRegisteredError';
 import CommandHandlersInformation from '@src/infrastructure/commandBus/commandHandlersInformation';
 import InMemoryCommandBus from '@src/infrastructure/commandBus/inMemoryCommandBus';
 
+// biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 class UnhandledCommand extends Command {
     static COMMAND_NAME = 'unhandled.command';
 }
 
+// biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 class HandledCommand extends Command {
     static COMMAND_NAME = 'handled.command';
 }

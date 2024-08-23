@@ -1,11 +1,11 @@
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { Nullable } from '@src/domain/nullable';
-import { Table, OneModel } from 'dynamodb-onetable';
+import { basename, extname } from 'node:path';
+import type { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import type { LogLevel, Logger } from '@src/domain/logger';
+import type { Nullable } from '@src/domain/nullable';
+import type DdbOneTableConfig from '@src/infrastructure/persistence/ddbOneTable/ddbOneTableConfig';
+import { type OneModel, Table } from 'dynamodb-onetable';
 import Dynamo from 'dynamodb-onetable/Dynamo';
-import DdbOneTableConfig from '@src/infrastructure/persistence/ddbOneTable/ddbOneTableConfig';
 import fglob from 'fast-glob';
-import { basename, extname } from 'path';
-import { LogLevel, Logger } from '@src/domain/logger';
 
 type DdbOneTableLoggerFn = (level: string, message: string, context: Record<string, unknown>) => void;
 
@@ -64,13 +64,13 @@ export default class DdbOneTableClientFactory {
     private static createDdbOneTableLogger(logger: Logger): DdbOneTableLoggerFn {
         return (level: string, message: string): void => {
             const mapping: { [key: string]: LogLevel } = {
-                info: 'info',
-                trace: 'debug',
-                data: 'debug',
-                warn: 'warn',
-                error: 'error',
-                exception: 'error'
-            },
+                    info: 'info',
+                    trace: 'debug',
+                    data: 'debug',
+                    warn: 'warn',
+                    error: 'error',
+                    exception: 'error'
+                },
                 method: LogLevel = mapping[level] ?? 'info';
 
             logger[method](message);

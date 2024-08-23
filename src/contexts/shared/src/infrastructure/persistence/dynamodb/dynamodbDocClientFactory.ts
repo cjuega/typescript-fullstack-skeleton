@@ -1,7 +1,7 @@
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import type { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
-import { Nullable } from '@src/domain/nullable';
-import DynamodbConfig from '@src/infrastructure/persistence/dynamodb/dynamodbConfig';
+import type { Nullable } from '@src/domain/nullable';
+import type DynamodbConfig from '@src/infrastructure/persistence/dynamodb/dynamodbConfig';
 import { captureAWSv3Client } from 'aws-xray-sdk';
 
 export default class DynamodbDocClientFactory {

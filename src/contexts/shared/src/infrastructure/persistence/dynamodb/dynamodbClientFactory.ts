@@ -1,8 +1,8 @@
-import { DynamoDBClient, DynamoDBClientConfig } from '@aws-sdk/client-dynamodb';
+import { DynamoDBClient, type DynamoDBClientConfig } from '@aws-sdk/client-dynamodb';
+import type { Logger } from '@src/domain/logger';
+import type { Nullable } from '@src/domain/nullable';
+import type DynamodbConfig from '@src/infrastructure/persistence/dynamodb/dynamodbConfig';
 import { captureAWSv3Client } from 'aws-xray-sdk';
-import { Nullable } from '@src/domain/nullable';
-import DynamodbConfig from '@src/infrastructure/persistence/dynamodb/dynamodbConfig';
-import { Logger } from '@src/domain/logger';
 
 export default class DynamodbClientFactory {
     private static clients: Record<string, DynamoDBClient> = {};
@@ -24,7 +24,7 @@ export default class DynamodbClientFactory {
     }
 
     private static create(config: DynamodbConfig, logger: Logger): DynamoDBClient {
-        const awsConfig = this.extractClientConfig(config, logger),
+        const awsConfig = DynamodbClientFactory.extractClientConfig(config, logger),
             client = new DynamoDBClient(awsConfig);
 
         if (config.enableTracing) {

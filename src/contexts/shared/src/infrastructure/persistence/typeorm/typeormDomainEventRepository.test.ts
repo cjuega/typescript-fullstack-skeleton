@@ -1,3 +1,4 @@
+import { resolve } from 'node:path';
 import DomainEvent from '@src/domain/eventBus/domainEvent';
 import DomainEventMapping from '@src/domain/eventBus/domainEventMapping';
 import ObjectMother from '@src/domain/objectMother.mother';
@@ -6,7 +7,6 @@ import NoopLogger from '@src/infrastructure/logger/noopLogger';
 import TypeormClientFactory from '@src/infrastructure/persistence/typeorm/typeormClientFactory';
 import TypeormDomainEventRepository from '@src/infrastructure/persistence/typeorm/typeormDomainEventRepository';
 import TypeormEnvironmentArranger from '@src/infrastructure/persistence/typeorm/typeormEnvironmentArranger';
-import { resolve } from 'path';
 
 class DummyEvent extends DomainEvent {
     static eventName = 'dummy:event';

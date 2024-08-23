@@ -1,13 +1,13 @@
+import { resolve } from 'node:path';
 import DomainEvent from '@src/domain/eventBus/domainEvent';
 import DomainEventMapping from '@src/domain/eventBus/domainEventMapping';
-import { DomainEventName } from '@src/domain/eventBus/domainEventName';
-import { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
+import type { DomainEventName } from '@src/domain/eventBus/domainEventName';
+import type { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
 import ObjectMother from '@src/domain/objectMother.mother';
 import DomainEventProtobufMapping, {
-    DomainEventProtobufPathPair
+    type DomainEventProtobufPathPair
 } from '@src/infrastructure/eventBus/marshallers/protobuf/domainEventProtobufMapping';
 import DomainEventProtobufMarshaller from '@src/infrastructure/eventBus/marshallers/protobuf/domainEventProtobufMarshaller';
-import { resolve } from 'path';
 
 class DummyEvent extends DomainEvent {
     static eventName = 'dummy:event';
@@ -78,7 +78,10 @@ const subscribers = [new DomainEventSubscriberDummy()],
 
 describe('domainEventProtobufMarshaller', () => {
     beforeAll(async () => {
-        const wait = (ms: number): Promise<void> => new Promise((r) => { setTimeout(r, ms); });
+        const wait = (ms: number): Promise<void> =>
+            new Promise((r) => {
+                setTimeout(r, ms);
+            });
 
         // Hacky trick to prevent DomainEventProtobufMarshaller to use promises
         await wait(500);

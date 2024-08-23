@@ -1,7 +1,7 @@
-import AggregateRoot from '@src/domain/aggregateRoot';
-import { Nullable } from '@src/domain/nullable';
-import { Primitives } from '@src/domain/primitives';
-import { Collection, MongoClient } from 'mongodb';
+import type AggregateRoot from '@src/domain/aggregateRoot';
+import type { Nullable } from '@src/domain/nullable';
+import type { Primitives } from '@src/domain/primitives';
+import type { Collection, MongoClient } from 'mongodb';
 
 export default abstract class MongoRepository<T extends AggregateRoot> {
     private readonly _client: Promise<MongoClient>;
@@ -21,9 +21,11 @@ export default abstract class MongoRepository<T extends AggregateRoot> {
     }
 
     protected persist(id: string, aggregateRoot: T): Promise<void> {
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         return this.rawPersist(id, aggregateRoot.toPrimitives() as Record<string, any>);
     }
 
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     protected async rawPersist(id: string, item: Record<string, any>): Promise<void> {
         const collection = await this.collection(),
             document = {

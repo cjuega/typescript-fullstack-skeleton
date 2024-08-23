@@ -1,6 +1,6 @@
-import DomainEvent from '@src/domain/eventBus/domainEvent';
-import { DomainEventName } from '@src/domain/eventBus/domainEventName';
-import { Type, load } from 'protobufjs';
+import type DomainEvent from '@src/domain/eventBus/domainEvent';
+import type { DomainEventName } from '@src/domain/eventBus/domainEventName';
+import { type Type, load } from 'protobufjs';
 
 type Mapping = Map<string, Type>;
 
@@ -19,7 +19,9 @@ export default class DomainEventProtobufMapping {
     }
 
     private loadSchemas(pairs: DomainEventProtobufPathPair<DomainEvent>[]): void {
-        pairs.forEach((pair) => this.loadSchema(pair));
+        for (const p of pairs) {
+            this.loadSchema(p);
+        }
     }
 
     private loadSchema(pair: DomainEventProtobufPathPair<DomainEvent>): void {
@@ -49,7 +51,7 @@ export default class DomainEventProtobufMapping {
             try {
                 const obj = schema.decode(buf);
                 return obj;
-            } catch (e) {
+            } catch {
                 /* empty */
             }
         }

@@ -1,6 +1,6 @@
-import { Logger } from '@src/domain/logger';
-import { Nullable } from '@src/domain/nullable';
-import TypeormConfig from '@src/infrastructure/persistence/typeorm/typeormConfig';
+import type { Logger } from '@src/domain/logger';
+import type { Nullable } from '@src/domain/nullable';
+import type TypeormConfig from '@src/infrastructure/persistence/typeorm/typeormConfig';
 import TypeormLogger from '@src/infrastructure/persistence/typeorm/typeormLogger';
 import { DataSource } from 'typeorm';
 

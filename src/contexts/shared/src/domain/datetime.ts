@@ -1,6 +1,6 @@
-import moment from 'moment';
 import InvalidArgument from '@src/domain/invalidArgument';
 import StringValueObject from '@src/domain/stringValueObject';
+import moment from 'moment';
 
 export default class Datetime extends StringValueObject {
     constructor(datetime?: string) {
@@ -13,7 +13,7 @@ export default class Datetime extends StringValueObject {
         const date = moment(value);
 
         if (!date.isValid()) {
-            throw new InvalidArgument(`<${this.name}> doesn't allow the value <${value}>`);
+            throw new InvalidArgument(`<${Datetime.name}> doesn't allow the value <${value}>`);
         }
     }
 

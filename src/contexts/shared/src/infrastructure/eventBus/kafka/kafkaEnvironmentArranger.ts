@@ -1,13 +1,13 @@
-import EnvironmentArranger from '@src/infrastructure/arranger/environmentArranger';
-import KafkaConfig from '@src/infrastructure/eventBus/kafka/kafkaConfig';
-import { Admin, Kafka } from 'kafkajs';
+import type EnvironmentArranger from '@src/infrastructure/arranger/environmentArranger';
+import type KafkaConfig from '@src/infrastructure/eventBus/kafka/kafkaConfig';
+import type { Admin, Kafka } from 'kafkajs';
 
 export default class KafkaEnvironmentArranger implements EnvironmentArranger {
     private readonly config: KafkaConfig;
 
     private readonly admin: Admin;
 
-    private isConnected: boolean = false;
+    private isConnected = false;
 
     private readonly removeDisconnectListener: () => void;
 
@@ -30,13 +30,13 @@ export default class KafkaEnvironmentArranger implements EnvironmentArranger {
                 }
             };
 
-        errorTypes.forEach((type) => {
+        for (const type of errorTypes) {
             process.on(type, disconnect);
-        });
+        }
 
-        signalTraps.forEach((type) => {
+        for (const type of signalTraps) {
             process.once(type, disconnect);
-        });
+        }
     }
 
     async arrange(): Promise<void> {

@@ -1,15 +1,15 @@
-import DomainEvent from '@src/domain/eventBus/domainEvent';
-import { DomainEventUnmarshaller } from '@src/domain/eventBus/domainEventUnmarshaller';
-import { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
-import { EventBusConsumer } from '@src/domain/eventBus/eventBusConsumer';
-import KafkaConfig from '@src/infrastructure/eventBus/kafka/kafkaConfig';
-import { Consumer, Kafka } from 'kafkajs';
+import type DomainEvent from '@src/domain/eventBus/domainEvent';
+import type { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
+import type { DomainEventUnmarshaller } from '@src/domain/eventBus/domainEventUnmarshaller';
+import type { EventBusConsumer } from '@src/domain/eventBus/eventBusConsumer';
 import InMemorySyncEventBus from '@src/infrastructure/eventBus/inMemorySyncEventBus';
+import type KafkaConfig from '@src/infrastructure/eventBus/kafka/kafkaConfig';
+import type { Consumer, Kafka } from 'kafkajs';
 
 export default class KafkaEventBusConsumer implements EventBusConsumer {
     private readonly consumer: Consumer;
 
-    private isConnected: boolean = false;
+    private isConnected = false;
 
     private readonly internalBus: InMemorySyncEventBus;
 
@@ -40,13 +40,13 @@ export default class KafkaEventBusConsumer implements EventBusConsumer {
                 }
             };
 
-        errorTypes.forEach((type) => {
+        for (const type of errorTypes) {
             process.on(type, disconnect);
-        });
+        }
 
-        signalTraps.forEach((type) => {
+        for (const type of signalTraps) {
             process.once(type, disconnect);
-        });
+        }
     }
 
     async start(): Promise<void> {

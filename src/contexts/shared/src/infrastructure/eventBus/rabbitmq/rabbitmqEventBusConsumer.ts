@@ -1,9 +1,9 @@
-import DomainEvent from '@src/domain/eventBus/domainEvent';
-import { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
-import { DomainEventUnmarshaller } from '@src/domain/eventBus/domainEventUnmarshaller';
-import { EventBusConsumer } from '@src/domain/eventBus/eventBusConsumer';
-import RabbitmqConnection from '@src/infrastructure/eventBus/rabbitmq/rabbitmqConnection';
-import { ConsumeMessage } from 'amqplib';
+import type DomainEvent from '@src/domain/eventBus/domainEvent';
+import type { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
+import type { DomainEventUnmarshaller } from '@src/domain/eventBus/domainEventUnmarshaller';
+import type { EventBusConsumer } from '@src/domain/eventBus/eventBusConsumer';
+import type RabbitmqConnection from '@src/infrastructure/eventBus/rabbitmq/rabbitmqConnection';
+import type { ConsumeMessage } from 'amqplib';
 
 export default class RabbitmqEventBusConsumer implements EventBusConsumer {
     private readonly connection: RabbitmqConnection;

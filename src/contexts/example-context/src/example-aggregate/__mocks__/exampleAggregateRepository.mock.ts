@@ -1,7 +1,7 @@
-import { ExampleAggregateRepository } from '@src/example-aggregate/domain/exampleAggregateRepository';
+import type { Nullable } from '@context/shared/domain/nullable';
 import ExampleAggregate from '@src/example-aggregate/domain/exampleAggregate';
-import ExampleAggregateId from '@src/example-aggregate/domain/exampleAggregateId';
-import { Nullable } from '@context/shared/domain/nullable';
+import type ExampleAggregateId from '@src/example-aggregate/domain/exampleAggregateId';
+import type { ExampleAggregateRepository } from '@src/example-aggregate/domain/exampleAggregateRepository';
 
 export default class ExampleAggregateRepositoryMock implements ExampleAggregateRepository {
     private mockSave = jest.fn<Promise<void>, ExampleAggregate[], ExampleAggregateRepositoryMock>();

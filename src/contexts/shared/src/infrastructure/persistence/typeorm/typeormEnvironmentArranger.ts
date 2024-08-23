@@ -1,5 +1,5 @@
-import EnvironmentArranger from '@src/infrastructure/arranger/environmentArranger';
-import { DataSource } from 'typeorm';
+import type EnvironmentArranger from '@src/infrastructure/arranger/environmentArranger';
+import type { DataSource } from 'typeorm';
 
 export default class TypeormEnvironmentArranger implements EnvironmentArranger {
     private readonly dataSource: Promise<DataSource>;

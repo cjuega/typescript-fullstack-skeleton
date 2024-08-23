@@ -1,8 +1,8 @@
-import { EventBridgeClient, PutEventsCommand, PutEventsRequestEntry } from '@aws-sdk/client-eventbridge';
-import DomainEvent from '@src/domain/eventBus/domainEvent';
-import { DomainEventMarshaller } from '@src/domain/eventBus/domainEventMarshaller';
-import { EventBus } from '@src/domain/eventBus/eventBus';
-import EventBridgeConfig from '@src/infrastructure/eventBus/eventBridge/eventBridgeConfig';
+import { type EventBridgeClient, PutEventsCommand, type PutEventsRequestEntry } from '@aws-sdk/client-eventbridge';
+import type DomainEvent from '@src/domain/eventBus/domainEvent';
+import type { DomainEventMarshaller } from '@src/domain/eventBus/domainEventMarshaller';
+import type { EventBus } from '@src/domain/eventBus/eventBus';
+import type EventBridgeConfig from '@src/infrastructure/eventBus/eventBridge/eventBridgeConfig';
 import { chunk } from 'lodash';
 
 export default class EventBridgeEventBus implements EventBus {

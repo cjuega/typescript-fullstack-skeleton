@@ -1,8 +1,7 @@
-
-import { Client as OpensearchClient } from '@opensearch-project/opensearch';
-import AggregateRoot from '@src/domain/aggregateRoot';
-import { Nullable } from '@src/domain/nullable';
-import { Primitives } from '@src/domain/primitives';
+import type { Client as OpensearchClient } from '@opensearch-project/opensearch';
+import type AggregateRoot from '@src/domain/aggregateRoot';
+import type { Nullable } from '@src/domain/nullable';
+import type { Primitives } from '@src/domain/primitives';
 
 export default abstract class OpensearchRepository<T extends AggregateRoot> {
     private client: OpensearchClient;

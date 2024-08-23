@@ -1,5 +1,5 @@
-import { Nullable } from '@src/domain/nullable';
-import RabbitmqConfig from '@src/infrastructure/eventBus/rabbitmq/rabbitmqConfig';
+import type { Nullable } from '@src/domain/nullable';
+import type RabbitmqConfig from '@src/infrastructure/eventBus/rabbitmq/rabbitmqConfig';
 import RabbitmqConnection from '@src/infrastructure/eventBus/rabbitmq/rabbitmqConnection';
 
 export default class RabbitmqClientFactory {

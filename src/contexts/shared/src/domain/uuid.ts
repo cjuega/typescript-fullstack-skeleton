@@ -1,7 +1,7 @@
-import { randomUUID } from 'crypto';
-import validate from 'uuid-validate';
+import { randomUUID } from 'node:crypto';
 import InvalidArgument from '@src/domain/invalidArgument';
 import ValueObject from '@src/domain/valueObject';
+import validate from 'uuid-validate';
 
 export default class Uuid extends ValueObject<string> {
     constructor(value: string) {

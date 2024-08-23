@@ -1,5 +1,5 @@
-import { Nullable } from '@src/domain/nullable';
-import RedisConfig from '@src/infrastructure/persistence/redis/redisConfig';
+import type { Nullable } from '@src/domain/nullable';
+import type RedisConfig from '@src/infrastructure/persistence/redis/redisConfig';
 import Redis, { Cluster } from 'ioredis';
 
 export type RedisClient = Redis | Cluster;

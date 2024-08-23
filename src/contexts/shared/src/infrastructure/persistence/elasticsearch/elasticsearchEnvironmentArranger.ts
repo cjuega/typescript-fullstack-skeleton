@@ -1,6 +1,6 @@
-import { Client } from '@elastic/elasticsearch';
+import type { Client } from '@elastic/elasticsearch';
 import EnvironmentArranger from '@src/infrastructure/arranger/environmentArranger';
-import ElasticsearchIndexCreator from '@src/infrastructure/persistence/elasticsearch/elasticsearchIndexCreator';
+import type ElasticsearchIndexCreator from '@src/infrastructure/persistence/elasticsearch/elasticsearchIndexCreator';
 
 export default class ElasticsearchEnvironmentArranger extends EnvironmentArranger {
     private readonly client: Client;

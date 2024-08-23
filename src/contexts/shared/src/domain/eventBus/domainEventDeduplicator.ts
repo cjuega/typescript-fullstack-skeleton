@@ -1,4 +1,4 @@
-import DomainEvent from '@src/domain/eventBus/domainEvent';
+import type DomainEvent from '@src/domain/eventBus/domainEvent';
 
 export interface DomainEventDeduplicator {
     deduplicate(domainEvents: DomainEvent[]): Promise<DomainEvent[]>;

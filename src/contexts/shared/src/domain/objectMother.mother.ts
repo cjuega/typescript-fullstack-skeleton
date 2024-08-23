@@ -1,10 +1,8 @@
 import { faker } from '@faker-js/faker';
 
 export default class ObjectMother {
-    static repeat<R>(callable: () => R, iterations?: number): Array<R> {
-        return Array(iterations !== undefined ? iterations : ObjectMother.zeroOrPositiveNumber(20))
-            .fill({})
-            .map(callable);
+    static repeat<R>(callable: () => R, iterations?: number): R[] {
+        return new Array(iterations !== undefined ? iterations : ObjectMother.zeroOrPositiveNumber(20)).fill({}).map(callable);
     }
 
     static uuid(): string {

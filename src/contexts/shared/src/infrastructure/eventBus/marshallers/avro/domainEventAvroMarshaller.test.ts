@@ -1,11 +1,11 @@
+import { resolve } from 'node:path';
 import DomainEvent from '@src/domain/eventBus/domainEvent';
 import DomainEventMapping from '@src/domain/eventBus/domainEventMapping';
-import { DomainEventName } from '@src/domain/eventBus/domainEventName';
-import { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
+import type { DomainEventName } from '@src/domain/eventBus/domainEventName';
+import type { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
 import ObjectMother from '@src/domain/objectMother.mother';
-import DomainEventAvroMapping, { DomainEventAvroPathPair } from '@src/infrastructure/eventBus/marshallers/avro/domainEventAvroMapping';
+import DomainEventAvroMapping, { type DomainEventAvroPathPair } from '@src/infrastructure/eventBus/marshallers/avro/domainEventAvroMapping';
 import DomainEventAvroMarshaller from '@src/infrastructure/eventBus/marshallers/avro/domainEventAvroMarshaller';
-import { resolve } from 'path';
 
 class DummyEvent extends DomainEvent {
     static eventName = 'dummy:event';
@@ -64,9 +64,7 @@ class DomainEventSubscriberDummy implements DomainEventSubscriber<DummyEvent | D
 }
 
 const subscribers = [new DomainEventSubscriberDummy()],
-    domainEvenAvroPaths = [
-        new DummyEventAvroPath()
-    ],
+    domainEvenAvroPaths = [new DummyEventAvroPath()],
     marshaller = new DomainEventAvroMarshaller(new DomainEventMapping(subscribers), new DomainEventAvroMapping(domainEvenAvroPaths));
 
 describe('domainEventAvroMarshaller', () => {

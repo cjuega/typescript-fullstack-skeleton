@@ -1,6 +1,6 @@
-import Command from '@src/domain/commandBus/command';
-import { CommandBus } from '@src/domain/commandBus/commandBus';
-import CommandHandlersInformation from '@src/infrastructure/commandBus/commandHandlersInformation';
+import type Command from '@src/domain/commandBus/command';
+import type { CommandBus } from '@src/domain/commandBus/commandBus';
+import type CommandHandlersInformation from '@src/infrastructure/commandBus/commandHandlersInformation';
 
 export default class InMemoryCommandBus implements CommandBus {
     private commandHandlersInformation: CommandHandlersInformation;

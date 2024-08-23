@@ -1,4 +1,4 @@
-import DomainEvent from '@src/domain/eventBus/domainEvent';
+import type DomainEvent from '@src/domain/eventBus/domainEvent';
 
 export interface DomainEventRepository {
     save(events: DomainEvent | DomainEvent[]): Promise<void>;

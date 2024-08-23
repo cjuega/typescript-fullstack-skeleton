@@ -1,6 +1,6 @@
-import EnvironmentArranger from '@src/infrastructure/arranger/environmentArranger';
-import RabbitmqConfigurer from '@src/infrastructure/eventBus/rabbitmq/rabbitmqConfigurer';
-import RabbitmqConnection from '@src/infrastructure/eventBus/rabbitmq/rabbitmqConnection';
+import type EnvironmentArranger from '@src/infrastructure/arranger/environmentArranger';
+import type RabbitmqConfigurer from '@src/infrastructure/eventBus/rabbitmq/rabbitmqConfigurer';
+import type RabbitmqConnection from '@src/infrastructure/eventBus/rabbitmq/rabbitmqConnection';
 
 export default class RabbitmqEnvironmentArranger implements EnvironmentArranger {
     private readonly connection: RabbitmqConnection;

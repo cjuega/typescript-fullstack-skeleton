@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, TableIndex } from 'typeorm';
+import { type MigrationInterface, type QueryRunner, TableIndex } from 'typeorm';
 
 export class IndexOccurredOnInDomainEventsFailoverTable1706038572960 implements MigrationInterface {
     private readonly tableName = 'failed_domain_events';

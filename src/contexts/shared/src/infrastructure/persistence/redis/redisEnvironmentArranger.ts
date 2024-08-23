@@ -1,5 +1,5 @@
-import EnvironmentArranger from '@src/infrastructure/arranger/environmentArranger';
-import { RedisClient } from '@src/infrastructure/persistence/redis/redisClientFactory';
+import type EnvironmentArranger from '@src/infrastructure/arranger/environmentArranger';
+import type { RedisClient } from '@src/infrastructure/persistence/redis/redisClientFactory';
 
 export default class RedisEnvironmentArranger implements EnvironmentArranger {
     private readonly client: RedisClient;

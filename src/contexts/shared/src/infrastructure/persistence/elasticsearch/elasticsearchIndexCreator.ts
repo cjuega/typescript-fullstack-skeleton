@@ -1,10 +1,10 @@
-import { Client } from '@elastic/elasticsearch';
+import { readFile } from 'node:fs';
+import { basename, extname } from 'node:path';
+import { promisify } from 'node:util';
+import type { Client } from '@elastic/elasticsearch';
+import type { IndicesIndexSettings, MappingTypeMapping } from '@elastic/elasticsearch/lib/api/types';
+import type ElasticsearchConfig from '@src/infrastructure/persistence/elasticsearch/elasticsearchConfig';
 import fglob from 'fast-glob';
-import { IndicesIndexSettings, MappingTypeMapping } from '@elastic/elasticsearch/lib/api/types';
-import ElasticsearchConfig from '@src/infrastructure/persistence/elasticsearch/elasticsearchConfig';
-import { readFile } from 'fs';
-import { promisify } from 'util';
-import { basename, extname } from 'path';
 
 type ElasticsearchIndexSetup = {
     name: string;

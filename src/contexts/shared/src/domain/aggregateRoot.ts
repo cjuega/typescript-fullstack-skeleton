@@ -1,13 +1,13 @@
-import DomainEvent from '@src/domain/eventBus/domainEvent';
+import type DomainEvent from '@src/domain/eventBus/domainEvent';
 
 export default abstract class AggregateRoot {
-    private domainEvents: Array<DomainEvent>;
+    private domainEvents: DomainEvent[];
 
     constructor() {
         this.domainEvents = [];
     }
 
-    pullDomainEvents(): Array<DomainEvent> {
+    pullDomainEvents(): DomainEvent[] {
         const domainEvents = this.domainEvents.slice();
         this.domainEvents = [];
 

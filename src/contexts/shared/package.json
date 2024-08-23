@@ -4,14 +4,10 @@
   "description": "Shared bounded context with common utilities",
   "author": "Carlos Juega",
   "license": "MIT",
-  "files": [
-    "./dist/"
-  ],
+  "files": ["./dist/"],
   "typesVersions": {
     "*": {
-      "*": [
-        "dist/*"
-      ]
+      "*": ["dist/*"]
     }
   },
   "exports": {

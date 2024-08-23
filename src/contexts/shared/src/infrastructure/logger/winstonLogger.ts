@@ -1,18 +1,18 @@
-import { Logger, LoggerConfig } from '@src/domain/logger';
-import { createLogger, format, Logger as InternalLogger } from 'winston';
+import type { Logger, LoggerConfig } from '@src/domain/logger';
+import { type Logger as InternalLogger, createLogger, format } from 'winston';
 
 export default class WinstonLogger implements Logger {
     private readonly winston: InternalLogger;
 
     constructor(config: LoggerConfig) {
-        const outputFormat = format.printf(({
-                level, message, timestamp, ...meta
-            }) => JSON.stringify({
-                timestamp,
-                level: level.toUpperCase(),
-                message,
-                meta: JSON.stringify(meta)
-            })),
+        const outputFormat = format.printf(({ level, message, timestamp, ...meta }) =>
+                JSON.stringify({
+                    timestamp,
+                    level: level.toUpperCase(),
+                    message,
+                    meta: JSON.stringify(meta)
+                })
+            ),
             formats = [format.errors({ stack: true }), format.timestamp(), outputFormat];
 
         this.winston = createLogger({

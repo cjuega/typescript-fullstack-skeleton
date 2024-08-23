@@ -1,14 +1,16 @@
 import Query from '@src/domain/queryBus/query';
-import QueryHandlersInformation from '@src/infrastructure/queryBus/queryHandlersInformation';
+import type { QueryHandler } from '@src/domain/queryBus/queryHandler';
 import QueryNotRegisteredError from '@src/domain/queryBus/queryNotRegisteredError';
-import { QueryHandler } from '@src/domain/queryBus/queryHandler';
-import { Response } from '@src/domain/queryBus/response';
+import type { Response } from '@src/domain/queryBus/response';
 import InMemoryQueryBus from '@src/infrastructure/queryBus/inMemoryQueryBus';
+import QueryHandlersInformation from '@src/infrastructure/queryBus/queryHandlersInformation';
 
+// biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 class UnhandledQuery extends Query {
     static QUERY_NAME = 'unhandled.query';
 }
 
+// biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 class HandledQuery extends Query {
     static QUERY_NAME = 'handled.query';
 }

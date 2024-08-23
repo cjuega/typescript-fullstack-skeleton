@@ -1,7 +1,7 @@
-import Query from '@src/domain/queryBus/query';
-import { Response } from '@src/domain/queryBus/response';
-import { QueryBus } from '@src/domain/queryBus/queryBus';
-import QueryHandlersInformation from '@src/infrastructure/queryBus/queryHandlersInformation';
+import type Query from '@src/domain/queryBus/query';
+import type { QueryBus } from '@src/domain/queryBus/queryBus';
+import type { Response } from '@src/domain/queryBus/response';
+import type QueryHandlersInformation from '@src/infrastructure/queryBus/queryHandlersInformation';
 
 export default class InMemoryQueryBus implements QueryBus {
     private queryHandlersInformation: QueryHandlersInformation;
@@ -11,8 +11,9 @@ export default class InMemoryQueryBus implements QueryBus {
     }
 
     async ask<R extends Response>(query: Query): Promise<R> {
-        const handler = this.queryHandlersInformation.search(query);
+        const handler = this.queryHandlersInformation.search(query),
+            response = (await handler.handle(query)) as R;
 
-        return handler.handle(query) as Promise<R>;
+        return response;
     }
 }

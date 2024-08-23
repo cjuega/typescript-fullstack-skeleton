@@ -1,7 +1,7 @@
+import type { Logger } from '@src/domain/logger';
+import type { Nullable } from '@src/domain/nullable';
+import type MongoConfig from '@src/infrastructure/persistence/mongo/mongoConfig';
 import { MongoClient } from 'mongodb';
-import { Nullable } from '@src/domain/nullable';
-import MongoConfig from '@src/infrastructure/persistence/mongo/mongoConfig';
-import { Logger } from '@src/domain/logger';
 
 export default class MongoClientFactory {
     private static clients: Record<string, MongoClient> = {};

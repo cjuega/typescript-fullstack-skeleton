@@ -1,4 +1,4 @@
-import { DynamoDBRecord } from 'aws-lambda';
+import type { DynamoDBRecord } from 'aws-lambda';
 
 export default abstract class DynamodbStreamProcessor {
     protected abstract filter(records: DynamoDBRecord[]): DynamoDBRecord[];

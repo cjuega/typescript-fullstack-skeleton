@@ -1,6 +1,6 @@
 import DomainEvent from '@src/domain/eventBus/domainEvent';
-import { DomainEventName } from '@src/domain/eventBus/domainEventName';
-import { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
+import type { DomainEventName } from '@src/domain/eventBus/domainEventName';
+import type { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
 import ObjectMother from '@src/domain/objectMother.mother';
 import InMemoryAsyncEventBus from '@src/infrastructure/eventBus/inMemoryAsyncEventBus';
 

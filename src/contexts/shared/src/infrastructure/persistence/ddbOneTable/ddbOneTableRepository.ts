@@ -1,6 +1,6 @@
-import AggregateRoot from '@src/domain/aggregateRoot';
-import DdbOneTableDomainEventRepository from '@src/infrastructure/persistence/ddbOneTable/ddbOneTableDomainEventRepository';
-import { Table, Model, OneModel } from 'dynamodb-onetable';
+import type AggregateRoot from '@src/domain/aggregateRoot';
+import type DdbOneTableDomainEventRepository from '@src/infrastructure/persistence/ddbOneTable/ddbOneTableDomainEventRepository';
+import type { Model, OneModel, Table } from 'dynamodb-onetable';
 
 export default abstract class DdbOneTableRepository<T extends AggregateRoot> {
     private readonly table: Promise<Table>;
@@ -20,6 +20,7 @@ export default abstract class DdbOneTableRepository<T extends AggregateRoot> {
 
     protected abstract loadModel(): OneModel;
 
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     protected async getModel(): Promise<Model<any>> {
         const table = await this.table,
             modelName = this.modelName();
@@ -60,6 +61,7 @@ export default abstract class DdbOneTableRepository<T extends AggregateRoot> {
     private async persistAggregateRoot(aggregateRoot: T, transaction?: object): Promise<void> {
         const model = await this.getModel();
 
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         await model.create(aggregateRoot.toPrimitives() as any, { transaction });
     }
 }

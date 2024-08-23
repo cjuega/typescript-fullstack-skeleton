@@ -1,4 +1,4 @@
-import Command from '@src/domain/commandBus/command';
+import type Command from '@src/domain/commandBus/command';
 
 export interface CommandHandler<T extends Command> {
     subscribedTo(): Command;

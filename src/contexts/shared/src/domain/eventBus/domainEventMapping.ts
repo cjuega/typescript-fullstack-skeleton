@@ -1,7 +1,7 @@
-import DomainEvent from '@src/domain/eventBus/domainEvent';
-import { DomainEventName } from '@src/domain/eventBus/domainEventName';
-import { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
-import { NewableClass } from '@src/domain/newableClass';
+import type DomainEvent from '@src/domain/eventBus/domainEvent';
+import type { DomainEventName } from '@src/domain/eventBus/domainEventName';
+import type { DomainEventSubscriber } from '@src/domain/eventBus/domainEventSubscriber';
+import type { NewableClass } from '@src/domain/newableClass';
 
 type DomainEventCtor = NewableClass<DomainEvent> & DomainEventName<DomainEvent>;
 
@@ -16,10 +16,10 @@ export default class DomainEventMapping {
 
     private static formatSubscribers(subscribers: DomainEventSubscriber<DomainEvent>[]): Mapping {
         const reducer = (map: Map<string, DomainEventCtor>, subscriber: DomainEventSubscriber<DomainEvent>) => {
-            subscriber.subscribedTo().forEach((domainEventCtor) => {
+            subscriber.subscribedTo().reduce((acc, domainEventCtor) => {
                 const { eventName } = domainEventCtor;
-                map.set(eventName, domainEventCtor as DomainEventCtor);
-            });
+                return acc.set(eventName, domainEventCtor as DomainEventCtor);
+            }, map);
 
             return map;
         };

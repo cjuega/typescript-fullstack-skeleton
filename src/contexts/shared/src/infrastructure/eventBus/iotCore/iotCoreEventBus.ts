@@ -1,10 +1,10 @@
-import { DescribeEndpointCommand, IoTClient } from '@aws-sdk/client-iot';
+import { DescribeEndpointCommand, type IoTClient } from '@aws-sdk/client-iot';
 import { IoTDataPlaneClient, PublishCommand } from '@aws-sdk/client-iot-data-plane';
-import DomainEvent from '@src/domain/eventBus/domainEvent';
-import { DomainEventMarshaller } from '@src/domain/eventBus/domainEventMarshaller';
-import { EventBus } from '@src/domain/eventBus/eventBus';
-import IotCoreConfig from '@src/infrastructure/eventBus/iotCore/iotCoreConfig';
-import IotCoreDomainEventsMapper from '@src/infrastructure/eventBus/iotCore/iotCoreDomainEventsMappers';
+import type DomainEvent from '@src/domain/eventBus/domainEvent';
+import type { DomainEventMarshaller } from '@src/domain/eventBus/domainEventMarshaller';
+import type { EventBus } from '@src/domain/eventBus/eventBus';
+import type IotCoreConfig from '@src/infrastructure/eventBus/iotCore/iotCoreConfig';
+import type IotCoreDomainEventsMapper from '@src/infrastructure/eventBus/iotCore/iotCoreDomainEventsMappers';
 
 export default class IotCoreEventBus implements EventBus {
     private readonly iot: IoTClient;
@@ -17,12 +17,7 @@ export default class IotCoreEventBus implements EventBus {
 
     private dataClient: IoTDataPlaneClient | undefined;
 
-    constructor(
-        iot: IoTClient,
-        eventsInformation: IotCoreDomainEventsMapper,
-        marshaller: DomainEventMarshaller,
-        config: IotCoreConfig
-    ) {
+    constructor(iot: IoTClient, eventsInformation: IotCoreDomainEventsMapper, marshaller: DomainEventMarshaller, config: IotCoreConfig) {
         this.iot = iot;
         this.eventsMapper = eventsInformation;
         this.marshaller = marshaller;

@@ -1,7 +1,7 @@
-import DomainEvent from '@src/domain/eventBus/domainEvent';
-import { DomainEventUnmarshaller } from '@src/domain/eventBus/domainEventUnmarshaller';
-import { EventBus } from '@src/domain/eventBus/eventBus';
-import { DataSource } from 'typeorm';
+import type DomainEvent from '@src/domain/eventBus/domainEvent';
+import type { DomainEventUnmarshaller } from '@src/domain/eventBus/domainEventUnmarshaller';
+import type { EventBus } from '@src/domain/eventBus/eventBus';
+import type { DataSource } from 'typeorm';
 
 export default class TypeormOutboxConsumer {
     private static readonly N_MESSAGES = 50;
@@ -36,9 +36,9 @@ export default class TypeormOutboxConsumer {
 
         await ds.transaction(async (manager) => {
             const rows = await manager.query<Array<{ id: string; payload: string }>>(
-                `SELECT id, payload FROM ${this.tableName} ORDER BY occurred_on ASC LIMIT ? FOR UPDATE SKIP LOCKED`,
-                [nEvents]
-            ),
+                    `SELECT id, payload FROM ${this.tableName} ORDER BY occurred_on ASC LIMIT ? FOR UPDATE SKIP LOCKED`,
+                    [nEvents]
+                ),
                 events = rows.map(({ payload }) => this.unmarshaller.unmarshall(payload)),
                 ids = rows.map(({ id }) => id);
 
@@ -49,8 +49,7 @@ export default class TypeormOutboxConsumer {
             try {
                 await action(events);
 
-                await manager.createQueryBuilder().delete().from(this.tableName).where('id In(:ids)', { ids })
-                    .execute();
+                await manager.createQueryBuilder().delete().from(this.tableName).where('id In(:ids)', { ids }).execute();
             } catch {
                 // Do nothing
             }

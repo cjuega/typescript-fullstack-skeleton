@@ -1,8 +1,8 @@
-import DomainEvent from '@src/domain/eventBus/domainEvent';
-import { DomainEventMarshaller } from '@src/domain/eventBus/domainEventMarshaller';
-import { EventBus } from '@src/domain/eventBus/eventBus';
-import RabbitmqConfig from '@src/infrastructure/eventBus/rabbitmq/rabbitmqConfig';
-import RabbitmqConnection from '@src/infrastructure/eventBus/rabbitmq/rabbitmqConnection';
+import type DomainEvent from '@src/domain/eventBus/domainEvent';
+import type { DomainEventMarshaller } from '@src/domain/eventBus/domainEventMarshaller';
+import type { EventBus } from '@src/domain/eventBus/eventBus';
+import type RabbitmqConfig from '@src/infrastructure/eventBus/rabbitmq/rabbitmqConfig';
+import type RabbitmqConnection from '@src/infrastructure/eventBus/rabbitmq/rabbitmqConnection';
 
 export default class RabbitmqEventBus implements EventBus {
     private readonly connection: RabbitmqConnection;

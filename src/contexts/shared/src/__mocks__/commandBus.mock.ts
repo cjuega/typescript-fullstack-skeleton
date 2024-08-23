@@ -1,6 +1,6 @@
+import type Command from '@src/domain/commandBus/command';
+import type { CommandBus } from '@src/domain/commandBus/commandBus';
 import ObjectMother from '@src/domain/objectMother.mother';
-import Command from '@src/domain/commandBus/command';
-import { CommandBus } from '@src/domain/commandBus/commandBus';
 
 export default class CommandBusMock implements CommandBus {
     private mockDispatch = jest.fn<Promise<void | Error>, Command[], CommandBusMock>();
@@ -29,7 +29,7 @@ export default class CommandBusMock implements CommandBus {
         expect(this.mockDispatch).toHaveBeenLastCalledWith(command);
     }
 
-    assertDispatchedCommandsAre(commands: Array<Command>): void {
+    assertDispatchedCommandsAre(commands: Command[]): void {
         const { mock } = this.mockDispatch;
 
         commands.forEach((command: Command, i: number) => {

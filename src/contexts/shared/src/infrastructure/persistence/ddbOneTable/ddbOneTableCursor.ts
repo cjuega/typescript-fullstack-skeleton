@@ -9,7 +9,7 @@ export const decryptDdbOneTableCursor = (cursor?: string): DdbOneTableCursor => 
 
         try {
             return JSON.parse(Buffer.from(cursor, 'base64').toString()) as DdbOneTableCursor;
-        } catch (e) {
+        } catch {
             throw new InvalidArgument(`cursor <${cursor}> can't be read.`);
         }
     },

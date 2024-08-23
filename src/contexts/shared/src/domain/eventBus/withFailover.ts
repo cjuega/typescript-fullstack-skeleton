@@ -1,6 +1,6 @@
-import DomainEvent from '@src/domain/eventBus/domainEvent';
-import { DomainEventRepository } from '@src/domain/eventBus/domainEventRepository';
-import { EventBus } from '@src/domain/eventBus/eventBus';
+import type DomainEvent from '@src/domain/eventBus/domainEvent';
+import type { DomainEventRepository } from '@src/domain/eventBus/domainEventRepository';
+import type { EventBus } from '@src/domain/eventBus/eventBus';
 
 export default class WithFailover implements EventBus {
     private readonly eventBus: EventBus;

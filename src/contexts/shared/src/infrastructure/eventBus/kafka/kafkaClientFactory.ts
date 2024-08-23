@@ -1,7 +1,7 @@
-import { Nullable } from '@src/domain/nullable';
-import { Kafka, logCreator, logLevel } from 'kafkajs';
-import { Logger, LogLevel } from '@src/domain/logger';
-import KafkaConfig from '@src/infrastructure/eventBus/kafka/kafkaConfig';
+import type { LogLevel, Logger } from '@src/domain/logger';
+import type { Nullable } from '@src/domain/nullable';
+import type KafkaConfig from '@src/infrastructure/eventBus/kafka/kafkaConfig';
+import { Kafka, type logCreator, logLevel } from 'kafkajs';
 
 export default class KafkaClientFactory {
     private static clients: Record<string, Kafka> = {};
@@ -27,18 +27,19 @@ export default class KafkaClientFactory {
     }
 
     private static createKafkaLogger(logger: Logger): logCreator {
-        return () => ({ level, log }) => {
-            const mapping: { [key: string]: LogLevel } = {
-                [logLevel.INFO]: 'info',
-                [logLevel.DEBUG]: 'debug',
-                [logLevel.WARN]: 'warn',
-                [logLevel.ERROR]: 'error',
-                [logLevel.NOTHING]: 'error'
-            },
-                method: LogLevel = mapping[level] ?? 'info';
+        return () =>
+            ({ level, log }) => {
+                const mapping: { [key: string]: LogLevel } = {
+                        [logLevel.INFO]: 'info',
+                        [logLevel.DEBUG]: 'debug',
+                        [logLevel.WARN]: 'warn',
+                        [logLevel.ERROR]: 'error',
+                        [logLevel.NOTHING]: 'error'
+                    },
+                    method: LogLevel = mapping[level] ?? 'info';
 
-            logger[method](log.message);
-        };
+                logger[method](log.message);
+            };
     }
 
     private static registerClient(client: Kafka, contextName: string): void {

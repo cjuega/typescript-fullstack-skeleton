@@ -1,5 +1,5 @@
-import { Clock } from '@src/domain/clock';
-import Datetime from '@src/domain/datetime';
+import type { Clock } from '@src/domain/clock';
+import type Datetime from '@src/domain/datetime';
 
 export default class ClockMock implements Clock {
     private mockNow = jest.fn<Datetime, void[], ClockMock>();

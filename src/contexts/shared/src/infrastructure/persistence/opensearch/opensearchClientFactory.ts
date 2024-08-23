@@ -1,10 +1,10 @@
-import { Client } from '@opensearch-project/opensearch';
-import { AwsSigv4Signer, AwsSigv4SignerResponse } from '@opensearch-project/opensearch/aws';
+import { readFileSync } from 'node:fs';
 import { defaultProvider } from '@aws-sdk/credential-provider-node';
-import { Logger } from '@src/domain/logger';
-import { Nullable } from '@src/domain/nullable';
-import OpensearchConfig from '@src/infrastructure/persistence/opensearch/opensearchConfig';
-import { readFileSync } from 'fs';
+import { Client } from '@opensearch-project/opensearch';
+import { AwsSigv4Signer, type AwsSigv4SignerResponse } from '@opensearch-project/opensearch/aws';
+import type { Logger } from '@src/domain/logger';
+import type { Nullable } from '@src/domain/nullable';
+import type OpensearchConfig from '@src/infrastructure/persistence/opensearch/opensearchConfig';
 
 export default class OpensearchClientFactory {
     private static clients: Record<string, Client> = {};

@@ -1,8 +1,8 @@
-import DomainEvent from '@src/domain/eventBus/domainEvent';
-import DomainEventMapping from '@src/domain/eventBus/domainEventMapping';
-import { DomainEventMarshaller } from '@src/domain/eventBus/domainEventMarshaller';
-import { DomainEventUnmarshaller } from '@src/domain/eventBus/domainEventUnmarshaller';
-import DomainEventAvroMapping from '@src/infrastructure/eventBus/marshallers/avro/domainEventAvroMapping';
+import type DomainEvent from '@src/domain/eventBus/domainEvent';
+import type DomainEventMapping from '@src/domain/eventBus/domainEventMapping';
+import type { DomainEventMarshaller } from '@src/domain/eventBus/domainEventMarshaller';
+import type { DomainEventUnmarshaller } from '@src/domain/eventBus/domainEventUnmarshaller';
+import type DomainEventAvroMapping from '@src/infrastructure/eventBus/marshallers/avro/domainEventAvroMapping';
 
 type JsonApi = {
     data: {

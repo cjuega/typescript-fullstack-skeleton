@@ -1,8 +1,8 @@
-import { IoTClient, IoTClientConfig } from '@aws-sdk/client-iot';
+import { IoTClient, type IoTClientConfig } from '@aws-sdk/client-iot';
+import type { Logger } from '@src/domain/logger';
+import type { Nullable } from '@src/domain/nullable';
+import type IotCoreConfig from '@src/infrastructure/eventBus/iotCore/iotCoreConfig';
 import { captureAWSv3Client } from 'aws-xray-sdk';
-import { Nullable } from '@src/domain/nullable';
-import IotCoreConfig from '@src/infrastructure/eventBus/iotCore/iotCoreConfig';
-import { Logger } from '@src/domain/logger';
 
 export default class IotClientFactory {
     private static clients: Record<string, IoTClient> = {};
@@ -24,7 +24,7 @@ export default class IotClientFactory {
     }
 
     private static create(config: IotCoreConfig, logger: Logger): IoTClient {
-        const awsConfig = this.extractClientConfig(config, logger),
+        const awsConfig = IotClientFactory.extractClientConfig(config, logger),
             client = new IoTClient(awsConfig);
 
         if (config.enableTracing) {

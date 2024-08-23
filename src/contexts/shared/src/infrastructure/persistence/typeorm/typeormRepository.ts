@@ -1,8 +1,6 @@
-import AggregateRoot from '@src/domain/aggregateRoot';
-import TypeormDomainEventRepository from '@src/infrastructure/persistence/typeorm/typeormDomainEventRepository';
-import {
-    DataSource, EntityManager, EntitySchema, Repository
-} from 'typeorm';
+import type AggregateRoot from '@src/domain/aggregateRoot';
+import type TypeormDomainEventRepository from '@src/infrastructure/persistence/typeorm/typeormDomainEventRepository';
+import type { DataSource, EntityManager, EntitySchema, Repository } from 'typeorm';
 
 export default abstract class TypeormRepository<T extends AggregateRoot> {
     private readonly _dataSource: Promise<DataSource>;

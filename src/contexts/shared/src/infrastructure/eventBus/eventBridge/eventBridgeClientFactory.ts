@@ -1,8 +1,8 @@
-import { EventBridgeClient, EventBridgeClientConfig } from '@aws-sdk/client-eventbridge';
+import { EventBridgeClient, type EventBridgeClientConfig } from '@aws-sdk/client-eventbridge';
+import type { Logger } from '@src/domain/logger';
+import type { Nullable } from '@src/domain/nullable';
+import type EventBridgeConfig from '@src/infrastructure/eventBus/eventBridge/eventBridgeConfig';
 import { captureAWSv3Client } from 'aws-xray-sdk';
-import { Nullable } from '@src/domain/nullable';
-import EventBridgeConfig from '@src/infrastructure/eventBus/eventBridge/eventBridgeConfig';
-import { Logger } from '@src/domain/logger';
 
 export default class EventBridgeClientFactory {
     private static clients: Record<string, EventBridgeClient> = {};
@@ -24,7 +24,7 @@ export default class EventBridgeClientFactory {
     }
 
     private static create(config: EventBridgeConfig, logger: Logger): EventBridgeClient {
-        const awsConfig = this.extractClientConfig(config, logger),
+        const awsConfig = EventBridgeClientFactory.extractClientConfig(config, logger),
             client = new EventBridgeClient(awsConfig);
 
         if (config.enableTracing) {

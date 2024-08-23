@@ -1,5 +1,5 @@
-import DomainEvent from '@src/domain/eventBus/domainEvent';
-import { DomainEventRepository } from '@src/domain/eventBus/domainEventRepository';
+import type DomainEvent from '@src/domain/eventBus/domainEvent';
+import type { DomainEventRepository } from '@src/domain/eventBus/domainEventRepository';
 
 export default class DomainEventRepositoryMock implements DomainEventRepository {
     private mockSave = jest.fn<Promise<void>, Array<DomainEvent | DomainEvent[]>, DomainEventRepositoryMock>();
@@ -10,13 +10,13 @@ export default class DomainEventRepositoryMock implements DomainEventRepository 
 
     assertSaveHasBeenWith(events: DomainEvent[]): void {
         const { mock } = this.mockSave,
-            actualSavedEvents = mock.calls.map((c) => c[0]).flat();
+            actualSavedEvents = mock.calls.flatMap((c) => c[0]);
 
         expect(mock.calls).toHaveLength(events.length);
 
-        events.forEach((e) => {
+        for (const e of events) {
             expect(actualSavedEvents).toContainEqual(e);
-        });
+        }
     }
 
     assertNothingSaved(): void {

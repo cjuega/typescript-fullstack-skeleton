@@ -1,7 +1,5 @@
-import RabbitmqConfig from '@src/infrastructure/eventBus/rabbitmq/rabbitmqConfig';
-import {
-    ConfirmChannel, Connection, ConsumeMessage, MessagePropertyHeaders, connect as rabbitConnect
-} from 'amqplib';
+import type RabbitmqConfig from '@src/infrastructure/eventBus/rabbitmq/rabbitmqConfig';
+import { type ConfirmChannel, type Connection, type ConsumeMessage, type MessagePropertyHeaders, connect as rabbitConnect } from 'amqplib';
 
 export default class RabbitmqConnection {
     private static readonly RETRY_SUFFIX = '.retry';
@@ -127,6 +125,7 @@ export default class RabbitmqConnection {
         });
     }
 
+    // biome-ignore lint/complexity/noBannedTypes: <explanation>
     async consume(queueName: string, subscriber: (message: ConsumeMessage) => {}): Promise<void> {
         await this.channel.consume(queueName, (msg: ConsumeMessage | null) => {
             if (msg) {
@@ -148,7 +147,7 @@ export default class RabbitmqConnection {
             return false;
         }
 
-        const count = message.properties.headers['redelivery-count'] as number;
+        const count = message.properties.headers?.['redelivery-count'] as number;
 
         return count >= this.config.maxRetries;
     }
@@ -181,7 +180,11 @@ export default class RabbitmqConnection {
         };
     }
 
-    private static incrementRedeliveryCount(headers: MessagePropertyHeaders): Record<string, unknown> {
+    private static incrementRedeliveryCount(headers?: MessagePropertyHeaders): Record<string, unknown> {
+        if (!headers) {
+            return { 'redelivery-count': 1 };
+        }
+
         const count = headers['redelivery-count'] as number;
 
         if (count) {
@@ -191,7 +194,8 @@ export default class RabbitmqConnection {
         return { 'redelivery-count': 1 };
     }
 
-    async ack(message: ConsumeMessage): Promise<void> {
+    ack(message: ConsumeMessage): Promise<void> {
         this.channel.ack(message);
+        return Promise.resolve();
     }
 }

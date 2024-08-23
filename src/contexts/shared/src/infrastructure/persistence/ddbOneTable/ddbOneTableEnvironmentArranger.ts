@@ -1,5 +1,5 @@
 import EnvironmentArranger from '@src/infrastructure/arranger/environmentArranger';
-import { Table, OneProperties } from 'dynamodb-onetable';
+import type { OneProperties, Table } from 'dynamodb-onetable';
 import { chunk } from 'lodash';
 
 export default class DdbOneTableEnvironmentArranger extends EnvironmentArranger {
@@ -29,7 +29,7 @@ export default class DdbOneTableEnvironmentArranger extends EnvironmentArranger 
     }
 
     private async cleanDatabase(): Promise<void> {
-        let next;
+        let next: unknown;
 
         do {
             const response = await (await this.table).scanItems(undefined, { parse: true, hidden: true });

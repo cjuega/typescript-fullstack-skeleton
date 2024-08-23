@@ -1,7 +1,7 @@
-import { Client as ElasticsearchClient } from '@elastic/elasticsearch';
-import AggregateRoot from '@src/domain/aggregateRoot';
-import { Nullable } from '@src/domain/nullable';
-import { Primitives } from '@src/domain/primitives';
+import type { Client as ElasticsearchClient } from '@elastic/elasticsearch';
+import type AggregateRoot from '@src/domain/aggregateRoot';
+import type { Nullable } from '@src/domain/nullable';
+import type { Primitives } from '@src/domain/primitives';
 
 export default abstract class ElasticsearchRepository<T extends AggregateRoot> {
     private client: ElasticsearchClient;

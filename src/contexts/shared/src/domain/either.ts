@@ -21,13 +21,15 @@ export const Right = <T>(value: T): Right<T> => ({
 
         return right(input.value);
     },
-    map = <L, R, B>(input: Either<L, R>, mapper: (r: R) => B): Either<L, B> => match(
-        input,
-        (left): Either<L, B> => Left(left),
-        (right): Either<L, B> => Right(mapper(right))
-    ),
-    flatMap = <L, R, B>(input: Either<L, R>, mapper: (r: R) => Either<L, B>): Either<L, B> => match(
-        input,
-        (left) => Left(left),
-        (right) => mapper(right)
-    );
+    map = <L, R, B>(input: Either<L, R>, mapper: (r: R) => B): Either<L, B> =>
+        match(
+            input,
+            (left): Either<L, B> => Left(left),
+            (right): Either<L, B> => Right(mapper(right))
+        ),
+    flatMap = <L, R, B>(input: Either<L, R>, mapper: (r: R) => Either<L, B>): Either<L, B> =>
+        match(
+            input,
+            (left) => Left(left),
+            (right) => mapper(right)
+        );

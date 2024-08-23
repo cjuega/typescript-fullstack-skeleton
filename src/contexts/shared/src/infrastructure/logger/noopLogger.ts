@@ -1,4 +1,4 @@
-import { Logger } from '@src/domain/logger';
+import type { Logger } from '@src/domain/logger';
 
 class NoopLogger implements Logger {
     debug(_: string): void {}

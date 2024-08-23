@@ -1,5 +1,5 @@
-import ValueObject from '@src/domain/valueObject';
 import InvalidArgument from '@src/domain/invalidArgument';
+import ValueObject from '@src/domain/valueObject';
 
 export default abstract class StringValueObject extends ValueObject<string> {
     constructor(value: string) {
@@ -12,7 +12,7 @@ export default abstract class StringValueObject extends ValueObject<string> {
 
     private static ensureStringIsNotEmpty(value: string): void {
         if (!value) {
-            throw new InvalidArgument(`<${this.name}> doesn't allow empty strings`);
+            throw new InvalidArgument(`<${StringValueObject.name}> doesn't allow empty strings`);
         }
     }
 }

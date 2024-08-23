@@ -1,5 +1,5 @@
-import { Logger } from '@src/domain/logger';
-import { Logger as ITypeormLogger } from 'typeorm';
+import type { Logger } from '@src/domain/logger';
+import type { Logger as ITypeormLogger } from 'typeorm';
 
 export default class TypeormLogger implements ITypeormLogger {
     private readonly logger: Logger;

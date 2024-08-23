@@ -1,6 +1,6 @@
-import { Client } from '@opensearch-project/opensearch';
+import type { Client } from '@opensearch-project/opensearch';
 import EnvironmentArranger from '@src/infrastructure/arranger/environmentArranger';
-import OpensearchIndexCreator from '@src/infrastructure/persistence/opensearch/opensearchIndexCreator';
+import type OpensearchIndexCreator from '@src/infrastructure/persistence/opensearch/opensearchIndexCreator';
 
 export default class OpensearchEnvironmentArranger extends EnvironmentArranger {
     private readonly client: Client;

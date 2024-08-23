@@ -1,5 +1,5 @@
-import { MongoClient } from 'mongodb';
 import EnvironmentArranger from '@src/infrastructure/arranger/environmentArranger';
+import type { MongoClient } from 'mongodb';
 
 export default class MongoEnvironmentArranger extends EnvironmentArranger {
     private readonly _client: Promise<MongoClient>;
