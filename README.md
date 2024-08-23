@@ -128,5 +128,4 @@ Check each package's README for more details regarding any configuration files t
 
 ## Advanced tips
 
-* Remember to update `.vscode/settings.json` with your current packages to prevent eslint errors within vscode.
 * You can disable [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) by removing the `commitlint.config.js` file and the **commit-msg** git hook from `.husky/`.

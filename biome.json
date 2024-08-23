@@ -1,0 +1,104 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true,
+    "defaultBranch": "master"
+  },
+  "formatter": {
+    "ignore": ["**/dist", "tmp/**", "node_modules/**", "jest.config.integration.js"],
+    "indentStyle": "space",
+    "lineWidth": 140
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "complexity": {
+        "noExcessiveCognitiveComplexity": "error",
+        "noVoid": "error",
+        "useSimplifiedLogicExpression": "error"
+      },
+      "correctness": {
+        "noUnusedImports": "error",
+        "noUndeclaredVariables": "error",
+        "noUnusedPrivateClassMembers": "error",
+        "noUnusedVariables": "error",
+        "useHookAtTopLevel": "error"
+      },
+      "nursery": {
+        "noConsole": "warn",
+        "noDoneCallback": "error",
+        "noDuplicateAtImportRules": "error",
+        "noDuplicateElseIf": "error",
+        "noDuplicateFontNames": "error",
+        "noDuplicateJsonKeys": "error",
+        "noDuplicateSelectorsKeyframeBlock": "error",
+        "noEmptyBlock": "error",
+        "noInvalidPositionAtImportRule": "error",
+        "noRestrictedImports": "error",
+        "noUnknownFunction": "error",
+        "noUnknownMediaFeatureName": "error",
+        "noUnknownProperty": "error",
+        "noUnknownSelectorPseudoElement": "error",
+        "noUnknownUnit": "error",
+        "noUnusedFunctionParameters": "error",
+        "noUselessStringConcat": "error",
+        "useAdjacentOverloadSignatures": "error",
+        "useConsistentBuiltinInstantiation": "error",
+        "useDefaultSwitchClause": "error",
+        "useErrorMessage": "error",
+        "useFocusableInteractive": "error",
+        "useSemanticElements": "error",
+        "useThrowNewError": "error",
+        "useThrowOnlyError": "error",
+        "noMisplacedAssertion": "error"
+      },
+      "style": {
+        "noImplicitBoolean": "error",
+        "noNegationElse": "error",
+        "noNonNullAssertion": "off",
+        "useBlockStatements": "error",
+        "useConsistentArrayType": {
+          "level": "error",
+          "options": {
+            "syntax": "shorthand"
+          }
+        },
+        "useForOf": "error",
+        "useFragmentSyntax": "error",
+        "useSingleVarDeclarator": "off"
+      },
+      "suspicious": {
+        "noConsoleLog": "warn",
+        "noSkippedTests": "warn",
+        "useAwait": "error"
+      }
+    },
+    "ignore": ["**/dist", "tmp/**", "node_modules/**", "jest.config.integration.js"]
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "jsxQuoteStyle": "single",
+      "trailingCommas": "none",
+      "indentStyle": "space",
+      "indentWidth": 4,
+      "lineWidth": 140
+    },
+    "globals": ["jest", "describe", "it", "expect", "beforeEach", "afterEach", "beforeAll", "afterAll"]
+  },
+  "json": {
+    "formatter": {
+      "indentStyle": "space"
+    }
+  },
+  "overrides": [
+    { "include": ["*.mother.ts"], "linter": { "rules": { "complexity": { "noStaticOnlyClass": "off" } } } },
+    {
+      "include": ["*.mock.ts"],
+      "linter": { "rules": { "nursery": { "noMisplacedAssertion": "off" }, "suspicious": { "noConfusingVoidType": "off" } } }
+    }
+  ]
+}
