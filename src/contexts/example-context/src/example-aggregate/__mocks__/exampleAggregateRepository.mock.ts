@@ -22,7 +22,7 @@ export default class ExampleAggregateRepositoryMock implements ExampleAggregateR
         expect(lastSavedExampleAggregateBody).toStrictEqual(expectedBody);
     }
 
-    async search(id: ExampleAggregateId): Promise<Nullable<ExampleAggregate>> {
+    search(id: ExampleAggregateId): Promise<Nullable<ExampleAggregate>> {
         return this.mockSearch(id);
     }
 

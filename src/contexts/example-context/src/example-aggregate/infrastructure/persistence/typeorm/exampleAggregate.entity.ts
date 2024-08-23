@@ -1,8 +1,8 @@
-import { EntitySchema } from 'typeorm';
+import Datetime from '@context/shared/domain/datetime';
+import ValueObjectTransformer from '@context/shared/infrastructure/persistence/typeorm/valueObjectTransformer';
 import ExampleAggregate from '@src/example-aggregate/domain/exampleAggregate';
 import ExampleAggregateId from '@src/example-aggregate/domain/exampleAggregateId';
-import ValueObjectTransformer from '@context/shared/infrastructure/persistence/typeorm/valueObjectTransformer';
-import Datetime from '@context/shared/domain/datetime';
+import { EntitySchema } from 'typeorm';
 
 const ExampleAggregateEntity = new EntitySchema<ExampleAggregate>({
     name: 'ExampleAggregate',

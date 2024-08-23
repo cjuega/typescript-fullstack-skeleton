@@ -1,10 +1,10 @@
-import { Clock } from '@context/shared/domain/clock';
-import { ExampleAggregateRepository } from '@src/example-aggregate/domain/exampleAggregateRepository';
-import { EventBus } from '@context/shared/domain/eventBus/eventBus';
-import ExampleAggregateId from '@src/example-aggregate/domain/exampleAggregateId';
+import type { Clock } from '@context/shared/domain/clock';
+import type { EventBus } from '@context/shared/domain/eventBus/eventBus';
+import type CreateExampleAggregateCommand from '@src/example-aggregate/application/create/createExampleAggregateCommand';
 import ExampleAggregate from '@src/example-aggregate/domain/exampleAggregate';
 import ExampleAggregateAlreadyExists from '@src/example-aggregate/domain/exampleAggregateAlreadyExists';
-import CreateExampleAggregateCommand from '@src/example-aggregate/application/create/createExampleAggregateCommand';
+import ExampleAggregateId from '@src/example-aggregate/domain/exampleAggregateId';
+import type { ExampleAggregateRepository } from '@src/example-aggregate/domain/exampleAggregateRepository';
 
 export default class ExampleAggregateCreator {
     private readonly clock: Clock;

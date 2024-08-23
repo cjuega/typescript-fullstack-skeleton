@@ -1,7 +1,7 @@
 import 'tsarch/dist/jest';
-import { FileConditionBuilder, filesOfProject } from 'tsarch';
-import { readdir } from 'fs';
-import { promisify } from 'util';
+import { readdir } from 'node:fs';
+import { promisify } from 'node:util';
+import { type FileConditionBuilder, filesOfProject } from 'tsarch';
 
 const TEST_TIMEOUT_IN_MILLISECONDS = 60 * 1000;
 
@@ -13,14 +13,10 @@ describe('hexagonal architecture', () => {
     });
 
     describe('shared module', () => {
-        it('shouldn\'t depend on any other module', () => {
+        it("shouldn't depend on any other module", () => {
             expect.hasAssertions();
 
-            const rule = files
-                .inFolder('shared')
-                .shouldNot()
-                .dependOnFiles()
-                .matchingPattern('^(?!.*shared).*');
+            const rule = files.inFolder('shared').shouldNot().dependOnFiles().matchingPattern('^(?!.*shared).*');
 
             expect(rule).toPassAsync();
         });
@@ -53,63 +49,68 @@ describe('hexagonal architecture', () => {
         });
     });
 
-    it('domain code shouldn\'t depend on application code', () => {
-        expect.hasAssertions();
+    it(
+        "domain code shouldn't depend on application code",
+        () => {
+            expect.hasAssertions();
 
-        const rule = files
-            .inFolder('domain')
-            .shouldNot()
-            .dependOnFiles()
-            .inFolder('application');
+            const rule = files.inFolder('domain').shouldNot().dependOnFiles().inFolder('application');
 
-        expect(rule).toPassAsync();
-    }, TEST_TIMEOUT_IN_MILLISECONDS);
+            expect(rule).toPassAsync();
+        },
+        TEST_TIMEOUT_IN_MILLISECONDS
+    );
 
-    it('domain code shouldn\'t depend on infrastructure code', () => {
-        expect.hasAssertions();
+    it(
+        "domain code shouldn't depend on infrastructure code",
+        () => {
+            expect.hasAssertions();
 
-        const rule = files
-            .inFolder('domain')
-            .shouldNot()
-            .dependOnFiles()
-            .inFolder('infrastructure');
+            const rule = files.inFolder('domain').shouldNot().dependOnFiles().inFolder('infrastructure');
 
-        expect(rule).toPassAsync();
-    }, TEST_TIMEOUT_IN_MILLISECONDS);
+            expect(rule).toPassAsync();
+        },
+        TEST_TIMEOUT_IN_MILLISECONDS
+    );
 
-    it('application code shouldn\'t depend on infrastructure code', () => {
-        expect.hasAssertions();
+    it(
+        "application code shouldn't depend on infrastructure code",
+        () => {
+            expect.hasAssertions();
 
-        const rule = files
-            .inFolder('application')
-            .shouldNot()
-            .dependOnFiles()
-            .inFolder('infrastructure');
+            const rule = files.inFolder('application').shouldNot().dependOnFiles().inFolder('infrastructure');
 
-        expect(rule).toPassAsync();
-    }, TEST_TIMEOUT_IN_MILLISECONDS);
+            expect(rule).toPassAsync();
+        },
+        TEST_TIMEOUT_IN_MILLISECONDS
+    );
 
-    it('production code shouldn\'t depend on test files (mocks and mothers)', () => {
-        expect.hasAssertions();
+    it(
+        "production code shouldn't depend on test files (mocks and mothers)",
+        () => {
+            expect.hasAssertions();
 
-        const rule = files
-            // all files not having test, mock or mother in their name
-            .matchingPattern('^[^.]+(?!\\.(test|mock|mother))\\.ts')
-            .shouldNot()
-            .dependOnFiles()
-            .matchingPattern('\\.(mock|mother)\\.ts');
+            const rule = files
+                // all files not having test, mock or mother in their name
+                .matchingPattern('^[^.]+(?!\\.(test|mock|mother))\\.ts')
+                .shouldNot()
+                .dependOnFiles()
+                .matchingPattern('\\.(mock|mother)\\.ts');
 
-        expect(rule).toPassAsync();
-    }, TEST_TIMEOUT_IN_MILLISECONDS);
+            expect(rule).toPassAsync();
+        },
+        TEST_TIMEOUT_IN_MILLISECONDS
+    );
 
-    it('there shouldn\'t be cycles in code references', () => {
-        expect.hasAssertions();
+    it(
+        "there shouldn't be cycles in code references",
+        () => {
+            expect.hasAssertions();
 
-        const rule = files
-            .inFolder('src')
-            .should()
-            .beFreeOfCycles();
+            const rule = files.inFolder('src').should().beFreeOfCycles();
 
-        expect(rule).toPassAsync();
-    }, TEST_TIMEOUT_IN_MILLISECONDS);
+            expect(rule).toPassAsync();
+        },
+        TEST_TIMEOUT_IN_MILLISECONDS
+    );
 });

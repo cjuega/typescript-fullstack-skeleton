@@ -1,7 +1,7 @@
-import Datetime from '@context/shared/domain/datetime';
-import { Primitives } from '@context/shared/domain/primitives';
+import type Datetime from '@context/shared/domain/datetime';
+import type { Primitives } from '@context/shared/domain/primitives';
 import CreateExampleAggregateCommand from '@src/example-aggregate/application/create/createExampleAggregateCommand';
-import ExampleAggregate from '@src/example-aggregate/domain/exampleAggregate';
+import type ExampleAggregate from '@src/example-aggregate/domain/exampleAggregate';
 import ExampleAggregateMother from '@src/example-aggregate/domain/exampleAggregate.mother';
 import ExampleAggregateIdMother from '@src/example-aggregate/domain/exampleAggregateId.mother';
 

@@ -1,16 +1,13 @@
+import RedisClientFactory from '@context/shared/infrastructure/persistence/redis/redisClientFactory';
+import RedisEnvironmentArranger from '@context/shared/infrastructure/persistence/redis/redisEnvironmentArranger';
 import ExampleAggregateMother from '@src/example-aggregate/domain/exampleAggregate.mother';
 import ExampleAggregateIdMother from '@src/example-aggregate/domain/exampleAggregateId.mother';
 import RedisExampleAggregateRepository from '@src/example-aggregate/infrastructure/persistence/redis/redisExampleAggregateRepository';
-import RedisClientFactory from '@context/shared/infrastructure/persistence/redis/redisClientFactory';
-import RedisEnvironmentArranger from '@context/shared/infrastructure/persistence/redis/redisEnvironmentArranger';
 
-const client = RedisClientFactory.createClient(
-        'integration-tests',
-        {
-            endpoints: ['redis://localhost:6379'],
-            clusterModeEnabled: false
-        }
-    ),
+const client = RedisClientFactory.createClient('integration-tests', {
+        endpoints: ['redis://localhost:6379'],
+        clusterModeEnabled: false
+    }),
     environmentArranger = new RedisEnvironmentArranger(client),
     repository = new RedisExampleAggregateRepository(client);
 

@@ -1,12 +1,13 @@
-import ExampleAggregate from '@src/example-aggregate/domain/exampleAggregate';
+import type { Nullable } from '@context/shared/domain/nullable';
 import ElasticsearchRepository from '@context/shared/infrastructure/persistence/elasticsearch/elasticsearchRepository';
-import { ExampleAggregateRepository } from '@src/example-aggregate/domain/exampleAggregateRepository';
-import ExampleAggregateId from '@src/example-aggregate/domain/exampleAggregateId';
-import { Nullable } from '@context/shared/domain/nullable';
+import ExampleAggregate from '@src/example-aggregate/domain/exampleAggregate';
+import type ExampleAggregateId from '@src/example-aggregate/domain/exampleAggregateId';
+import type { ExampleAggregateRepository } from '@src/example-aggregate/domain/exampleAggregateRepository';
 
 export default class ElasticsearchExampleAggregateRepository
     extends ElasticsearchRepository<ExampleAggregate>
-    implements ExampleAggregateRepository {
+    implements ExampleAggregateRepository
+{
     protected moduleName() {
         return 'example-aggregates';
     }
@@ -16,6 +17,7 @@ export default class ElasticsearchExampleAggregateRepository
     }
 
     async search(id: ExampleAggregateId): Promise<Nullable<ExampleAggregate>> {
-        return this.byId(id.value, ExampleAggregate.fromPrimitives);
+        const aggregate = await this.byId(id.value, ExampleAggregate.fromPrimitives);
+        return aggregate;
     }
 }

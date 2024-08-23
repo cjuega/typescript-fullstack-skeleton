@@ -4,14 +4,10 @@
   "description": "Example of a bounded context",
   "author": "Carlos Juega",
   "license": "MIT",
-  "files": [
-    "./dist/"
-  ],
+  "files": ["./dist/"],
   "typesVersions": {
     "*": {
-      "*": [
-        "dist/*"
-      ]
+      "*": ["dist/*"]
     }
   },
   "exports": {

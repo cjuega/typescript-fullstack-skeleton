@@ -1,3 +1,4 @@
+import { resolve } from 'node:path';
 import NoopLogger from '@context/shared/infrastructure/logger/noopLogger';
 import ElasticsearchClientFactory from '@context/shared/infrastructure/persistence/elasticsearch/elasticsearchClientFactory';
 import ElasticsearchEnvironmentArranger from '@context/shared/infrastructure/persistence/elasticsearch/elasticsearchEnvironmentArranger';
@@ -5,7 +6,6 @@ import ElasticsearchIndexCreator from '@context/shared/infrastructure/persistenc
 import ExampleAggregateMother from '@src/example-aggregate/domain/exampleAggregate.mother';
 import ExampleAggregateIdMother from '@src/example-aggregate/domain/exampleAggregateId.mother';
 import ElasticsearchExampleAggregateRepository from '@src/example-aggregate/infrastructure/persistence/elasticsearch/elasticsearchExampleAggregateRepository';
-import { resolve } from 'path';
 
 const noLogger = new NoopLogger(),
     config = {

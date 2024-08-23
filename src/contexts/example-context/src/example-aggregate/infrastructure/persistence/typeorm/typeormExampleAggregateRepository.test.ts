@@ -1,10 +1,10 @@
+import { resolve } from 'node:path';
+import NoopLogger from '@context/shared/infrastructure/logger/noopLogger';
 import TypeormClientFactory from '@context/shared/infrastructure/persistence/typeorm/typeormClientFactory';
 import TypeormEnvironmentArranger from '@context/shared/infrastructure/persistence/typeorm/typeormEnvironmentArranger';
-import NoopLogger from '@context/shared/infrastructure/logger/noopLogger';
 import ExampleAggregateMother from '@src/example-aggregate/domain/exampleAggregate.mother';
 import ExampleAggregateIdMother from '@src/example-aggregate/domain/exampleAggregateId.mother';
 import TypeormExampleAggregateRepository from '@src/example-aggregate/infrastructure/persistence/typeorm/typeormExampleAggregateRepository';
-import { resolve } from 'path';
 
 const noLogger = new NoopLogger(),
     table = TypeormClientFactory.createClient(

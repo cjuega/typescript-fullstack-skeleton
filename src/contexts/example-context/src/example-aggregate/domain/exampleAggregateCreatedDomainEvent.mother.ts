@@ -1,6 +1,6 @@
+import type { Primitives } from '@context/shared/domain/primitives';
+import type ExampleAggregate from '@src/example-aggregate/domain/exampleAggregate';
 import ExampleAggregateCreatedDomainEvent from '@src/example-aggregate/domain/exampleAggregateCreatedDomainEvent';
-import ExampleAggregate from '@src/example-aggregate/domain/exampleAggregate';
-import { Primitives } from '@context/shared/domain/primitives';
 
 export default class ExampleAggregateCreatedDomainEventMother {
     static create(

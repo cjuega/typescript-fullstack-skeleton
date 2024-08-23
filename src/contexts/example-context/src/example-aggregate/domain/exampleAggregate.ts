@@ -1,8 +1,8 @@
-import type { Primitives } from '@context/shared/domain/primitives';
 import AggregateRoot from '@context/shared/domain/aggregateRoot';
-import ExampleAggregateId from '@src/example-aggregate/domain/exampleAggregateId';
 import Datetime from '@context/shared/domain/datetime';
+import type { Primitives } from '@context/shared/domain/primitives';
 import ExampleAggregateCreatedDomainEvent from '@src/example-aggregate/domain/exampleAggregateCreatedDomainEvent';
+import ExampleAggregateId from '@src/example-aggregate/domain/exampleAggregateId';
 
 export default class ExampleAggregate extends AggregateRoot {
     readonly id: ExampleAggregateId;

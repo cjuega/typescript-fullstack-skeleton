@@ -1,11 +1,11 @@
 import ClockMock from '@context/shared/__mocks__/clock.mock';
 import EventBusMock from '@context/shared/__mocks__/eventBus.mock';
+import DatetimeMother from '@context/shared/domain/datetime.mother';
 import ExampleAggregateRepositoryMock from '@src/example-aggregate/__mocks__/exampleAggregateRepository.mock';
-import ExampleAggregateAlreadyExists from '@src/example-aggregate/domain/exampleAggregateAlreadyExists';
+import CreateExampleAggregateCommandMother from '@src/example-aggregate/application/create/createExampleAggregateCommand.mother';
 import CreateExampleAggregateCommandHandler from '@src/example-aggregate/application/create/createExampleAggregateCommandHandler';
 import ExampleAggregateCreator from '@src/example-aggregate/application/create/exampleAggregateCreator';
-import CreateExampleAggregateCommandMother from '@src/example-aggregate/application/create/createExampleAggregateCommand.mother';
-import DatetimeMother from '@context/shared/domain/datetime.mother';
+import ExampleAggregateAlreadyExists from '@src/example-aggregate/domain/exampleAggregateAlreadyExists';
 import ExampleAggregateCreatedDomainEventMother from '@src/example-aggregate/domain/exampleAggregateCreatedDomainEvent.mother';
 
 describe('exampleAggregateCreator', () => {
