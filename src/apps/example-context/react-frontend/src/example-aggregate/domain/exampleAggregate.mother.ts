@@ -1,5 +1,5 @@
-import { ExampleAggregate } from "@src/example-aggregate/domain/exampleAggregate";
 import ObjectMother from '@context/shared/domain/objectMother.mother';
+import type { ExampleAggregate } from '@src/example-aggregate/domain/exampleAggregate';
 
 export class ExampleAggregateMother {
     static random(overwrites?: Partial<ExampleAggregate>): ExampleAggregate {

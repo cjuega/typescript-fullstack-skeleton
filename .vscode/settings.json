@@ -34,7 +34,7 @@
     "@app/aws-cicd",
     "@app/swagger-ui-docs",
     "@app/serverless",
-    "@app/react-frontend"
+    "@app/react-fe"
   ],
   "biome.lspBin": "./node_modules/@biomejs/biome/bin/biome"
 }

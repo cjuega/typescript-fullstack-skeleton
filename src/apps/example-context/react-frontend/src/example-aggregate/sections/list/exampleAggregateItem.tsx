@@ -1,4 +1,4 @@
-import { ExampleAggregate } from "@src/example-aggregate/domain/exampleAggregate";
+import type { ExampleAggregate } from '@src/example-aggregate/domain/exampleAggregate';
 
 interface ExampleAggregateItemProps {
     item: ExampleAggregate;
