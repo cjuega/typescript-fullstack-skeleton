@@ -21,7 +21,7 @@
   "devDependencies": {
     "@context/shared": "^1.0.1",
     "@testing-library/dom": "^10.4.0",
-    "@testing-library/jest-dom": "^6.4.8",
+    "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.5.2",
     "@types/react": "^18.3.3",

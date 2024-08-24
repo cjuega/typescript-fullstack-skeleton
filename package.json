@@ -6,10 +6,7 @@
   "author": "Carlos Juega",
   "license": "MIT",
   "private": true,
-  "workspaces": [
-    "src/contexts/*",
-    "src/apps/*/*"
-  ],
+  "workspaces": ["src/contexts/*", "src/apps/*/*"],
   "scripts": {
     "postinstall": "npx husky install",
     "precommit": "npx lerna run precommit --since $(git describe --tags --abbrev=0) --stream --concurrency 1",
