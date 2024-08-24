@@ -1,6 +1,6 @@
 {
   "name": "@app/react-fe",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "React UI of the example-context bounded context",
   "author": "Carlos Juega",
   "license": "MIT",
@@ -18,7 +18,7 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@context/shared": "^1.0.1",
+    "@context/shared": "^1.1.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.0",

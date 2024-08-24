@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/cjuega/typescript-fullstack-skeleton/compare/@app/aws-cicd@1.1.0...@app/aws-cicd@1.2.0) (2024-08-24)
+
+
+### Bug Fixes
+
+* **@app/serverless:** adding missing ts-jest dependency ([59f9328](https://github.com/cjuega/typescript-fullstack-skeleton/commit/59f93287d67de7ae9f92686a173b1eef8437c5fa))
+
+
+### Features
+
+* **@app/aws-cicd:** notify pipeline executions to SNS and optionally to an slack channel ([8186948](https://github.com/cjuega/typescript-fullstack-skeleton/commit/818694806e1cb27821e0e0a460ab13a8f5b3fdb5))
+
+
+
+
+
 # 1.1.0 (2022-04-07)
 
 

@@ -1,13 +1,17 @@
 {
   "name": "@context/example",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Example of a bounded context",
   "author": "Carlos Juega",
   "license": "MIT",
-  "files": ["./dist/"],
+  "files": [
+    "./dist/"
+  ],
   "typesVersions": {
     "*": {
-      "*": ["dist/*"]
+      "*": [
+        "dist/*"
+      ]
     }
   },
   "exports": {
@@ -24,7 +28,7 @@
     "build:tsc": "tsc --build tsconfig.build.json && tscpaths -p tsconfig.build.json -s ./src -o ./dist"
   },
   "dependencies": {
-    "@context/shared": "^1.0.1"
+    "@context/shared": "^1.1.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",

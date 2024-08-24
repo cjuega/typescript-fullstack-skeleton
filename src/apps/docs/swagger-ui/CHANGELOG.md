@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.2](https://github.com/cjuega/typescript-fullstack-skeleton/compare/@app/swagger-ui-docs@1.1.1...@app/swagger-ui-docs@1.1.2) (2024-08-24)
+
+
+### Bug Fixes
+
+* **@app/serverless:** adding missing ts-jest dependency ([59f9328](https://github.com/cjuega/typescript-fullstack-skeleton/commit/59f93287d67de7ae9f92686a173b1eef8437c5fa))
+
+
+
+
+
 ## [1.1.1](https://codestar-connections.eu-west-1.amazonaws.com/git-http/406806550794/eu-west-1/5ac84416-c843-48e9-b85b-2c46d4245810/cjuega/typescript-fullstack-skeleton/compare/@app/swagger-ui-docs@1.1.0...@app/swagger-ui-docs@1.1.1) (2022-04-07)
 
 

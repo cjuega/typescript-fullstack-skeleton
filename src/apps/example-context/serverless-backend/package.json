@@ -1,6 +1,6 @@
 {
   "name": "@app/serverless",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Serverless implementation in AWS of the example-context bounded context",
   "author": "Carlos Juega",
   "license": "MIT",
@@ -49,8 +49,8 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "@context/example": "^1.0.1",
-    "@context/shared": "^1.0.1",
+    "@context/example": "^1.1.0",
+    "@context/shared": "^1.1.0",
     "@middy/core": "^5.4.6",
     "@middy/http-cors": "^5.4.6",
     "convict": "^6.2.1",
