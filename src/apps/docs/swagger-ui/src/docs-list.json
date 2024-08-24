@@ -1,6 +1,6 @@
 [
-    {
-        "name": "Example Context Serverless (v1.0.0)",
-        "url": "apis/example-context/serverless-backend/v1.0.0/openapi.yml"
-    }
+  {
+    "name": "Example Context Serverless (v1.0.0)",
+    "url": "apis/example-context/serverless-backend/v1.0.0/openapi.yml"
+  }
 ]

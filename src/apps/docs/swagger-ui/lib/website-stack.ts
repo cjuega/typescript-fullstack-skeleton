@@ -1,8 +1,6 @@
-import {
-    Stack, StackProps, RemovalPolicy, CfnOutput
-} from 'aws-cdk-lib';
-import { Construct } from 'constructs';
+import { CfnOutput, RemovalPolicy, Stack, type StackProps } from 'aws-cdk-lib';
 import { SPADeploy } from 'cdk-spa-deploy';
+import type { Construct } from 'constructs';
 
 export default class WebsiteStack extends Stack {
     constructor(scope: Construct, id: string, props?: StackProps) {
