@@ -1,15 +1,10 @@
 SHELL := $(shell which bash)
 # Test if the dependencies we need to run this Makefile are installed
 DOCKER := $(shell command -v docker)
-DOCKER_COMPOSE := $(shell command -v docker-compose)
 .PHONY = deps
 deps:
 ifndef DOCKER
 	@echo "Docker is not available. Please install docker"
-	@exit 1
-endif
-ifndef DOCKER_COMPOSE
-	@echo "docker-compose is not available. Please install docker-compose"
 	@exit 1
 endif
 ifndef GITHUB_ACTIONS
@@ -21,13 +16,13 @@ endif
 # Start infrastructure containers in background
 .PHONY = start_infra
 start_infra:
-	docker-compose up -d --wait
+	docker compose up -d --wait
 
 # Start infrastructure containers in background for CI
 .PHONY = start_infra_ci
 start_infra_ci:
 ifndef GITHUB_ACTIONS
-	docker-compose up -d --wait dynamodb redis mysql mongo elasticsearch opensearch-node1 opensearch-node2 kafka rabbitmq
+	docker compose up -d --wait dynamodb redis mysql mongo elasticsearch opensearch-node1 opensearch-node2 kafka rabbitmq
 else
 	docker compose up -d --wait dynamodb >/dev/null 2>&1
 endif
@@ -35,12 +30,12 @@ endif
 # Start databases containers in background
 .PHONY = start_database
 start_database:
-	docker-compose up -d --wait dynamodb redis mysql mongo elasticsearch opensearch-node1 opensearch-node2
+	docker compose up -d --wait dynamodb redis mysql mongo elasticsearch opensearch-node1 opensearch-node2
 
 # Start messaging containers in background
 .PHONY = start_messaging
 start_messaging:
-	docker-compose up -d --wait kafka kafka-ui rabbitmq
+	docker compose up -d --wait kafka kafka-ui rabbitmq
 
 # Run tests
 .PHONY = test
@@ -65,4 +60,4 @@ deploy:
 # Clean containers
 .PHONY = clean
 clean:
-	docker-compose down --rmi local --volumes --remove-orphans
+	docker compose down --rmi local --volumes --remove-orphans
