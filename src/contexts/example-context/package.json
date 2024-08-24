@@ -14,8 +14,8 @@
     "./*": "./src/*.ts"
   },
   "scripts": {
-    "precommit": "npx biome check --staged",
-    "lint": "npx biome check --fix --since $(git describe --tags --abbrev=0)",
+    "precommit": "npx biome check --fix --staged",
+    "lint": "npx biome check --fix --changed --since $(git describe --tags --abbrev=0)",
     "test": "yarn test:unit && yarn test:integration",
     "test:unit": "NODE_ENV=test jest --verbose",
     "test:integration": "NODE_ENV=test jest --config=jest.config.integration.js --verbose --runInBand",

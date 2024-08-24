@@ -33,9 +33,9 @@
     "clean:libs": "find . -name node_modules -prune -exec rm -rf {} \\;"
   },
   "devDependencies": {
-    "@commitlint/cli": "^18.2.0",
-    "@commitlint/config-conventional": "^18.1.0",
-    "husky": "^8.0.3",
-    "lerna": "^7.4.2"
+    "@commitlint/cli": "^19.4.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "husky": "^9.1.5",
+    "lerna": "^8.1.8"
   }
 }
