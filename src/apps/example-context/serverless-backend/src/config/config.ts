@@ -1,5 +1,5 @@
-import { accessSync } from 'fs';
-import { F_OK } from 'constants';
+import { F_OK } from 'node:constants';
+import { accessSync } from 'node:fs';
 import convict from 'convict';
 import { url } from 'convict-format-with-validator';
 

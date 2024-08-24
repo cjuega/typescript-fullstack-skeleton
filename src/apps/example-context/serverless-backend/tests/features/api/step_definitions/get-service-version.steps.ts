@@ -1,11 +1,11 @@
-import { defineFeature, loadFeature } from 'jest-cucumber';
-import { isOffline } from '@tests/features/shared/isOffline';
 import {
-    whenISendAGetRequest,
-    thenTheResponseStatusCodeIs,
     andTheResponseBodyIsPackageVersion,
-    andTheResponseIsOpenAPIValid
+    andTheResponseIsOpenAPIValid,
+    thenTheResponseStatusCodeIs,
+    whenISendAGetRequest
 } from '@tests/features/shared/http';
+import { isOffline } from '@tests/features/shared/isOffline';
+import { defineFeature, loadFeature } from 'jest-cucumber';
 
 const feature = loadFeature(
     'tests/features/api/get-service-version.feature',

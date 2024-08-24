@@ -1,7 +1,7 @@
-import { ContainerBuilder, Definition } from 'node-dependency-injection';
-import DynamodbConfigFactory from '@src/config/infrastructure/persistence/dynamodb/dynamodbConfigFactory';
-import DdbOneTableConfigFactory from '@src/config/infrastructure/persistence/ddbOneTable/ddbOneTableConfigFactory';
 import EventBridgeConfigFactory from '@src/config/infrastructure/eventBus/eventBridge/eventBridgeConfigFactory';
+import DdbOneTableConfigFactory from '@src/config/infrastructure/persistence/ddbOneTable/ddbOneTableConfigFactory';
+import DynamodbConfigFactory from '@src/config/infrastructure/persistence/dynamodb/dynamodbConfigFactory';
+import { type ContainerBuilder, Definition } from 'node-dependency-injection';
 
 const register = (container: ContainerBuilder): void => {
     let definition = new Definition();

@@ -1,10 +1,11 @@
-import { APIGatewayProxyResult } from 'aws-lambda';
-import { Nullable } from '@context/shared/domain/nullable';
-import { Logger } from '@context/shared/domain/logger';
+import type { Logger } from '@context/shared/domain/logger';
+import type { Nullable } from '@context/shared/domain/nullable';
 import container from '@src/config/dependency-injection';
+import type { APIGatewayProxyResult } from 'aws-lambda';
 
 const logger: Logger = container.get('Shared.Logger');
 
+// biome-ignore lint/complexity/noBannedTypes: <explanation>
 export type ErrorMapping = { clazz: Function; errorCode: number };
 
 function handleCustomException(exceptions: ErrorMapping[], error: Error): Nullable<APIGatewayProxyResult> {

@@ -1,13 +1,13 @@
-import { defineFeature, loadFeature } from 'jest-cucumber';
-import { isOffline } from '@tests/features/shared/isOffline';
-import {
-    whenISendAPutRequest,
-    thenTheResponseStatusCodeIs,
-    andTheResponseBodyIsEmpty,
-    andTheRequestIsOpenAPIValid
-} from '@tests/features/shared/http';
-import EnvironmentArranger from '@context/shared/infrastructure/arranger/environmentArranger';
+import type EnvironmentArranger from '@context/shared/infrastructure/arranger/environmentArranger';
 import container from '@tests/config/dependency-injection';
+import {
+    andTheRequestIsOpenAPIValid,
+    andTheResponseBodyIsEmpty,
+    thenTheResponseStatusCodeIs,
+    whenISendAPutRequest
+} from '@tests/features/shared/http';
+import { isOffline } from '@tests/features/shared/isOffline';
+import { defineFeature, loadFeature } from 'jest-cucumber';
 
 const feature = loadFeature(
         'tests/features/example-aggregate/create-example-aggregate.feature',

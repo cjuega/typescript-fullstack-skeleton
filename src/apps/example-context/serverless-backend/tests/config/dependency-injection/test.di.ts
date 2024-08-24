@@ -1,6 +1,6 @@
-import { ContainerBuilder, Reference } from 'node-dependency-injection';
-import DdbOneTableEnvironmentArranger from '@context/shared/infrastructure/persistence/ddbOneTable/ddbOneTableEnvironmentArranger';
 import EnvironmentMultiArranger from '@context/shared/infrastructure/arranger/environmentMultiArranger';
+import DdbOneTableEnvironmentArranger from '@context/shared/infrastructure/persistence/ddbOneTable/ddbOneTableEnvironmentArranger';
+import { type ContainerBuilder, Reference } from 'node-dependency-injection';
 
 const register = (container: ContainerBuilder): void => {
     container

@@ -1,14 +1,14 @@
-import { ContainerBuilder, Definition } from 'node-dependency-injection';
-import { DomainEventSubscriber } from '@context/shared/domain/eventBus/domainEventSubscriber';
-import DomainEvent from '@context/shared/domain/eventBus/domainEvent';
-import { EventBus } from '@context/shared/domain/eventBus/eventBus';
+import type DomainEvent from '@context/shared/domain/eventBus/domainEvent';
+import type { DomainEventSubscriber } from '@context/shared/domain/eventBus/domainEventSubscriber';
+import type { EventBus } from '@context/shared/domain/eventBus/eventBus';
+import type { ContainerBuilder, Definition } from 'node-dependency-injection';
 
 const registerSubscribers = (container: ContainerBuilder): EventBus => {
     const eventBus = container.get('Shared.InMemoryEventBus'),
         subscriberDefinitions = container.findTaggedServiceIds('domainEventSubscriber') as Map<string, Definition>,
-        subscribers: Array<DomainEventSubscriber<DomainEvent>> = [];
+        subscribers: DomainEventSubscriber<DomainEvent>[] = [];
 
-    subscriberDefinitions.forEach((_value: any, key: any) => {
+    subscriberDefinitions.forEach((_: Definition, key: string) => {
         subscribers.push(container.get(key));
     });
 

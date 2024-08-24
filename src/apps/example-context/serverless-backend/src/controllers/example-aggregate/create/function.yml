@@ -2,14 +2,12 @@ exampleAggregatePutController:
   handler: src/controllers/example-aggregate/create/exampleAggregatePutController.create
   iamRoleStatementsInherit: true
   iamRoleStatements:
-    -
-      Effect: Allow
+    - Effect: Allow
       Action:
         - dynamodb:GetItem
         - dynamodb:PutItem
       Resource: !GetAtt Database.Arn
-    -
-      Effect: Allow
+    - Effect: Allow
       Action:
         - events:PutEvents
       Resource: !GetAtt DomainEventBus.Arn

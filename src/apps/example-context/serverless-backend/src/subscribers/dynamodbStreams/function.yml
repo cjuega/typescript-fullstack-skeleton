@@ -2,8 +2,7 @@ subscribers:
   handler: src/subscribers/dynamodbStreams/processors.on
   iamRoleStatementsInherit: true
   iamRoleStatements:
-    -
-      Effect: Allow
+    - Effect: Allow
       Action:
         - events:PutEvents
       Resource: !GetAtt DomainEventBus.Arn

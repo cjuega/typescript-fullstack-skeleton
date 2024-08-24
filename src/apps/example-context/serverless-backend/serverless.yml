@@ -4,7 +4,7 @@ useDotenv: true
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs20.x
   stage: ${opt:stage, 'offline'}
   region: ${env:AWS_REGION, 'eu-west-1'}
   profile: ${env:AWS_PROFILE, ''}
@@ -44,7 +44,7 @@ custom:
   serverless-offline-aws-eventbridge:
     port: 4010
     debug: true
-    account: ''
+    account: ""
     convertEntry: false
 
 package:

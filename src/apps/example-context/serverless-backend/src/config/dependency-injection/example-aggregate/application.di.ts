@@ -1,7 +1,7 @@
-import { ContainerBuilder, Reference } from 'node-dependency-injection';
-import DdbOneTableExampleAggregateRepository from '@context/example/example-aggregate/infrastructure/persistence/ddbOneTable/ddbOneTableExampleAggregateRepository';
-import ExampleAggregateCreator from '@context/example/example-aggregate/application/create/exampleAggregateCreator';
 import CreateExampleAggregateCommandHandler from '@context/example/example-aggregate/application/create/createExampleAggregateCommandHandler';
+import ExampleAggregateCreator from '@context/example/example-aggregate/application/create/exampleAggregateCreator';
+import DdbOneTableExampleAggregateRepository from '@context/example/example-aggregate/infrastructure/persistence/ddbOneTable/ddbOneTableExampleAggregateRepository';
+import { type ContainerBuilder, Reference } from 'node-dependency-injection';
 
 const register = (container: ContainerBuilder): void => {
     container

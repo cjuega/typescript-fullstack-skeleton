@@ -1,17 +1,19 @@
-import { APIGatewayProxyHandler } from 'aws-lambda';
+import type { APIGatewayProxyHandler } from 'aws-lambda';
 import 'source-map-support/register';
+import CreateExampleAggregateCommand from '@context/example/example-aggregate/application/create/createExampleAggregateCommand';
+import type CreateExampleAggregateCommandHandler from '@context/example/example-aggregate/application/create/createExampleAggregateCommandHandler';
+import ExampleAggregateAlreadyExists from '@context/example/example-aggregate/domain/exampleAggregateAlreadyExists';
+import InvalidArgument from '@context/shared/domain/invalidArgument';
+import type { Logger } from '@context/shared/domain/logger';
 import middy from '@middy/core';
 import cors from '@middy/http-cors';
-import handleError from '@src/controllers/handleError';
-import { Logger } from '@context/shared/domain/logger';
-import CreateExampleAggregateCommandHandler from '@context/example/example-aggregate/application/create/createExampleAggregateCommandHandler';
-import CreateExampleAggregateCommand from '@context/example/example-aggregate/application/create/createExampleAggregateCommand';
-import InvalidArgument from '@context/shared/domain/invalidArgument';
-import ExampleAggregateAlreadyExists from '@context/example/example-aggregate/domain/exampleAggregateAlreadyExists';
 import container from '@src/config/dependency-injection';
+import handleError from '@src/controllers/handleError';
 
 const logger: Logger = container.get('Shared.Logger'),
-    commandHandler: CreateExampleAggregateCommandHandler = container.get('<YourBoundedContext>.exampleAggregate.CreateExampleAggregateCommandHandler'),
+    commandHandler: CreateExampleAggregateCommandHandler = container.get(
+        '<YourBoundedContext>.exampleAggregate.CreateExampleAggregateCommandHandler'
+    ),
     exceptions = [
         {
             clazz: InvalidArgument,

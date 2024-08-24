@@ -1,7 +1,7 @@
-import { DefineStepFunction } from 'jest-cucumber';
-import request from 'supertest';
-import { serverUrl } from '@tests/features/shared/isOffline';
 import { isRequestOpenAPIValid, isResponseOpenAPIValid } from '@tests/features/shared/docValidation';
+import { serverUrl } from '@tests/features/shared/isOffline';
+import type { DefineStepFunction } from 'jest-cucumber';
+import request from 'supertest';
 import { version } from '../../../package.json';
 
 let req: request.Request;
@@ -57,7 +57,7 @@ export const whenISendAGetRequest = (when: DefineStepFunction): void => {
     },
     thenTheResponseStatusCodeIs = (then: DefineStepFunction): void => {
         then(/the response status code should be (\d+)/, (statusCode: string) => {
-            expect(response.status).toBe(parseInt(statusCode, 10));
+            expect(response.status).toBe(Number.parseInt(statusCode, 10));
         });
     },
     andTheResponseBodyIs = (and: DefineStepFunction): void => {

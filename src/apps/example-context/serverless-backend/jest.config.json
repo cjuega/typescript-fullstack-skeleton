@@ -1,12 +1,12 @@
 {
-    "preset": "ts-jest",
-    "testEnvironment": "node",
-    "moduleNameMapper": {
-        "@src/(.*)$": "<rootDir>/src/$1",
-        "@tests/(.*)$": ["<rootDir>/tests/$1"],
-        "@context/shared/(.*)$": "<rootDir>/../../../contexts/shared/dist/$1",
-        "@context/example/(.*)$": "<rootDir>/../../../contexts/example-context/dist/$1"
-    },
-    "testMatch": ["<rootDir>/**/*.steps.ts"],
-    "testTimeout": 10000
+  "preset": "ts-jest",
+  "testEnvironment": "node",
+  "moduleNameMapper": {
+    "@src/(.*)$": "<rootDir>/src/$1",
+    "@tests/(.*)$": ["<rootDir>/tests/$1"],
+    "@context/shared/(.*)$": "<rootDir>/../../../contexts/shared/dist/$1",
+    "@context/example/(.*)$": "<rootDir>/../../../contexts/example-context/dist/$1"
+  },
+  "testMatch": ["<rootDir>/**/*.steps.ts"],
+  "testTimeout": 10000
 }

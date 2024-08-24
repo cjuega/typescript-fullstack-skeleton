@@ -1,18 +1,16 @@
-import {
-    ContainerBuilder, Definition, Reference, TagReference
-} from 'node-dependency-injection';
-import CurrentTimeClock from '@context/shared/infrastructure/currentTimeClock';
-import ConsoleLogger from '@context/shared/infrastructure/logger/consoleLogger';
-import DynamodbClientFactory from '@context/shared/infrastructure/persistence/dynamodb/dynamodbClientFactory';
-import DdbOneTableClientFactory from '@context/shared/infrastructure/persistence/ddbOneTable/ddbOneTableClientFactory';
-import DynamodbStreamsOutboxConsumer from '@context/shared/infrastructure/persistence/dynamodb/dynamodbStreamsOutboxConsumer';
-import EventBridgeClientFactory from '@context/shared/infrastructure/eventBus/eventBridge/eventBridgeClientFactory';
 import DomainEventMapping from '@context/shared/domain/eventBus/domainEventMapping';
-import DomainEventJsonMarshaller from '@context/shared/infrastructure/eventBus/marshallers/json/domainEventJsonMarshaller';
+import CurrentTimeClock from '@context/shared/infrastructure/currentTimeClock';
+import EventBridgeClientFactory from '@context/shared/infrastructure/eventBus/eventBridge/eventBridgeClientFactory';
 import EventBridgeEventBus from '@context/shared/infrastructure/eventBus/eventBridge/eventBridgeEventBus';
 import InMemorySyncEventBus from '@context/shared/infrastructure/eventBus/inMemorySyncEventBus';
-import config from '@src/config/config';
+import DomainEventJsonMarshaller from '@context/shared/infrastructure/eventBus/marshallers/json/domainEventJsonMarshaller';
+import ConsoleLogger from '@context/shared/infrastructure/logger/consoleLogger';
+import DdbOneTableClientFactory from '@context/shared/infrastructure/persistence/ddbOneTable/ddbOneTableClientFactory';
 import DdbOneTableDomainEventRepository from '@context/shared/infrastructure/persistence/ddbOneTable/ddbOneTableDomainEventRepository';
+import DynamodbClientFactory from '@context/shared/infrastructure/persistence/dynamodb/dynamodbClientFactory';
+import DynamodbStreamsOutboxConsumer from '@context/shared/infrastructure/persistence/dynamodb/dynamodbStreamsOutboxConsumer';
+import config from '@src/config/config';
+import { type ContainerBuilder, Definition, Reference, TagReference } from 'node-dependency-injection';
 
 const serviceName = config.get('serviceName'),
     failoverOrOutboxConfig = {

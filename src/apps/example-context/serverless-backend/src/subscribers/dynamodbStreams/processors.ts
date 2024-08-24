@@ -1,4 +1,4 @@
-import { DynamoDBStreamHandler } from 'aws-lambda';
+import type { DynamoDBStreamHandler } from 'aws-lambda';
 import 'source-map-support/register';
 import container from '@src/config/dependency-injection';
 import hydratateProcessors from '@src/subscribers/dynamodbStreams/hydratateProcessors';

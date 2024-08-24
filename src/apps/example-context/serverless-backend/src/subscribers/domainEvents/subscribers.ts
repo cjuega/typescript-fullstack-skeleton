@@ -1,11 +1,11 @@
-import { EventBridgeHandler } from 'aws-lambda';
+import type { EventBridgeHandler } from 'aws-lambda';
 import 'source-map-support/register';
-import { Logger } from '@context/shared/domain/logger';
-import { Clock } from '@context/shared/domain/clock';
-import { EventBus } from '@context/shared/domain/eventBus/eventBus';
+import type { Clock } from '@context/shared/domain/clock';
+import type { DomainEventUnmarshaller } from '@context/shared/domain/eventBus/domainEventUnmarshaller';
+import type { EventBus } from '@context/shared/domain/eventBus/eventBus';
+import type { Logger } from '@context/shared/domain/logger';
 import container from '@src/config/dependency-injection';
 import registerSubscribers from '@src/subscribers/domainEvents/registerSubscribers';
-import { DomainEventUnmarshaller } from '@context/shared/domain/eventBus/domainEventUnmarshaller';
 
 const logger: Logger = container.get('Shared.Logger'),
     clock: Clock = container.get('Shared.Clock'),
@@ -15,9 +15,9 @@ const logger: Logger = container.get('Shared.Logger'),
 export const on: EventBridgeHandler<string, Record<string, unknown>, void> = async (event) => {
     const domainEvents = [unmarshaller.unmarshall(JSON.stringify(event.detail))];
 
-    domainEvents.forEach((e) => {
-        logger.debug(`${e.eventId}::${e.occurredOn.toISOString()}::${e.eventName}::${e.aggregateId} (processing at ${clock.now().value})`);
-    });
+    for (const e of domainEvents) {
+        logger.debug(`${e.eventId}::${e.occurredOn.toISOString()}::${e.eventName}::${e.aggregateId} (received at ${clock.now().value})`);
+    }
 
     await eventBus.publish(domainEvents);
 };

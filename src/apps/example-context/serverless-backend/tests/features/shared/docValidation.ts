@@ -1,9 +1,9 @@
-import { readFile } from 'fs';
-import { join, resolve } from 'path';
-import { load } from 'js-yaml';
-import { promisify } from 'util';
+import { readFile } from 'node:fs';
+import { join, resolve } from 'node:path';
+import { promisify } from 'node:util';
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
+import { load } from 'js-yaml';
 
 expect.extend({
     toBeValid(isValid, errorMessage) {
@@ -41,9 +41,7 @@ function isValidAgainstSchema(schema: Record<string, any>, obj: Record<string, u
         isValid = ajv.validate(schema, obj),
         errorMessage = (ajv.errors || [])
             .map((error) => {
-                const {
-                    instancePath, data, message, params
-                } = error;
+                const { instancePath, data, message, params } = error;
                 return instancePath
                     ? `<${instancePath} = ${data}> ${message} (${JSON.stringify(params)})`
                     : `<${JSON.stringify(data)}> ${message} (${JSON.stringify(params)})`;
@@ -122,7 +120,7 @@ export const isRequestOpenAPIValid = async (
     ): Promise<void> => {
         const schema = await readSchema(join(appFolder, filepath)),
             pathSchema = schema.paths[pathToRoute],
-            methodSchema = pathSchema && pathSchema[httpVerb.toLowerCase()],
+            methodSchema = pathSchema?.[httpVerb.toLowerCase()],
             parametersSchema = methodSchema?.parameters || [],
             bodySchema = methodSchema?.requestBody?.content[contentType]?.schema;
 
@@ -146,7 +144,7 @@ export const isRequestOpenAPIValid = async (
     ): Promise<void> => {
         const schema = await readSchema(join(appFolder, filepath)),
             pathSchema = schema.paths[pathToRoute],
-            methodSchema = pathSchema && pathSchema[httpVerb.toLowerCase()],
+            methodSchema = pathSchema?.[httpVerb.toLowerCase()],
             responseSchema = methodSchema?.responses[responseCode]?.content[contentType]?.schema;
 
         expect(pathSchema).toBeDefined();
