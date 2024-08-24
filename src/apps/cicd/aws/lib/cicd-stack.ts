@@ -1,20 +1,16 @@
-import {
-    CfnParameter, Fn, RemovalPolicy, Stack, StackProps
-} from 'aws-cdk-lib';
-import { Construct } from 'constructs';
-import { Secret, SecretStringValueBeta1 } from 'aws-cdk-lib/aws-secretsmanager';
-import {
-    PipelineProject, LinuxBuildImage, BuildEnvironmentVariableType, Cache
-} from 'aws-cdk-lib/aws-codebuild';
+import { CfnParameter, Fn, RemovalPolicy, Stack, type StackProps } from 'aws-cdk-lib';
+import { SlackChannelConfiguration } from 'aws-cdk-lib/aws-chatbot';
+import { BuildEnvironmentVariableType, Cache, LinuxBuildImage, PipelineProject } from 'aws-cdk-lib/aws-codebuild';
 import { Artifact, Pipeline } from 'aws-cdk-lib/aws-codepipeline';
-import { CodeStarConnectionsSourceAction, CodeBuildAction, Action } from 'aws-cdk-lib/aws-codepipeline-actions';
+import { type Action, CodeBuildAction, CodeStarConnectionsSourceAction } from 'aws-cdk-lib/aws-codepipeline-actions';
 import { CfnConnection } from 'aws-cdk-lib/aws-codestarconnections';
+import { NotificationRule } from 'aws-cdk-lib/aws-codestarnotifications';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
+import { Secret, SecretStringValueBeta1 } from 'aws-cdk-lib/aws-secretsmanager';
 import { Topic } from 'aws-cdk-lib/aws-sns';
-import { SlackChannelConfiguration } from 'aws-cdk-lib/aws-chatbot';
-import { NotificationRule } from 'aws-cdk-lib/aws-codestarnotifications';
+import type { Construct } from 'constructs';
 
 const SWAGGER_UI_DOCS_SERVICE_NAME = 'swagger-ui-docs';
 
@@ -140,21 +136,21 @@ export default class CICDStack extends Stack {
 
         dockerSecret.grantRead(project);
 
-        this.buildPermissionsForCDK().forEach((statement) => {
+        for (const statement of this.buildPermissionsForCDK()) {
             project.addToRolePolicy(statement);
-        });
+        }
 
-        this.buildPermissionsForSwaggerUI().forEach((statement) => {
+        for (const statement of this.buildPermissionsForSwaggerUI()) {
             project.addToRolePolicy(statement);
-        });
+        }
 
-        this.buildBasicPermissionsForServerlessFramework().forEach((statement) => {
+        for (const statement of this.buildBasicPermissionsForServerlessFramework()) {
             project.addToRolePolicy(statement);
-        });
+        }
 
-        this.buildServicesDependentPermissions().forEach((statement) => {
+        for (const statement of this.buildServicesDependentPermissions()) {
             project.addToRolePolicy(statement);
-        });
+        }
 
         return action;
     }
@@ -379,13 +375,11 @@ export default class CICDStack extends Stack {
         statements.push(
             new PolicyStatement({
                 actions: ['events:*'],
-                resources: this.services
-                    .map((s) => [
-                        `arn:aws:events:${region}:${account}:event-bus/${s}*`,
-                        `arn:aws:events:${region}:${account}:rules/${s}*`,
-                        `arn:aws:events:${region}:${account}:rule/${s}*`
-                    ])
-                    .flat()
+                resources: this.services.flatMap((s) => [
+                    `arn:aws:events:${region}:${account}:event-bus/${s}*`,
+                    `arn:aws:events:${region}:${account}:rules/${s}*`,
+                    `arn:aws:events:${region}:${account}:rule/${s}*`
+                ])
             })
         );
 
