@@ -6,10 +6,6 @@ export default class InMemorySyncEventBus implements EventBus {
     // biome-ignore lint/complexity/noBannedTypes: <explanation>
     private readonly subscriptions: Map<string, Function[]> = new Map();
 
-    constructor(subscribers: DomainEventSubscriber<DomainEvent>[]) {
-        this.registerSubscribers(subscribers);
-    }
-
     async publish(events: DomainEvent[]): Promise<void> {
         const executions: Promise<void>[] = [];
 
@@ -24,7 +20,7 @@ export default class InMemorySyncEventBus implements EventBus {
         await Promise.all(executions);
     }
 
-    private registerSubscribers(subscribers: DomainEventSubscriber<DomainEvent>[]): void {
+    registerSubscribers(subscribers: DomainEventSubscriber<DomainEvent>[]): void {
         for (const subscriber of subscribers) {
             for (const e of subscriber.subscribedTo()) {
                 this.subscribe(e.eventName, subscriber);

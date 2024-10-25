@@ -26,12 +26,23 @@ class MyQueryHandler implements QueryHandler<Query, Response> {
 }
 
 describe('inMemoryQueryBus', () => {
+    it('throws an error when no handlers are registered', async () => {
+        expect.hasAssertions();
+
+        const unhandledQuery = new UnhandledQuery(),
+            queryBus = new InMemoryQueryBus();
+
+        await expect(queryBus.ask(unhandledQuery)).rejects.toThrow(Error);
+    });
+
     it('throws an error if dispatches a query without handler', async () => {
         expect.hasAssertions();
 
         const unhandledQuery = new UnhandledQuery(),
             queryHandlersInformation = new QueryHandlersInformation([]),
-            queryBus = new InMemoryQueryBus(queryHandlersInformation);
+            queryBus = new InMemoryQueryBus();
+
+        queryBus.registerHandlers(queryHandlersInformation);
 
         await expect(queryBus.ask(unhandledQuery)).rejects.toThrow(QueryNotRegisteredError);
     });
@@ -40,7 +51,9 @@ describe('inMemoryQueryBus', () => {
         const handledQuery = new HandledQuery(),
             myQueryHandler = new MyQueryHandler(),
             queryHandlersInformation = new QueryHandlersInformation([myQueryHandler]),
-            queryBus = new InMemoryQueryBus(queryHandlersInformation);
+            queryBus = new InMemoryQueryBus();
+
+        queryBus.registerHandlers(queryHandlersInformation);
 
         await queryBus.ask(handledQuery);
     });

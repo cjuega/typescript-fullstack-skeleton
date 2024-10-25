@@ -5,12 +5,11 @@ import type { DomainEventUnmarshaller } from '@context/shared/domain/eventBus/do
 import type { EventBus } from '@context/shared/domain/eventBus/eventBus';
 import type { Logger } from '@context/shared/domain/logger';
 import container from '@src/config/dependency-injection';
-import registerSubscribers from '@src/subscribers/domainEvents/registerSubscribers';
 
 const logger: Logger = container.get('Shared.Logger'),
     clock: Clock = container.get('Shared.Clock'),
     unmarshaller: DomainEventUnmarshaller = container.get('Shared.EventBus.EventMarshaller'),
-    eventBus: EventBus = registerSubscribers(container);
+    eventBus: EventBus = container.get('Shared.InMemoryEventBus');
 
 export const on: EventBridgeHandler<string, Record<string, unknown>, void> = async (event) => {
     const domainEvents = [unmarshaller.unmarshall(JSON.stringify(event.detail))];

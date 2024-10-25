@@ -50,7 +50,9 @@ describe('inMemorySyncEventBus', () => {
 
         const event = new DummyEvent({ id: ObjectMother.uuid() }),
             subscriber = new DomainEventSubscriberDummy(),
-            eventBus = new InMemorySyncEventBus([subscriber]);
+            eventBus = new InMemorySyncEventBus();
+
+        eventBus.registerSubscribers([subscriber]);
 
         subscriber.setExpectation((actual: DummyEvent) => {
             expect(actual).toStrictEqual(event);

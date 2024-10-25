@@ -1,4 +1,6 @@
 import DomainEventMapping from '@context/shared/domain/eventBus/domainEventMapping';
+import CommandHandlersInformation from '@context/shared/infrastructure/commandBus/commandHandlersInformation';
+import InMemoryCommandBus from '@context/shared/infrastructure/commandBus/inMemoryCommandBus';
 import CurrentTimeClock from '@context/shared/infrastructure/currentTimeClock';
 import EventBridgeClientFactory from '@context/shared/infrastructure/eventBus/eventBridge/eventBridgeClientFactory';
 import EventBridgeEventBus from '@context/shared/infrastructure/eventBus/eventBridge/eventBridgeEventBus';
@@ -9,6 +11,8 @@ import DdbOneTableClientFactory from '@context/shared/infrastructure/persistence
 import DdbOneTableDomainEventRepository from '@context/shared/infrastructure/persistence/ddbOneTable/ddbOneTableDomainEventRepository';
 import DynamodbClientFactory from '@context/shared/infrastructure/persistence/dynamodb/dynamodbClientFactory';
 import DynamodbStreamsOutboxConsumer from '@context/shared/infrastructure/persistence/dynamodb/dynamodbStreamsOutboxConsumer';
+import InMemoryQueryBus from '@context/shared/infrastructure/queryBus/inMemoryQueryBus';
+import QueryHandlersInformation from '@context/shared/infrastructure/queryBus/queryHandlersInformation';
 import config from '@src/config/config';
 import { type ContainerBuilder, Definition, Reference, TagReference } from 'node-dependency-injection';
 
@@ -85,6 +89,12 @@ const serviceName = config.get('serviceName'),
             // .addArgument(new Reference('Shared.EventBus.NoFailover'))
             .addArgument(failoverOrOutboxConfig)
             .addTag('dynamodbStreamProcessor');
+
+        container.register('Shared.QueryHandlersInformation', QueryHandlersInformation).addArgument(new TagReference('queryHandler'));
+        container.register('Shared.QueryBus', InMemoryQueryBus);
+
+        container.register('Shared.CommandHandlersInformation', CommandHandlersInformation).addArgument(new TagReference('commandHandler'));
+        container.register('Shared.CommandBus', InMemoryCommandBus);
     };
 
 export default register;

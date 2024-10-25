@@ -45,12 +45,23 @@ class DomainEventSubscriberDummy implements DomainEventSubscriber<DummyEvent> {
 }
 
 describe('inMemoryAsyncEventBus', () => {
+    it('throws an error when no subscribers are registered', async () => {
+        expect.hasAssertions();
+
+        const event = new DummyEvent({ id: ObjectMother.uuid() }),
+            eventBus = new InMemoryAsyncEventBus();
+
+        await expect(eventBus.publish([event])).rejects.toThrow(Error);
+    });
+
     it('the subscriber should be called when the event it is subscribed to is published', async () => {
         expect.assertions(1);
 
         const event = new DummyEvent({ id: ObjectMother.uuid() }),
             subscriber = new DomainEventSubscriberDummy(),
-            eventBus = new InMemoryAsyncEventBus([subscriber]);
+            eventBus = new InMemoryAsyncEventBus();
+
+        eventBus.registerSubscribers([subscriber]);
 
         subscriber.setExpectation((actual: DummyEvent) => {
             expect(actual).toStrictEqual(event);

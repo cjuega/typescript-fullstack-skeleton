@@ -21,7 +21,8 @@ export default class KafkaEventBusConsumer implements EventBusConsumer {
         private readonly unmarshaller: DomainEventUnmarshaller,
         private readonly config: KafkaConfig
     ) {
-        this.internalBus = new InMemorySyncEventBus(subscribers);
+        this.internalBus = new InMemorySyncEventBus();
+        this.internalBus.registerSubscribers(subscribers);
         this.consumer = kafka.consumer({ groupId: this.config.groupId });
 
         this.removeDisconnectListener = this.consumer.on(this.consumer.events.DISCONNECT, () => {

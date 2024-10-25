@@ -4,13 +4,17 @@ import type { EventBus } from '@src/domain/eventBus/eventBus';
 import EventEmitterBus from '@src/infrastructure/eventBus/eventEmitterBus';
 
 export default class InMemoryAsyncEventBus implements EventBus {
-    private readonly bus: EventEmitterBus;
+    private bus?: EventEmitterBus;
 
-    constructor(subscribers: DomainEventSubscriber<DomainEvent>[]) {
+    registerSubscribers(subscribers: DomainEventSubscriber<DomainEvent>[]): void {
         this.bus = new EventEmitterBus(subscribers);
     }
 
     publish(events: DomainEvent[]): Promise<void> {
+        if (!this.bus) {
+            return Promise.reject(new Error('No event subscribers registered'));
+        }
+
         this.bus.publish(events);
         return Promise.resolve();
     }

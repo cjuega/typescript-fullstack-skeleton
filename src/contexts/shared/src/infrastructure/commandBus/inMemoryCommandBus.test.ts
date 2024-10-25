@@ -23,12 +23,23 @@ class MyCommandHandler implements CommandHandler<HandledCommand> {
 }
 
 describe('inMemoryCommandBus', () => {
+    it('throws an error when no handlers are registered', async () => {
+        expect.hasAssertions();
+
+        const unhandledCommand = new UnhandledCommand(),
+            commandBus = new InMemoryCommandBus();
+
+        await expect(commandBus.dispatch(unhandledCommand)).rejects.toThrow(Error);
+    });
+
     it('throws an error if dispatches a command without handler', async () => {
         expect.hasAssertions();
 
         const unhandledCommand = new UnhandledCommand(),
             commandHandlersInformation = new CommandHandlersInformation([]),
-            commandBus = new InMemoryCommandBus(commandHandlersInformation);
+            commandBus = new InMemoryCommandBus();
+
+        commandBus.registerHandlers(commandHandlersInformation);
 
         await expect(commandBus.dispatch(unhandledCommand)).rejects.toThrow(CommandNotRegisteredError);
     });
@@ -37,7 +48,9 @@ describe('inMemoryCommandBus', () => {
         const handledCommand = new HandledCommand(),
             myCommandHandler = new MyCommandHandler(),
             commandHandlersInformation = new CommandHandlersInformation([myCommandHandler]),
-            commandBus = new InMemoryCommandBus(commandHandlersInformation);
+            commandBus = new InMemoryCommandBus();
+
+        commandBus.registerHandlers(commandHandlersInformation);
 
         await commandBus.dispatch(handledCommand);
     });
