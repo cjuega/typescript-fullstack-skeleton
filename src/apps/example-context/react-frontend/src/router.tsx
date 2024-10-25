@@ -1,9 +1,6 @@
-import { InMemoryExampleAggregateRepository } from '@src/example-aggregate/infrastructure/inMemoryExampleAggregateRepository';
-import { ExampleAggregateList } from '@src/example-aggregate/sections/list/exampleAggregateList';
+import { ExampleAggregateListFactory } from '@src/example-aggregate/sections/list/exampleAggregateListFactory';
 import { Layout } from '@src/layout/sections/layout';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-
-const repository = new InMemoryExampleAggregateRepository();
 
 const router = createBrowserRouter([
     {
@@ -12,7 +9,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '/',
-                element: <ExampleAggregateList repository={repository} />
+                element: <ExampleAggregateListFactory />
             }
         ]
     }
