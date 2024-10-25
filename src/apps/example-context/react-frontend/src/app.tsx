@@ -1,8 +1,5 @@
-import { InMemoryExampleAggregateRepository } from '@src/example-aggregate/infrastructure/inMemoryExampleAggregateRepository';
-import { ExampleAggregateList } from '@src/example-aggregate/sections/list/exampleAggregateList';
-
-const repository = new InMemoryExampleAggregateRepository();
+import { Router } from '@src/router';
 
 export function App() {
-    return <ExampleAggregateList repository={repository} />;
+    return <Router />;
 }

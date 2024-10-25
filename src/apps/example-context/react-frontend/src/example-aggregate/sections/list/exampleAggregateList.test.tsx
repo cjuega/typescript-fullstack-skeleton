@@ -1,7 +1,8 @@
 import { ExampleAggregateMother } from '@src/example-aggregate/domain/exampleAggregate.mother';
 import type { ExampleAggregateRepository } from '@src/example-aggregate/domain/exampleAggregateRepository';
 import { ExampleAggregateList } from '@src/example-aggregate/sections/list/exampleAggregateList';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { renderWithRouter } from '@tests/renderWithRouter';
 import { describe, expect, it } from 'vitest';
 import { mock } from 'vitest-mock-extended';
 
@@ -13,7 +14,7 @@ describe('ExampleAggregateList', () => {
 
         repository.findAll.mockResolvedValue(exampleAggregates);
 
-        render(<ExampleAggregateList repository={repository} />);
+        renderWithRouter(<ExampleAggregateList repository={repository} />);
 
         const title = await screen.findByRole('heading', {
                 name: /Example Aggregate List/i
@@ -35,7 +36,7 @@ describe('ExampleAggregateList', () => {
     it("should show a no results message when there aren't example aggregates", async () => {
         repository.findAll.mockResolvedValue([]);
 
-        render(<ExampleAggregateList repository={repository} />);
+        renderWithRouter(<ExampleAggregateList repository={repository} />);
 
         const noResults = await screen.findByText(/There aren't example aggregates/i);
 
